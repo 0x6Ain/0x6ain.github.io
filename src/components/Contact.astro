@@ -9,7 +9,6 @@ interface Props {
 const { t } = Astro.props;
 const sendingLabel = t.contact.sendingLabel;
 const successMessage = t.contact.successMessage;
-const errorMessage = t.contact.errorMessage;
 ---
 
 <section id="contact" class="mx-auto max-w-4xl px-6 pb-24">
@@ -23,8 +22,10 @@ const errorMessage = t.contact.errorMessage;
 		{t.contact.description}
 	</p>
 
+	<iframe name="web3forms-target" data-contact-iframe style="display:none" title="" aria-hidden="true"></iframe>
 	<form
 		data-contact-form
+		target="web3forms-target"
 		class="mt-8 max-w-xl space-y-4"
 		action="https://api.web3forms.com/submit"
 		method="POST"
@@ -99,40 +100,35 @@ const errorMessage = t.contact.errorMessage;
 	</p>
 </section>
 
-<script define:vars={{ sendingLabel, successMessage, errorMessage }}>
+<script define:vars={{ sendingLabel, successMessage }}>
 	document.querySelectorAll('[data-contact-form]').forEach((form) => {
 		const btn = form.querySelector('[data-submit-btn]');
 		const status = form.querySelector('[data-status]');
+		const iframe = document.querySelector('[data-contact-iframe]');
 		const originalLabel = btn.textContent;
+		let submitted = false;
 
-		form.addEventListener('submit', async (event) => {
-			event.preventDefault();
+		// Web3Forms' response is missing both CORS and a same-origin-friendly
+		// Cross-Origin-Resource-Policy header, so any fetch()/XHR call gets
+		// blocked outright (even with mode: "no-cors") even though the request
+		// itself reaches them and gets recorded. Submitting the actual <form>
+		// to a hidden iframe sidesteps this entirely — CORS/CORP only govern
+		// script-initiated resource loads, not native form navigations.
+		form.addEventListener('submit', () => {
+			submitted = true;
 			btn.disabled = true;
 			btn.textContent = sendingLabel;
 			status.textContent = '';
+		});
 
-			try {
-				// Web3Forms doesn't send back Access-Control-Allow-Origin for this
-				// setup, so the browser blocks us from reading the response even
-				// though the request itself reaches them and gets recorded. Use
-				// no-cors with a "simple" (multipart) request so the browser sends
-				// it without a blocked preflight, and treat a non-throwing fetch
-				// as success since the opaque response can't be inspected.
-				await fetch(form.action, {
-					method: 'POST',
-					mode: 'no-cors',
-					body: new FormData(form),
-				});
-				status.textContent = successMessage;
-				status.style.color = 'var(--good)';
-				form.reset();
-			} catch (err) {
-				status.textContent = errorMessage;
-				status.style.color = '#e34948';
-			} finally {
-				btn.disabled = false;
-				btn.textContent = originalLabel;
-			}
+		iframe.addEventListener('load', () => {
+			if (!submitted) return;
+			submitted = false;
+			status.textContent = successMessage;
+			status.style.color = 'var(--good)';
+			btn.disabled = false;
+			btn.textContent = originalLabel;
+			form.reset();
 		});
 	});
 </script>
