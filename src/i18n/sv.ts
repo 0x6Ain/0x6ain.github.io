@@ -148,6 +148,58 @@ const sv: SiteContent = {
         },
       ],
     },
+    {
+      slug: 'infra-as-code-least-privilege',
+      company: 'Munto',
+      title: 'Migrering av AWS-infrastruktur till CDK med IAM enligt minsta möjliga behörighet',
+      subtitle: 'Från konsolhanterad infrastruktur med breda behörigheter till granskningsbar infrastructure as code enligt principen om minsta möjliga behörighet',
+      summary: 'Ersatte manuella ändringar i AWS-konsolen med AWS CDK och omdesignade IAM enligt minsta möjliga behörighet, vilket gjorde infrastrukturändringar granskningsbara och minskade omfattningen av skadan vid en komprometterad autentiseringsuppgift.',
+      tags: ['AWS', 'CDK', 'IAM', 'Infrastructure'],
+      steps: [
+        {
+          label: 'Problem',
+          body: 'AWS-resurser tillhandahölls manuellt via konsolen, så ändringar dokumenterades inte och var svåra att reproducera mellan miljöer. IAM-roller hade dessutom för brett omfång, vilket gjorde det oklart vilka tjänster som kunde komma åt vilka resurser — och förstorade konsekvenserna av en komprometterad autentiseringsuppgift.',
+        },
+        {
+          label: 'Analys',
+          body: 'Granskade befintliga IAM-policyer och resurskonfigurationer för att kartlägga vilka behörigheter varje tjänst faktiskt behövde, och identifierade var manuella konsoländringar hade orsakat skillnader (environment drift) mellan staging och produktion.',
+        },
+        {
+          label: 'Åtgärd',
+          body: 'Migrerade infrastrukturdefinitionerna till AWS CDK så att varje ändring är kod, granskas via pull requests och är reproducerbar mellan miljöer. Parallellt byggdes IAM-roller och -policyer om per tjänst enligt minsta möjliga behörighet i stället för delade breda behörigheter.',
+        },
+        {
+          label: 'Resultat',
+          body: 'Infrastrukturändringar går nu genom samma granskningsprocess som applikationskod, driften mellan staging och produktion har eliminerats, och den potentiella skadan av en läckt autentiseringsuppgift begränsas till en enda tjänst i stället för hela kontot.',
+        },
+      ],
+    },
+    {
+      slug: 'deep-linking-attribution',
+      company: 'Viceversa.ai',
+      title: 'Deep linking för attribution av användarförvärv',
+      subtitle: 'Ge marknadsföringen attributionsdata per kanal för att förbättra effektiviteten i förvärvsbudgeten',
+      summary: 'Integrerade Branch.io deep linking i hela appen så att marknadsföringen kunde attribuera installationer och registreringar till specifika kampanjer, vilket förbättrade effektiviteten i förvärvsbudgeten.',
+      tags: ['Flutter', 'Branch.io', 'Deep Linking', 'Growth'],
+      steps: [
+        {
+          label: 'Problem',
+          body: 'Marknadsföringen kunde inte avgöra vilken kampanj, remisslänk eller social delning som faktiskt ledde till en installation eller registrering, så det fanns inget tillförlitligt sätt att bedöma kanalprestanda eller motivera förvärvsutgifter.',
+        },
+        {
+          label: 'Analys',
+          body: 'Kartlade alla ingångar till appen — kampanjlänkar, inbjudningslänkar, sociala delningar — och den attributionsdata marknadsföringen behövde för var och en, inklusive deferred deep linking för användare som ännu inte hade installerat appen.',
+        },
+        {
+          label: 'Åtgärd',
+          body: 'Integrerade Branch.io på iOS och Android, kopplade länkparametrar till attributionshändelser och anslöt dessa händelser till marknadsföringens analysdashboards.',
+        },
+        {
+          label: 'Resultat',
+          body: 'Marknadsföringen fick för första gången insyn i attribution per kanal, vilket möjliggjorde datadrivna beslut om var förvärvsbudgeten skulle läggas i stället för gissningar.',
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Fallstudier',

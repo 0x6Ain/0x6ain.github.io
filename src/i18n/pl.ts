@@ -148,6 +148,58 @@ const pl: SiteContent = {
         },
       ],
     },
+    {
+      slug: 'infra-as-code-least-privilege',
+      company: 'Munto',
+      title: 'Migracja infrastruktury AWS do CDK z IAM według zasady najmniejszych uprawnień',
+      subtitle: 'Od infrastruktury zarządzanej ręcznie przez konsolę, z szerokimi uprawnieniami, do możliwej do przeglądu infrastruktury jako kodu zgodnej z zasadą najmniejszych uprawnień',
+      summary: 'Zastąpiłem ręczne zmiany w konsoli AWS przez AWS CDK i przeprojektowałem IAM według zasady najmniejszych uprawnień, dzięki czemu zmiany infrastruktury stały się możliwe do przeglądu, a zasięg skutków wycieku dowolnych poświadczeń został ograniczony.',
+      tags: ['AWS', 'CDK', 'IAM', 'Infrastructure'],
+      steps: [
+        {
+          label: 'Problem',
+          body: 'Zasoby AWS były tworzone ręcznie przez konsolę, więc zmiany nie były dokumentowane i trudno je było odtworzyć między środowiskami. Role IAM miały też zbyt szeroki zakres, przez co trudno było ustalić, które usługi mają dostęp do których zasobów — co zwiększało skutki wycieku dowolnych poświadczeń.',
+        },
+        {
+          label: 'Analiza',
+          body: 'Przeprowadziłem audyt istniejących polityk IAM i konfiguracji zasobów, aby zmapować, jakie uprawnienia faktycznie są potrzebne każdej usłudze, i zidentyfikowałem miejsca, w których ręczne zmiany w konsoli doprowadziły do rozbieżności (environment drift) między środowiskiem staging a produkcyjnym.',
+        },
+        {
+          label: 'Działanie',
+          body: 'Zmigrowałem definicje infrastruktury do AWS CDK, tak aby każda zmiana była kodem, przechodziła przegląd przez pull request i była odtwarzalna między środowiskami. Równolegle przebudowałem role i polityki IAM per usługa według zasady najmniejszych uprawnień zamiast współdzielonych szerokich uprawnień.',
+        },
+        {
+          label: 'Wynik',
+          body: 'Zmiany infrastruktury przechodzą teraz przez ten sam proces przeglądu co kod aplikacji, rozbieżność między staging a produkcją została wyeliminowana, a potencjalny skutek wycieku poświadczeń jest ograniczony do pojedynczej usługi zamiast całego konta.',
+        },
+      ],
+    },
+    {
+      slug: 'deep-linking-attribution',
+      company: 'Viceversa.ai',
+      title: 'Deep linking do atrybucji pozyskiwania użytkowników',
+      subtitle: 'Dostarczenie marketingowi danych atrybucji na poziomie kanału w celu poprawy efektywności wydatków na pozyskiwanie',
+      summary: 'Zintegrowałem deep linking Branch.io w całej aplikacji, aby marketing mógł przypisywać instalacje i rejestracje do konkretnych kampanii, poprawiając efektywność wydatków na pozyskiwanie.',
+      tags: ['Flutter', 'Branch.io', 'Deep Linking', 'Growth'],
+      steps: [
+        {
+          label: 'Problem',
+          body: 'Marketing nie potrafił ustalić, która kampania, link polecający czy udostępnienie w social media faktycznie przyniosły instalację lub rejestrację, więc nie było wiarygodnego sposobu na ocenę skuteczności kanałów ani uzasadnienie wydatków na pozyskiwanie.',
+        },
+        {
+          label: 'Analiza',
+          body: 'Zmapowałem wszystkie punkty wejścia do aplikacji — linki kampanii, linki z zaproszeniami, udostępnienia w social media — oraz dane atrybucji potrzebne marketingowi dla każdego z nich, w tym wymagania dotyczące odroczonego deep linkingu dla użytkowników, którzy nie mieli jeszcze zainstalowanej aplikacji.',
+        },
+        {
+          label: 'Działanie',
+          body: 'Zintegrowałem Branch.io na iOS i Androidzie, powiązałem parametry linków ze zdarzeniami atrybucji i połączyłem te zdarzenia z dashboardami analitycznymi marketingu.',
+        },
+        {
+          label: 'Wynik',
+          body: 'Marketing po raz pierwszy uzyskał wgląd w atrybucję na poziomie kanału, co umożliwiło podejmowanie decyzji o alokacji budżetu na pozyskiwanie w oparciu o dane, a nie domysły.',
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Studia przypadków',

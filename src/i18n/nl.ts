@@ -148,6 +148,58 @@ const nl: SiteContent = {
         },
       ],
     },
+    {
+      slug: 'infra-as-code-least-privilege',
+      company: 'Munto',
+      title: 'AWS-infrastructuur migreren naar CDK met least-privilege IAM',
+      subtitle: 'Van handmatig via de console beheerde infrastructuur met brede rechten naar reviewbare infrastructure as code volgens het principe van minimale rechten',
+      summary: 'Handmatige wijzigingen in de AWS-console vervangen door AWS CDK en IAM opnieuw ontworpen rond minimale rechten, waardoor infrastructuurwijzigingen reviewbaar werden en de impact van een gecompromitteerde credential kleiner werd.',
+      tags: ['AWS', 'CDK', 'IAM', 'Infrastructure'],
+      steps: [
+        {
+          label: 'Probleem',
+          body: 'AWS-resources werden handmatig via de console aangemaakt, waardoor wijzigingen niet werden gedocumenteerd en moeilijk te reproduceren waren tussen omgevingen. IAM-rollen hadden bovendien een te brede scope, waardoor onduidelijk was welke services toegang hadden tot welke resources — en de impact van een gecompromitteerde credential toenam.',
+        },
+        {
+          label: 'Analyse',
+          body: 'De bestaande IAM-policies en resourceconfiguraties geaudit om in kaart te brengen welke rechten elke service werkelijk nodig had, en vastgesteld waar handmatige consolewijzigingen tot verschillen (environment drift) tussen staging en productie hadden geleid.',
+        },
+        {
+          label: 'Actie',
+          body: 'De infrastructuurdefinities gemigreerd naar AWS CDK, zodat elke wijziging code is, via pull requests wordt gereviewd en reproduceerbaar is tussen omgevingen. Tegelijkertijd de IAM-rollen en -policies per service opnieuw opgebouwd volgens minimale rechten in plaats van gedeelde brede rechten.',
+        },
+        {
+          label: 'Resultaat',
+          body: 'Infrastructuurwijzigingen doorlopen nu hetzelfde reviewproces als applicatiecode, de drift tussen staging en productie is verdwenen, en de potentiële impact van een gelekte credential blijft beperkt tot één service in plaats van het hele account.',
+        },
+      ],
+    },
+    {
+      slug: 'deep-linking-attribution',
+      company: 'Viceversa.ai',
+      title: 'Deep linking voor attributie van gebruikersacquisitie',
+      subtitle: 'Marketing attributiedata per kanaal geven om de efficiëntie van het acquisitiebudget te verbeteren',
+      summary: 'Branch.io deep linking geïntegreerd in de hele app zodat marketing installaties en aanmeldingen aan specifieke campagnes kon toeschrijven, wat de efficiëntie van het acquisitiebudget verbeterde.',
+      tags: ['Flutter', 'Branch.io', 'Deep Linking', 'Growth'],
+      steps: [
+        {
+          label: 'Probleem',
+          body: 'Marketing kon niet bepalen welke campagne, verwijzingslink of social share daadwerkelijk een installatie of aanmelding opleverde, waardoor er geen betrouwbare manier was om kanaalprestaties te beoordelen of het acquisitiebudget te verantwoorden.',
+        },
+        {
+          label: 'Analyse',
+          body: 'Alle toegangspunten tot de app in kaart gebracht — campagnelinks, uitnodigingslinks, social shares — en de attributiedata die marketing voor elk nodig had, inclusief deferred deep linking voor gebruikers die de app nog niet hadden geïnstalleerd.',
+        },
+        {
+          label: 'Actie',
+          body: 'Branch.io geïntegreerd op iOS en Android, linkparameters gekoppeld aan attributie-events, en die events verbonden met de analytics-dashboards van marketing.',
+        },
+        {
+          label: 'Resultaat',
+          body: 'Marketing kreeg voor het eerst inzicht in attributie per kanaal, waardoor datagedreven beslissingen over de besteding van het acquisitiebudget mogelijk werden in plaats van giswerk.',
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Casestudy\'s',

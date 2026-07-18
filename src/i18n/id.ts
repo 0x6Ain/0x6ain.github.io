@@ -148,6 +148,58 @@ const id: SiteContent = {
         },
       ],
     },
+    {
+      slug: 'infra-as-code-least-privilege',
+      company: 'Munto',
+      title: 'Migrasi Infrastruktur AWS ke CDK dengan IAM Least-Privilege',
+      subtitle: 'Dari infrastruktur yang dikelola manual lewat konsol dengan izin luas, menjadi infrastructure as code yang dapat direview dan menerapkan least-privilege',
+      summary: 'Mengganti perubahan manual di konsol AWS dengan AWS CDK dan mendesain ulang IAM berdasarkan least-privilege, membuat perubahan infrastruktur dapat direview serta mengurangi dampak jika ada kredensial yang bocor.',
+      tags: ['AWS', 'CDK', 'IAM', 'Infrastructure'],
+      steps: [
+        {
+          label: 'Masalah',
+          body: 'Resource AWS disediakan secara manual melalui konsol, sehingga perubahan tidak terdokumentasi dan sulit direproduksi antar lingkungan. Role IAM juga memiliki cakupan terlalu luas, menyulitkan untuk mengetahui layanan mana yang dapat mengakses resource mana — dan memperbesar dampak jika ada kredensial yang bocor.',
+        },
+        {
+          label: 'Analisis',
+          body: 'Mengaudit kebijakan IAM dan konfigurasi resource yang ada untuk memetakan izin yang benar-benar dibutuhkan tiap layanan, serta mengidentifikasi titik di mana perubahan manual di konsol telah menyebabkan perbedaan (environment drift) antara staging dan production.',
+        },
+        {
+          label: 'Tindakan',
+          body: 'Memigrasikan definisi infrastruktur ke AWS CDK sehingga setiap perubahan menjadi kode, direview melalui pull request, dan dapat direproduksi antar lingkungan. Bersamaan dengan itu, membangun ulang role dan kebijakan IAM per layanan berdasarkan least-privilege alih-alih izin luas yang dibagikan bersama.',
+        },
+        {
+          label: 'Hasil',
+          body: 'Kini perubahan infrastruktur melalui proses review yang sama dengan kode aplikasi, perbedaan antara staging dan production hilang, dan dampak potensial dari kredensial yang bocor dibatasi pada satu layanan saja alih-alih seluruh akun.',
+        },
+      ],
+    },
+    {
+      slug: 'deep-linking-attribution',
+      company: 'Viceversa.ai',
+      title: 'Deep Linking untuk Atribusi Akuisisi Pengguna',
+      subtitle: 'Memberi tim marketing data atribusi per kanal untuk meningkatkan efisiensi anggaran akuisisi',
+      summary: 'Mengintegrasikan deep linking Branch.io di seluruh aplikasi agar marketing dapat mengatribusikan instalasi dan pendaftaran ke kampanye tertentu, meningkatkan efisiensi anggaran akuisisi.',
+      tags: ['Flutter', 'Branch.io', 'Deep Linking', 'Growth'],
+      steps: [
+        {
+          label: 'Masalah',
+          body: 'Marketing tidak bisa mengetahui kampanye, tautan referral, atau bagikan sosial mana yang benar-benar menghasilkan instalasi atau pendaftaran, sehingga tidak ada cara andal untuk menilai performa per kanal atau membenarkan anggaran akuisisi.',
+        },
+        {
+          label: 'Analisis',
+          body: 'Memetakan setiap titik masuk ke aplikasi — tautan kampanye, tautan undangan, bagikan sosial — dan data atribusi yang dibutuhkan marketing untuk masing-masing, termasuk deferred deep linking untuk pengguna yang belum memasang aplikasi.',
+        },
+        {
+          label: 'Tindakan',
+          body: 'Mengintegrasikan Branch.io di iOS dan Android, menghubungkan parameter tautan ke event atribusi, lalu menghubungkan event tersebut ke dashboard analitik marketing.',
+        },
+        {
+          label: 'Hasil',
+          body: 'Marketing untuk pertama kalinya memperoleh visibilitas atribusi per kanal, memungkinkan keputusan berbasis data tentang ke mana anggaran akuisisi dialokasikan alih-alih mengandalkan tebakan.',
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Studi Kasus',

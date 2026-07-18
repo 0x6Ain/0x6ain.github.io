@@ -148,6 +148,58 @@ const tr: SiteContent = {
         },
       ],
     },
+    {
+      slug: 'infra-as-code-least-privilege',
+      company: 'Munto',
+      title: 'AWS Altyapısını CDK\'ye Taşıma ve En Az Ayrıcalıklı IAM Yeniden Tasarımı',
+      subtitle: 'Konsol üzerinden manuel yönetilen, geniş izinli altyapıdan, gözden geçirilebilir ve en az ayrıcalık ilkesine uyan kod tabanlı altyapıya',
+      summary: 'AWS konsolundaki manuel değişiklikleri AWS CDK ile değiştirdim ve IAM\'i en az ayrıcalık ilkesine göre yeniden tasarladım; böylece altyapı değişiklikleri gözden geçirilebilir hale geldi ve ele geçirilen herhangi bir kimlik bilgisinin etki alanı daraldı.',
+      tags: ['AWS', 'CDK', 'IAM', 'Infrastructure'],
+      steps: [
+        {
+          label: 'Sorun',
+          body: 'AWS kaynakları konsol üzerinden manuel olarak oluşturuluyordu, bu yüzden değişiklikler belgelenmiyor ve ortamlar arasında yeniden üretilmesi zor oluyordu. IAM rolleri de hizmet bazında ayrılmamış, fazla geniş kapsamlıydı; bu da hangi hizmetin hangi kaynağa erişebildiğini belirsizleştiriyor ve ele geçirilen herhangi bir kimlik bilgisinin etkisini büyütüyordu.',
+        },
+        {
+          label: 'Analiz',
+          body: 'Mevcut IAM politikalarını ve kaynak yapılandırmalarını denetleyerek her hizmetin gerçekte hangi izinlere ihtiyaç duyduğunu haritalandırdım ve konsoldaki manuel değişikliklerin staging ile production ortamları arasında oluşturduğu farklılıkları (environment drift) belirledim.',
+        },
+        {
+          label: 'Aksiyon',
+          body: 'Altyapı tanımlarını AWS CDK\'ye taşıdım; böylece her değişiklik kod olarak kalıyor, pull request ile gözden geçiriliyor ve ortamlar arasında yeniden üretilebiliyor. Paralelde, paylaşılan geniş izinler yerine her hizmet için IAM rollerini ve politikalarını en az ayrıcalık ilkesine göre yeniden yapılandırdım.',
+        },
+        {
+          label: 'Sonuç',
+          body: 'Artık altyapı değişiklikleri de uygulama koduyla aynı gözden geçirme sürecinden geçiyor, staging ile production arasındaki drift ortadan kalktı ve sızan bir kimlik bilgisinin olası etkisi tüm hesap yerine tek bir hizmetle sınırlı kalıyor.',
+        },
+      ],
+    },
+    {
+      slug: 'deep-linking-attribution',
+      company: 'Viceversa.ai',
+      title: 'Kullanıcı Kazanımı Atıfı için Deep Linking',
+      subtitle: 'Kazanım harcamasının verimliliğini artırmak için pazarlamaya kanal bazlı atıf verisi sağlamak',
+      summary: 'Pazarlamanın kurulum ve kayıtları belirli kampanyalara atfedebilmesi için uygulama genelinde Branch.io deep linking\'i entegre ettim ve kazanım harcamasının verimliliğini artırdım.',
+      tags: ['Flutter', 'Branch.io', 'Deep Linking', 'Growth'],
+      steps: [
+        {
+          label: 'Sorun',
+          body: 'Pazarlama, hangi kampanyanın, davet bağlantısının veya sosyal paylaşımın gerçekten bir kurulum ya da kayıt getirdiğini bilemiyordu; bu nedenle kanal performansını güvenilir biçimde değerlendirmenin veya kazanım harcamasını gerekçelendirmenin bir yolu yoktu.',
+        },
+        {
+          label: 'Analiz',
+          body: 'Uygulamaya gelen tüm giriş noktalarını — kampanya bağlantıları, davet bağlantıları, sosyal paylaşımlar — ve her biri için pazarlamanın ihtiyaç duyduğu atıf verilerini, uygulamayı henüz kurmamış kullanıcılar için ertelenmiş deep linking gereksinimleri dahil olmak üzere haritalandırdım.',
+        },
+        {
+          label: 'Aksiyon',
+          body: 'iOS ve Android genelinde Branch.io\'yu entegre ettim, bağlantı parametrelerini atıf olaylarına bağladım ve bu olayları pazarlamanın analiz panolarına bağladım.',
+        },
+        {
+          label: 'Sonuç',
+          body: 'Pazarlama ilk kez kanal bazlı atıf görünürlüğü kazandı; böylece kazanım bütçesini tahmine dayalı değil, veriye dayalı olarak dağıtabildi.',
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Vaka Analizleri',
