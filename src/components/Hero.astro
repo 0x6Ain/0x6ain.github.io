@@ -1,0 +1,45 @@
+---
+import type { SiteContent } from '../i18n/types';
+
+interface Props {
+  t: SiteContent;
+}
+
+const { t } = Astro.props;
+---
+
+<section id="top" class="mx-auto max-w-4xl px-6 pt-16 pb-20 sm:pt-24 sm:pb-28">
+	<p class="text-sm font-medium" style="color: var(--accent);">
+		{t.profile.location} · {t.profile.title} · {t.profile.yearsOfExperience}{t.profile.yearsSuffix}
+	</p>
+	<h1
+		class="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl"
+		style="color: var(--text-primary);"
+	>
+		{t.profile.name}
+		<span class="block text-2xl font-normal sm:text-3xl" style="color: var(--text-secondary);">
+			{t.profile.subName}
+		</span>
+	</h1>
+	<p class="mt-6 max-w-2xl text-lg leading-relaxed" style="color: var(--text-secondary);">
+		{t.profile.intro}
+	</p>
+	<div class="mt-8 flex flex-wrap gap-3">
+		<a
+			href={t.profile.githubUrl}
+			target="_blank"
+			rel="noopener noreferrer"
+			class="rounded-full border px-5 py-2 text-sm font-medium transition-colors hover:opacity-80"
+			style="border-color: var(--border); color: var(--text-primary);"
+		>
+			GitHub
+		</a>
+		<a
+			href={`mailto:${t.profile.email}`}
+			class="rounded-full px-5 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+			style="background: var(--accent);"
+		>
+			{t.profile.email}
+		</a>
+	</div>
+</section>

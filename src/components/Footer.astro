@@ -1,0 +1,20 @@
+---
+import type { SiteContent } from '../i18n/types';
+
+interface Props {
+  t: SiteContent;
+}
+
+const { t } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t" style="border-color: var(--border);">
+	<div
+		class="mx-auto flex max-w-4xl flex-col gap-2 px-6 py-10 text-sm sm:flex-row sm:items-center sm:justify-between"
+		style="color: var(--text-muted);"
+	>
+		<p>{t.footer.tagline}</p>
+		<p>© {year} {t.profile.subName}. {t.footer.rights}</p>
+	</div>
+</footer>

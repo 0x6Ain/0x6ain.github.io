@@ -1,0 +1,76 @@
+---
+import { languages, pathForLang, type Lang } from '../i18n';
+import type { SiteContent } from '../i18n/types';
+
+interface Props {
+  t: SiteContent;
+  lang: Lang;
+}
+
+const { t, lang } = Astro.props;
+
+const links = [
+  { href: '#impact', label: t.nav.impact },
+  { href: '#experience', label: t.nav.experience },
+  { href: '#case-study', label: t.nav.caseStudy },
+  { href: '#skills', label: t.nav.skills },
+];
+---
+
+<header
+	class="sticky top-0 z-50 border-b backdrop-blur"
+	style="background: color-mix(in srgb, var(--page) 85%, transparent); border-color: var(--border);"
+>
+	<nav class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
+		<a href="#top" class="font-semibold tracking-tight" style="color: var(--text-primary);">
+			{t.profile.subName}
+		</a>
+		<ul class="hidden gap-6 text-sm sm:flex" style="color: var(--text-secondary);">
+			{
+				links.map((link) => (
+					<li>
+						<a href={link.href} class="transition-colors hover:opacity-70">
+							{link.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+		<div class="flex items-center gap-3">
+			<div class="flex items-center gap-1 text-sm" style="color: var(--text-muted);">
+				{
+					(Object.keys(languages) as Lang[]).map((code, i) => (
+						<>
+							{i > 0 && <span aria-hidden="true">/</span>}
+							<a
+								href={pathForLang(code)}
+								data-lang-link={code}
+								aria-current={code === lang ? 'page' : undefined}
+								class="px-1 transition-colors hover:opacity-70"
+								style={code === lang ? 'color: var(--accent); font-weight: 600;' : undefined}
+							>
+								{code.toUpperCase()}
+							</a>
+						</>
+					))
+				}
+			</div>
+			<a
+				href={`mailto:${t.profile.email}`}
+				class="rounded-full px-4 py-1.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
+				style="background: var(--accent);"
+			>
+				{t.nav.contact}
+			</a>
+		</div>
+	</nav>
+</header>
+
+<script>
+	document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]').forEach((el) => {
+		el.addEventListener('click', () => {
+			const code = el.getAttribute('data-lang-link');
+			if (code) localStorage.setItem('preferred-lang', code);
+		});
+	});
+</script>

@@ -1,0 +1,34 @@
+---
+import { defaultLang, languages, type Lang } from '../i18n';
+
+const supported = Object.keys(languages) as Lang[];
+---
+
+<!doctype html>
+<html lang={defaultLang}>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="refresh" content={`0; url=/${defaultLang}/`} />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Jinyoung Hong</title>
+		<script define:vars={{ supported, defaultLang }}>
+			(function () {
+				var stored = localStorage.getItem('preferred-lang');
+				var lang = stored;
+				if (!lang || supported.indexOf(lang) === -1) {
+					var browserLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+					lang = supported.find(function (code) {
+						return browserLang.indexOf(code) === 0;
+					});
+				}
+				if (!lang || supported.indexOf(lang) === -1) lang = defaultLang;
+				location.replace('/' + lang + '/');
+			})();
+		</script>
+	</head>
+	<body>
+		<noscript>
+			<p>Redirecting to <a href={`/${defaultLang}/`}>the portfolio</a>…</p>
+		</noscript>
+	</body>
+</html>

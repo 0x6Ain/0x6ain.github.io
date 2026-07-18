@@ -1,0 +1,38 @@
+---
+import type { SiteContent } from '../i18n/types';
+
+interface Props {
+  t: SiteContent;
+}
+
+const { t } = Astro.props;
+---
+
+<section id="impact" class="mx-auto max-w-4xl px-6 pb-20">
+	<h2 class="text-sm font-semibold tracking-wide uppercase" style="color: var(--text-muted);">
+		{t.sectionLabels.impact}
+	</h2>
+	<div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+		{
+			t.impactStats.map((stat) => (
+				<div
+					class="rounded-2xl border p-6"
+					style="background: var(--surface); border-color: var(--border);"
+				>
+					<p class="text-sm" style="color: var(--text-secondary);">
+						{stat.label}
+					</p>
+					<p
+						class="mt-2 text-3xl font-semibold"
+						style={`color: ${stat.direction === 'good' ? 'var(--good)' : 'var(--text-primary)'};`}
+					>
+						{stat.value}
+					</p>
+					<p class="mt-3 text-sm leading-relaxed" style="color: var(--text-muted);">
+						{stat.detail}
+					</p>
+				</div>
+			))
+		}
+	</div>
+</section>

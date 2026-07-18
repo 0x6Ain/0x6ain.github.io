@@ -1,0 +1,34 @@
+---
+import '../styles/global.css';
+import { languages, pathForLang, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+}
+
+const { lang, title, description } = Astro.props;
+const canonicalUrl = new URL(pathForLang(lang), Astro.site);
+---
+
+<html lang={lang}>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalUrl} />
+		{
+			(Object.keys(languages) as Lang[]).map((code) => (
+				<link rel="alternate" hreflang={code} href={new URL(pathForLang(code), Astro.site)} />
+			))
+		}
+		<link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site)} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

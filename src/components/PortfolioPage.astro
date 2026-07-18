@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from './Nav.astro';
+import Hero from './Hero.astro';
+import ImpactStats from './ImpactStats.astro';
+import Experience from './Experience.astro';
+import CaseStudy from './CaseStudy.astro';
+import Skills from './Skills.astro';
+import EducationFreelance from './EducationFreelance.astro';
+import Footer from './Footer.astro';
+import { content, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang];
+---
+
+<Layout lang={lang} title={`${t.profile.name} — ${t.profile.title}`} description={t.profile.intro}>
+	<Nav t={t} lang={lang} />
+	<main>
+		<Hero t={t} />
+		<ImpactStats t={t} />
+		<Experience t={t} />
+		<CaseStudy t={t} />
+		<Skills t={t} />
+		<EducationFreelance t={t} />
+	</main>
+	<Footer t={t} />
+</Layout>
