@@ -121,11 +121,15 @@ const zhTW: SiteContent = {
     achievements: ['協助完成 Pre-A 輪募資', '部署 150 台以上裝置,含交付至文化中心的機型'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: '核心資料庫查詢效能提升 92%',
-    subtitle: '1206ms → 13ms —— 從 PostgreSQL 瓶頸分析到結構性優化',
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: '核心資料庫查詢效能提升 92%',
+      subtitle: '1206ms → 13ms —— 從 PostgreSQL 瓶頸分析到結構性優化',
+      summary: '透過 EXPLAIN ANALYZE 診斷出 1200ms 以上的查詢瓶頸,重建索引策略,將回應時間縮短 92%,同時降低了 Redis 記憶體使用率。',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: '問題',
         body: '核心動態消息查詢的回應延遲直接影響使用者體驗並加重伺服器負載。當時尚未釐清根本原因是查詢本身、索引缺失,還是資料模型設計問題。',
@@ -140,9 +144,17 @@ const zhTW: SiteContent = {
       },
       {
         label: '結果',
-        body: '核心查詢回應時間從 1206ms 降至 13ms,提升超過 92%。這項成果成為後續推薦架構與資料管線的基礎,目前穩定服務 10,000+ 位使用者。',
-      },
-    ],
+          body: '核心查詢回應時間從 1206ms 降至 13ms,提升超過 92%。這項成果成為後續推薦架構與資料管線的基礎,目前穩定服務 10,000+ 位使用者。',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: '案例研究',
+    intro: '記錄了幾個關鍵決策 —— 我遇到的問題、如何診斷,以及在多個方案中為什麼選擇了這種解決方式。',
+    readMore: '查看完整內容',
+    backToList: '← 返回案例列表',
+    viewAll: '查看全部案例',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const zhTW: SiteContent = {
       points: ['開發身心健康資料視覺化功能,並依使用者回饋優化 UI/UX(Flutter)'],
     },
   ],
+  contact: {
+    heading: '聯絡我',
+    description: '如果有合作機會或問題,歡迎透過下方表單留言給我。',
+    namePlaceholder: '姓名',
+    emailPlaceholder: '電子郵件',
+    messagePlaceholder: '訊息內容',
+    submitLabel: '傳送訊息',
+    sendingLabel: '傳送中…',
+    successMessage: '訊息已傳送,我會盡快回覆您。',
+    errorMessage: '傳送失敗,請稍後再試,或直接寄信聯絡我。',
+    orEmailDirectly: '或直接寄信至:',
+  },
   footer: {
     tagline: '從行動應用到後端,再到基礎設施。',
     rights: '版權所有。',

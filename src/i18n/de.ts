@@ -121,11 +121,15 @@ const de: SiteContent = {
     achievements: ['Zu einer Pre-A-Finanzierungsrunde beigetragen', '150+ Geräte im Einsatz, darunter Einheiten für ein Kulturzentrum'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: '92% schnellere zentrale DB-Abfragen',
-    subtitle: '1206ms → 13ms – von der Engpassanalyse bis zu strukturellen Korrekturen in PostgreSQL',
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: '92% schnellere zentrale DB-Abfragen',
+      subtitle: '1206ms → 13ms – von der Engpassanalyse bis zu strukturellen Korrekturen in PostgreSQL',
+      summary: 'Mit EXPLAIN ANALYZE einen Engpass von über 1200ms diagnostiziert, die Indexstrategie neu aufgebaut und die Antwortzeit um 92% reduziert, während gleichzeitig die Redis-Speichernutzung gesenkt wurde.',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: 'Problem',
         body: 'Die Latenz der zentralen Feed-Abfrage beeinträchtigte direkt die Nutzererfahrung und erhöhte die Serverlast. Unklar war, ob die Ursache in der Abfrage selbst, fehlenden Indizes oder dem Datenmodell lag.',
@@ -140,9 +144,17 @@ const de: SiteContent = {
       },
       {
         label: 'Ergebnis',
-        body: 'Die Antwortzeit der zentralen Abfrage sank von 1206ms auf 13ms – eine Verbesserung von über 92%. Diese Arbeit bildete die Grundlage für eine Empfehlungsarchitektur und Datenpipeline, die heute stabil 10.000+ Nutzer bedient.',
-      },
-    ],
+          body: 'Die Antwortzeit der zentralen Abfrage sank von 1206ms auf 13ms – eine Verbesserung von über 92%. Diese Arbeit bildete die Grundlage für eine Empfehlungsarchitektur und Datenpipeline, die heute stabil 10.000+ Nutzer bedient.',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: 'Fallstudien',
+    intro: 'Ein genauerer Blick auf einige Entscheidungen — das Problem, auf das ich gestoßen bin, wie ich es diagnostiziert habe und warum ich mich für diese Lösung entschieden habe.',
+    readMore: 'Ganze Geschichte lesen',
+    backToList: '← Alle Fallstudien',
+    viewAll: 'Alle Fallstudien ansehen',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const de: SiteContent = {
       points: ['Visualisierungen für körperliche/mentale Gesundheitsdaten entwickelt und UI/UX basierend auf Nutzerfeedback verbessert (Flutter)'],
     },
   ],
+  contact: {
+    heading: 'Kontakt aufnehmen',
+    description: 'Haben Sie ein Projekt, eine Stelle oder eine Frage im Kopf? Schreiben Sie mir unten eine Nachricht.',
+    namePlaceholder: 'Name',
+    emailPlaceholder: 'E-Mail',
+    messagePlaceholder: 'Nachricht',
+    submitLabel: 'Nachricht senden',
+    sendingLabel: 'Wird gesendet…',
+    successMessage: 'Nachricht gesendet — ich melde mich bald bei Ihnen.',
+    errorMessage: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut oder schreiben Sie mir direkt per E-Mail.',
+    orEmailDirectly: 'Oder schreiben Sie mir direkt an',
+  },
   footer: {
     tagline: 'Von Mobile über Backend bis zur Infrastruktur.',
     rights: 'Alle Rechte vorbehalten.',

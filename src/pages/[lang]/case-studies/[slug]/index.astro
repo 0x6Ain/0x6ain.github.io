@@ -1,0 +1,89 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import Nav from '../../../../components/Nav.astro';
+import Footer from '../../../../components/Footer.astro';
+import { content, languages, pathForLang, type Lang } from '../../../../i18n';
+
+export function getStaticPaths() {
+  return (Object.keys(languages) as Lang[]).flatMap((lang) =>
+    content[lang].caseStudies.map((caseStudy) => ({
+      params: { lang, slug: caseStudy.slug },
+    }))
+  );
+}
+
+const { lang, slug } = Astro.params as { lang: Lang; slug: string };
+const t = content[lang];
+const caseStudy = t.caseStudies.find((c) => c.slug === slug)!;
+---
+
+<Layout lang={lang} title={`${caseStudy.title} — ${t.profile.name}`} description={caseStudy.summary}>
+	<Nav t={t} lang={lang} />
+	<main>
+		<section class="mx-auto max-w-4xl px-6 pt-16 pb-20 sm:pt-24">
+			<a
+				href={`${pathForLang(lang)}case-studies/`}
+				class="text-sm font-medium transition-colors hover:opacity-70"
+				style="color: var(--accent);"
+			>
+				{t.caseStudiesPage.backToList}
+			</a>
+
+			<h1
+				class="mt-4 text-sm font-semibold tracking-wide uppercase"
+				style="color: var(--text-muted);"
+			>
+				{caseStudy.company}
+			</h1>
+			<h2 class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl" style="color: var(--text-primary);">
+				{caseStudy.title}
+			</h2>
+			<p class="mt-4 max-w-2xl text-lg leading-relaxed" style="color: var(--text-secondary);">
+				{caseStudy.subtitle}
+			</p>
+
+			<div class="mt-6 flex flex-wrap gap-2">
+				{
+					caseStudy.tags.map((tag) => (
+						<span
+							class="rounded-full px-2.5 py-1 text-xs"
+							style="background: var(--accent-soft); color: var(--accent-strong);"
+						>
+							{tag}
+						</span>
+					))
+				}
+			</div>
+
+			<div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+				{
+					caseStudy.steps.map((step) => (
+						<div
+							class="rounded-2xl border p-6"
+							style="background: var(--surface); border-color: var(--border);"
+						>
+							<span
+								class="text-xs font-semibold tracking-wide uppercase"
+								style="color: var(--accent);"
+							>
+								{step.label}
+							</span>
+							<p class="mt-2 text-sm leading-relaxed" style="color: var(--text-secondary);">
+								{step.body}
+							</p>
+						</div>
+					))
+				}
+			</div>
+
+			<a
+				href={`${pathForLang(lang)}case-studies/`}
+				class="mt-10 inline-block text-sm font-medium transition-colors hover:opacity-70"
+				style="color: var(--accent);"
+			>
+				{t.caseStudiesPage.backToList}
+			</a>
+		</section>
+	</main>
+	<Footer t={t} />
+</Layout>

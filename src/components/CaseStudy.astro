@@ -1,42 +1,60 @@
 ---
+import { pathForLang, type Lang } from '../i18n';
 import type { SiteContent } from '../i18n/types';
 
 interface Props {
   t: SiteContent;
+  lang: Lang;
 }
 
-const { t } = Astro.props;
-const caseStudy = t.caseStudy;
+const { t, lang } = Astro.props;
 ---
 
 <section id="case-study" class="mx-auto max-w-4xl px-6 pb-20">
-	<h2 class="text-sm font-semibold tracking-wide uppercase" style="color: var(--text-muted);">
-		{t.sectionLabels.caseStudy} — {caseStudy.company}
-	</h2>
-	<h3 class="mt-3 text-2xl font-semibold" style="color: var(--text-primary);">
-		{caseStudy.title}
-	</h3>
-	<p class="mt-2 text-base" style="color: var(--text-secondary);">
-		{caseStudy.subtitle}
-	</p>
+	<div class="flex items-baseline justify-between gap-4">
+		<h2 class="text-sm font-semibold tracking-wide uppercase" style="color: var(--text-muted);">
+			{t.sectionLabels.caseStudy}
+		</h2>
+		<a
+			href={`${pathForLang(lang)}case-studies/`}
+			class="shrink-0 text-sm font-medium transition-colors hover:opacity-70"
+			style="color: var(--accent);"
+		>
+			{t.caseStudiesPage.viewAll} →
+		</a>
+	</div>
 
-	<div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+	<div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
 		{
-			caseStudy.steps.map((step) => (
-				<div
-					class="rounded-2xl border p-6"
+			t.caseStudies.map((caseStudy) => (
+				<a
+					href={`${pathForLang(lang)}case-studies/${caseStudy.slug}/`}
+					class="block rounded-2xl border p-6 transition-colors hover:opacity-90"
 					style="background: var(--surface); border-color: var(--border);"
 				>
 					<span
 						class="text-xs font-semibold tracking-wide uppercase"
-						style="color: var(--accent);"
+						style="color: var(--text-muted);"
 					>
-						{step.label}
+						{caseStudy.company}
 					</span>
+					<h3 class="mt-2 text-lg font-semibold" style="color: var(--text-primary);">
+						{caseStudy.title}
+					</h3>
 					<p class="mt-2 text-sm leading-relaxed" style="color: var(--text-secondary);">
-						{step.body}
+						{caseStudy.summary}
 					</p>
-				</div>
+					<div class="mt-4 flex flex-wrap gap-2">
+						{caseStudy.tags.map((tag) => (
+							<span
+								class="rounded-full px-2.5 py-1 text-xs"
+								style="background: var(--accent-soft); color: var(--accent-strong);"
+							>
+								{tag}
+							</span>
+						))}
+					</div>
+				</a>
 			))
 		}
 	</div>

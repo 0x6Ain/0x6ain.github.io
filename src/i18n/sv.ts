@@ -121,11 +121,15 @@ const sv: SiteContent = {
     achievements: ['Bidrog till en Pre-A-finansieringsrunda', 'Driftsatte 150+ enheter, inklusive enheter levererade till ett kulturcenter'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: '92% snabbare centrala DB-frågor',
-    subtitle: '1206ms → 13ms — från flaskhalsanalys till strukturella fixar i PostgreSQL',
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: '92% snabbare centrala DB-frågor',
+      subtitle: '1206ms → 13ms — från flaskhalsanalys till strukturella fixar i PostgreSQL',
+      summary: 'Diagnostiserade en flaskhals på över 1200ms med EXPLAIN ANALYZE, byggde om indexstrategin och minskade svarstiden med 92% samtidigt som Redis-minnesanvändningen minskade.',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: 'Problem',
         body: 'Latensen i den centrala flödesfrågan påverkade direkt användarupplevelsen och ökade serverbelastningen. Det var oklart om grundorsaken var själva frågan, saknade index eller datamodellen.',
@@ -140,9 +144,17 @@ const sv: SiteContent = {
       },
       {
         label: 'Resultat',
-        body: 'Svarstiden för den centrala frågan sjönk från 1206ms till 13ms — en förbättring på över 92%. Detta arbete blev grunden för en rekommendationsarkitektur och datapipeline som idag stabilt betjänar 10 000+ användare.',
-      },
-    ],
+          body: 'Svarstiden för den centrala frågan sjönk från 1206ms till 13ms — en förbättring på över 92%. Detta arbete blev grunden för en rekommendationsarkitektur och datapipeline som idag stabilt betjänar 10 000+ användare.',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: 'Fallstudier',
+    intro: 'En närmare titt på några beslut — problemet jag stötte på, hur jag diagnostiserade det och varför jag valde just den här lösningen bland alternativen.',
+    readMore: 'Läs hela historien',
+    backToList: '← Alla fallstudier',
+    viewAll: 'Visa alla fallstudier',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const sv: SiteContent = {
       points: ['Utvecklade visualiseringar av fysisk/mental hälsodata och förbättrade UI/UX utifrån användarfeedback (Flutter)'],
     },
   ],
+  contact: {
+    heading: 'Kontakta mig',
+    description: 'Har du ett projekt, en roll eller en fråga i åtanke? Skicka ett meddelande nedan.',
+    namePlaceholder: 'Namn',
+    emailPlaceholder: 'E-post',
+    messagePlaceholder: 'Meddelande',
+    submitLabel: 'Skicka meddelande',
+    sendingLabel: 'Skickar…',
+    successMessage: 'Meddelandet är skickat — jag återkommer snart.',
+    errorMessage: 'Något gick fel. Försök igen eller mejla mig direkt.',
+    orEmailDirectly: 'Eller mejla mig direkt på',
+  },
   footer: {
     tagline: 'Från mobil till backend, till infrastruktur.',
     rights: 'Alla rättigheter förbehållna.',

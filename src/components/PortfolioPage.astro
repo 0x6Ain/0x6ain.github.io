@@ -7,6 +7,7 @@ import Experience from './Experience.astro';
 import CaseStudy from './CaseStudy.astro';
 import Skills from './Skills.astro';
 import EducationFreelance from './EducationFreelance.astro';
+import Contact from './Contact.astro';
 import Footer from './Footer.astro';
 import { content, type Lang } from '../i18n';
 
@@ -24,9 +25,10 @@ const t = content[lang];
 		<Hero t={t} />
 		<ImpactStats t={t} />
 		<Experience t={t} />
-		<CaseStudy t={t} />
+		<CaseStudy t={t} lang={lang} />
 		<Skills t={t} />
 		<EducationFreelance t={t} />
+		<Contact t={t} />
 	</main>
 	<Footer t={t} />
 </Layout>

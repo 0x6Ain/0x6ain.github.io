@@ -121,11 +121,15 @@ const es: SiteContent = {
     achievements: ['Contribución a una ronda de financiación Pre-A', 'Más de 150 dispositivos desplegados, incluidas unidades entregadas a un centro cultural'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: 'Consultas clave a la base de datos un 92% más rápidas',
-    subtitle: '1206ms → 13ms — del análisis de cuellos de botella a las correcciones estructurales en PostgreSQL',
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: 'Consultas clave a la base de datos un 92% más rápidas',
+      subtitle: '1206ms → 13ms — del análisis de cuellos de botella a las correcciones estructurales en PostgreSQL',
+      summary: 'Diagnostiqué un cuello de botella de más de 1200ms con EXPLAIN ANALYZE, rediseñé la estrategia de índices y reduje el tiempo de respuesta en un 92%, además de reducir el uso de memoria de Redis.',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: 'Problema',
         body: 'La latencia en la consulta principal del feed afectaba directamente la experiencia de usuario y aumentaba la carga del servidor. No estaba claro si la causa raíz era la propia consulta, la falta de índices o el modelo de datos.',
@@ -140,9 +144,17 @@ const es: SiteContent = {
       },
       {
         label: 'Resultado',
-        body: 'El tiempo de respuesta de la consulta principal bajó de 1206ms a 13ms, una mejora superior al 92%. Este trabajo se convirtió en la base de una arquitectura de recomendación y un pipeline de datos que hoy sirve de forma estable a más de 10,000 usuarios.',
-      },
-    ],
+          body: 'El tiempo de respuesta de la consulta principal bajó de 1206ms a 13ms, una mejora superior al 92%. Este trabajo se convirtió en la base de una arquitectura de recomendación y un pipeline de datos que hoy sirve de forma estable a más de 10,000 usuarios.',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: 'Casos de estudio',
+    intro: 'Un vistazo más de cerca a algunas decisiones: el problema que encontré, cómo lo diagnostiqué y por qué elegí esta solución entre las alternativas.',
+    readMore: 'Leer la historia completa',
+    backToList: '← Todos los casos de estudio',
+    viewAll: 'Ver todos los casos de estudio',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const es: SiteContent = {
       points: ['Desarrollo de visualizaciones de datos de salud física/mental y mejoras de UI/UX basadas en feedback de usuarios (Flutter)'],
     },
   ],
+  contact: {
+    heading: 'Ponte en contacto',
+    description: '¿Tienes una propuesta, proyecto o pregunta? Envíame un mensaje y te responderé pronto.',
+    namePlaceholder: 'Nombre',
+    emailPlaceholder: 'Correo electrónico',
+    messagePlaceholder: 'Mensaje',
+    submitLabel: 'Enviar mensaje',
+    sendingLabel: 'Enviando…',
+    successMessage: 'Mensaje enviado — te responderé pronto.',
+    errorMessage: 'Algo salió mal. Inténtalo de nuevo o escríbeme directamente por correo.',
+    orEmailDirectly: 'O escríbeme directamente a',
+  },
   footer: {
     tagline: 'De móvil a backend, y hasta infraestructura.',
     rights: 'Todos los derechos reservados.',

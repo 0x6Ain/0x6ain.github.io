@@ -1,0 +1,136 @@
+---
+import type { SiteContent } from '../i18n/types';
+import { WEB3FORMS_ACCESS_KEY } from '../config';
+
+interface Props {
+  t: SiteContent;
+}
+
+const { t } = Astro.props;
+const sendingLabel = t.contact.sendingLabel;
+const successMessage = t.contact.successMessage;
+const errorMessage = t.contact.errorMessage;
+---
+
+<section id="contact" class="mx-auto max-w-4xl px-6 pb-24">
+	<h2 class="text-sm font-semibold tracking-wide uppercase" style="color: var(--text-muted);">
+		{t.nav.contact}
+	</h2>
+	<h3 class="mt-3 text-2xl font-semibold" style="color: var(--text-primary);">
+		{t.contact.heading}
+	</h3>
+	<p class="mt-2 max-w-xl text-base leading-relaxed" style="color: var(--text-secondary);">
+		{t.contact.description}
+	</p>
+
+	<form
+		data-contact-form
+		class="mt-8 max-w-xl space-y-4"
+		action="https://api.web3forms.com/submit"
+		method="POST"
+	>
+		<input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+		<input type="hidden" name="subject" value={`Portfolio contact — ${t.profile.name}`} />
+		<input
+			type="checkbox"
+			name="botcheck"
+			class="hidden"
+			style="display:none"
+			tabindex="-1"
+			autocomplete="off"
+		/>
+
+		<div>
+			<label class="sr-only" for="contact-name">{t.contact.namePlaceholder}</label>
+			<input
+				id="contact-name"
+				name="name"
+				type="text"
+				required
+				placeholder={t.contact.namePlaceholder}
+				class="w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-current"
+				style="border-color: var(--border); background: var(--surface); color: var(--text-primary);"
+			/>
+		</div>
+		<div>
+			<label class="sr-only" for="contact-email">{t.contact.emailPlaceholder}</label>
+			<input
+				id="contact-email"
+				name="email"
+				type="email"
+				required
+				placeholder={t.contact.emailPlaceholder}
+				class="w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-current"
+				style="border-color: var(--border); background: var(--surface); color: var(--text-primary);"
+			/>
+		</div>
+		<div>
+			<label class="sr-only" for="contact-message">{t.contact.messagePlaceholder}</label>
+			<textarea
+				id="contact-message"
+				name="message"
+				required
+				rows="5"
+				placeholder={t.contact.messagePlaceholder}
+				class="w-full resize-none rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-current"
+				style="border-color: var(--border); background: var(--surface); color: var(--text-primary);"
+			></textarea>
+		</div>
+
+		<div class="flex items-center gap-3">
+			<button
+				type="submit"
+				data-submit-btn
+				class="rounded-full px-5 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+				style="background: var(--accent);"
+			>
+				{t.contact.submitLabel}
+			</button>
+			<span data-status role="status" class="text-sm"></span>
+		</div>
+	</form>
+
+	<p class="mt-6 text-sm" style="color: var(--text-muted);">
+		{t.contact.orEmailDirectly}
+		{' '}
+		<a href={`mailto:${t.profile.email}`} class="underline" style="color: var(--accent);">
+			{t.profile.email}
+		</a>
+	</p>
+</section>
+
+<script define:vars={{ sendingLabel, successMessage, errorMessage }}>
+	document.querySelectorAll('[data-contact-form]').forEach((form) => {
+		const btn = form.querySelector('[data-submit-btn]');
+		const status = form.querySelector('[data-status]');
+		const originalLabel = btn.textContent;
+
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			btn.disabled = true;
+			btn.textContent = sendingLabel;
+			status.textContent = '';
+
+			try {
+				const res = await fetch(form.action, {
+					method: 'POST',
+					headers: { Accept: 'application/json' },
+					body: new FormData(form),
+				});
+				const data = await res.json();
+				if (!res.ok || data.success === false) {
+					throw new Error(data.message || 'submit failed');
+				}
+				status.textContent = successMessage;
+				status.style.color = 'var(--good)';
+				form.reset();
+			} catch (err) {
+				status.textContent = errorMessage;
+				status.style.color = '#e34948';
+			} finally {
+				btn.disabled = false;
+				btn.textContent = originalLabel;
+			}
+		});
+	});
+</script>

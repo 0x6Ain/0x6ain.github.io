@@ -121,28 +121,92 @@ const en: SiteContent = {
     achievements: ['Contributed to a Pre-A funding round', 'Deployed 150+ devices, including units delivered to Jagok Culture Center'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: '92% Faster Core DB Queries',
-    subtitle: '1206ms → 13ms — from bottleneck analysis to structural fixes in PostgreSQL',
-    steps: [
-      {
-        label: 'Problem',
-        body: "Latency on the core feed query was directly hurting user experience and driving up server load. It wasn't clear whether the root cause was the query itself, missing indexes, or the data model.",
-      },
-      {
-        label: 'Analysis',
-        body: 'Used PostgreSQL EXPLAIN ANALYZE together with Prisma middleware to trace execution plans for production queries, then visualized and reported on the slowest queries to pinpoint the exact bottleneck.',
-      },
-      {
-        label: 'Action',
-        body: 'Rebuilt the indexing strategy to match the bottleneck and applied structural fixes — query rewrites and condition optimization. In parallel, trimmed the follow-feed fan-out ZSET to the latest 500 entries per user, dropping Redis memory usage from 90% to 58% and reducing the risk of outages.',
-      },
-      {
-        label: 'Result',
-        body: 'Core query response time dropped from 1206ms to 13ms — a 92%+ improvement. This work became the foundation for a recommendation architecture and data pipeline now stably serving 10,000+ users.',
-      },
-    ],
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: '92% Faster Core DB Queries',
+      subtitle: '1206ms → 13ms — from bottleneck analysis to structural fixes in PostgreSQL',
+      summary: 'Diagnosed a 1200ms+ query bottleneck with EXPLAIN ANALYZE, rebuilt the indexing strategy, and cut response time by 92% while also trimming Redis memory usage.',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
+        {
+          label: 'Problem',
+          body: "Latency on the core feed query was directly hurting user experience and driving up server load. It wasn't clear whether the root cause was the query itself, missing indexes, or the data model.",
+        },
+        {
+          label: 'Analysis',
+          body: 'Used PostgreSQL EXPLAIN ANALYZE together with Prisma middleware to trace execution plans for production queries, then visualized and reported on the slowest queries to pinpoint the exact bottleneck.',
+        },
+        {
+          label: 'Action',
+          body: 'Rebuilt the indexing strategy to match the bottleneck and applied structural fixes — query rewrites and condition optimization. In parallel, trimmed the follow-feed fan-out ZSET to the latest 500 entries per user, dropping Redis memory usage from 90% to 58% and reducing the risk of outages.',
+        },
+        {
+          label: 'Result',
+          body: 'Core query response time dropped from 1206ms to 13ms — a 92%+ improvement. This work became the foundation for a recommendation architecture and data pipeline now stably serving 10,000+ users.',
+        },
+      ],
+    },
+    {
+      slug: 'infra-as-code-least-privilege',
+      company: 'Munto',
+      title: 'Migrating AWS Infrastructure to CDK with Least-Privilege IAM',
+      subtitle: 'From console-managed, broadly-permissioned infrastructure to reviewable, least-privilege infrastructure as code',
+      summary: 'Replaced manual AWS console changes with AWS CDK and redesigned IAM around least privilege, making infrastructure changes reviewable and reducing the blast radius of any compromised credential.',
+      tags: ['AWS', 'CDK', 'IAM', 'Infrastructure'],
+      steps: [
+        {
+          label: 'Problem',
+          body: 'AWS resources were provisioned by hand through the console, so changes were undocumented and hard to reproduce across environments. IAM roles were also broadly scoped, making it unclear which services could access which resources — and expanding the impact of any single compromised credential.',
+        },
+        {
+          label: 'Analysis',
+          body: 'Audited existing IAM policies and resource configurations to map which services actually needed which permissions, and identified where manual console changes had caused environment drift between staging and production.',
+        },
+        {
+          label: 'Action',
+          body: 'Migrated infrastructure definitions to AWS CDK so every change is code, reviewed through pull requests, and reproducible across environments. Rebuilt IAM roles and policies per service around least-privilege access instead of shared broad permissions.',
+        },
+        {
+          label: 'Result',
+          body: 'Infrastructure changes now go through the same review process as application code, environment drift between staging and production was eliminated, and the potential impact of a leaked credential is scoped to a single service instead of the whole account.',
+        },
+      ],
+    },
+    {
+      slug: 'deep-linking-attribution',
+      company: 'Viceversa.ai',
+      title: 'Deep Linking for User Acquisition Attribution',
+      subtitle: 'Giving marketing channel-level attribution data to improve acquisition spend efficiency',
+      summary: 'Integrated Branch.io deep linking across the app so marketing could attribute installs and signups to specific campaigns, improving acquisition spend efficiency.',
+      tags: ['Flutter', 'Branch.io', 'Deep Linking', 'Growth'],
+      steps: [
+        {
+          label: 'Problem',
+          body: 'Marketing could not tell which campaign, referral link, or social share actually drove an install or signup, so there was no reliable way to evaluate channel performance or justify acquisition spend.',
+        },
+        {
+          label: 'Analysis',
+          body: 'Mapped every entry point into the app — campaign links, invite links, social shares — and the attribution data marketing needed for each, including deferred deep linking for users who did not have the app installed yet.',
+        },
+        {
+          label: 'Action',
+          body: "Integrated Branch.io across iOS and Android, wired link parameters through to attribution events, and connected those events to marketing's analytics dashboards.",
+        },
+        {
+          label: 'Result',
+          body: 'Marketing gained per-channel attribution visibility for the first time, enabling data-driven decisions about where to spend acquisition budget instead of relying on guesswork.',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: 'Case Studies',
+    intro: 'A closer look at a few decisions — the problem I ran into, how I diagnosed it, and why I chose this particular fix over the alternatives.',
+    readMore: 'Read the full story',
+    backToList: '← All case studies',
+    viewAll: 'View all case studies',
   },
   skillGroups: [
     {
@@ -198,6 +262,18 @@ const en: SiteContent = {
       points: ['Built physical/mental health data visualizations and improved UI/UX based on user feedback (Flutter)'],
     },
   ],
+  contact: {
+    heading: 'Get in touch',
+    description: "Have a role, project, or question in mind? Send a message below and I'll get back to you.",
+    namePlaceholder: 'Name',
+    emailPlaceholder: 'Email',
+    messagePlaceholder: 'Message',
+    submitLabel: 'Send message',
+    sendingLabel: 'Sending…',
+    successMessage: "Message sent — I'll get back to you soon.",
+    errorMessage: 'Something went wrong. Please try again or email me directly.',
+    orEmailDirectly: 'Or email me directly at',
+  },
   footer: {
     tagline: 'From mobile to backend to infrastructure.',
     rights: 'All rights reserved.',

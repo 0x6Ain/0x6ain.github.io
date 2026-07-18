@@ -121,11 +121,15 @@ const id: SiteContent = {
     achievements: ['Berkontribusi pada pendanaan putaran Pre-A', 'Men-deploy lebih dari 150 perangkat, termasuk unit yang dikirim ke pusat kebudayaan'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: 'Query Database Inti 92% Lebih Cepat',
-    subtitle: '1206ms → 13ms — dari analisis bottleneck hingga perbaikan struktural di PostgreSQL',
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: 'Query Database Inti 92% Lebih Cepat',
+      subtitle: '1206ms → 13ms — dari analisis bottleneck hingga perbaikan struktural di PostgreSQL',
+      summary: 'Mendiagnosis bottleneck query lebih dari 1200ms dengan EXPLAIN ANALYZE, membangun ulang strategi index, dan mengurangi waktu respons sebesar 92% sekaligus menurunkan penggunaan memori Redis.',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: 'Masalah',
         body: 'Latensi pada query feed inti secara langsung memengaruhi pengalaman pengguna dan meningkatkan beban server. Belum jelas apakah akar masalahnya ada pada query itu sendiri, kurangnya index, atau model data.',
@@ -140,9 +144,17 @@ const id: SiteContent = {
       },
       {
         label: 'Hasil',
-        body: 'Waktu respons query inti turun dari 1206ms menjadi 13ms — peningkatan lebih dari 92%. Hasil ini menjadi fondasi arsitektur rekomendasi dan data pipeline yang kini melayani lebih dari 10.000 pengguna secara stabil.',
-      },
-    ],
+          body: 'Waktu respons query inti turun dari 1206ms menjadi 13ms — peningkatan lebih dari 92%. Hasil ini menjadi fondasi arsitektur rekomendasi dan data pipeline yang kini melayani lebih dari 10.000 pengguna secara stabil.',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: 'Studi Kasus',
+    intro: 'Tinjauan lebih dekat pada beberapa keputusan — masalah yang saya hadapi, cara saya mendiagnosisnya, dan alasan memilih solusi ini dari beberapa alternatif.',
+    readMore: 'Baca cerita lengkap',
+    backToList: '← Semua studi kasus',
+    viewAll: 'Lihat semua studi kasus',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const id: SiteContent = {
       points: ['Mengembangkan fitur visualisasi data kesehatan fisik/mental dan meningkatkan UI/UX berdasarkan feedback pengguna (Flutter)'],
     },
   ],
+  contact: {
+    heading: 'Hubungi saya',
+    description: 'Punya proyek, peran, atau pertanyaan? Kirim pesan di bawah ini.',
+    namePlaceholder: 'Nama',
+    emailPlaceholder: 'Email',
+    messagePlaceholder: 'Pesan',
+    submitLabel: 'Kirim pesan',
+    sendingLabel: 'Mengirim…',
+    successMessage: 'Pesan terkirim — saya akan segera membalas.',
+    errorMessage: 'Terjadi kesalahan. Coba lagi atau kirim email langsung ke saya.',
+    orEmailDirectly: 'Atau kirim email langsung ke',
+  },
   footer: {
     tagline: 'Dari mobile ke backend, hingga infrastruktur.',
     rights: 'Hak cipta dilindungi.',

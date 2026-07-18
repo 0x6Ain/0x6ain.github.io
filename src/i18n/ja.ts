@@ -121,11 +121,15 @@ const ja: SiteContent = {
     achievements: ['プレA資金調達に貢献', '150台以上のデバイスを運用、文化センターへの納品実績あり'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: 'コアDBクエリを92%高速化',
-    subtitle: '1206ms → 13ms — PostgreSQLのボトルネック分析から構造的な改善まで',
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: 'コアDBクエリを92%高速化',
+      subtitle: '1206ms → 13ms — PostgreSQLのボトルネック分析から構造的な改善まで',
+      summary: 'EXPLAIN ANALYZEで1200ms超のクエリボトルネックを診断し、インデックス戦略を再構築して応答時間を92%短縮、同時にRedisメモリ使用率も削減しました。',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: '課題',
         body: 'コアフィード取得クエリの応答遅延が、ユーザー体験とサーバー負荷に直接影響していました。原因がクエリ自体なのか、インデックス不足なのか、データモデルの問題なのか特定できていない状態でした。',
@@ -140,9 +144,17 @@ const ja: SiteContent = {
       },
       {
         label: '結果',
-        body: 'コアクエリの応答時間が1206msから13msへ、92%以上改善されました。この改善を基盤にレコメンドアーキテクチャとデータパイプラインを構築し、10,000人以上が利用するサービスを安定運用しています。',
-      },
-    ],
+          body: 'コアクエリの応答時間が1206msから13msへ、92%以上改善されました。この改善を基盤にレコメンドアーキテクチャとデータパイプラインを構築し、10,000人以上が利用するサービスを安定運用しています。',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: 'ケーススタディ',
+    intro: 'いくつかの意思決定について、直面した課題をどう診断し、数ある選択肢の中でなぜこの方法を選んだのかをまとめました。',
+    readMore: '詳細を見る',
+    backToList: '← ケーススタディ一覧へ',
+    viewAll: 'すべてのケーススタディを見る',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const ja: SiteContent = {
       points: ['心身の健康データの可視化機能を開発し、ユーザーフィードバックに基づきUI/UXを改善(Flutter)'],
     },
   ],
+  contact: {
+    heading: 'お問い合わせ',
+    description: 'ご質問やお仕事のご相談があれば、下記フォームからお気軽にメッセージをお送りください。',
+    namePlaceholder: 'お名前',
+    emailPlaceholder: 'メールアドレス',
+    messagePlaceholder: 'メッセージ',
+    submitLabel: '送信する',
+    sendingLabel: '送信中…',
+    successMessage: 'メッセージを送信しました。追ってご連絡します。',
+    errorMessage: '送信に失敗しました。もう一度お試しいただくか、メールで直接ご連絡ください。',
+    orEmailDirectly: 'または、こちらのメールに直接ご連絡ください:',
+  },
   footer: {
     tagline: 'モバイルからバックエンド、インフラまで。',
     rights: 'All rights reserved.',

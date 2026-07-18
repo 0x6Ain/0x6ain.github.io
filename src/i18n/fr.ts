@@ -121,11 +121,15 @@ const fr: SiteContent = {
     achievements: ['Contribution à une levée de fonds Pre-A', 'Plus de 150 appareils déployés, dont des unités livrées à un centre culturel'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: 'Requêtes BD critiques 92% plus rapides',
-    subtitle: "1206ms → 13ms — de l'analyse des goulots d'étranglement aux corrections structurelles sous PostgreSQL",
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: 'Requêtes BD critiques 92% plus rapides',
+      subtitle: "1206ms → 13ms — de l'analyse des goulots d'étranglement aux corrections structurelles sous PostgreSQL",
+      summary: "Diagnostic d'un goulot d'étranglement de plus de 1200ms avec EXPLAIN ANALYZE, refonte de la stratégie d'index, réduction du temps de réponse de 92% et de l'utilisation mémoire Redis.",
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: 'Problème',
         body: "La latence de la requête principale du fil d'actualité affectait directement l'expérience utilisateur et alourdissait la charge serveur. On ignorait si la cause profonde était la requête elle-même, l'absence d'index ou le modèle de données.",
@@ -140,9 +144,17 @@ const fr: SiteContent = {
       },
       {
         label: 'Résultat',
-        body: "Le temps de réponse de la requête principale est passé de 1206ms à 13ms, soit une amélioration de plus de 92%. Ce travail a servi de base à une architecture de recommandation et un pipeline de données qui servent aujourd'hui plus de 10 000 utilisateurs de façon stable.",
-      },
-    ],
+          body: "Le temps de réponse de la requête principale est passé de 1206ms à 13ms, soit une amélioration de plus de 92%. Ce travail a servi de base à une architecture de recommandation et un pipeline de données qui servent aujourd'hui plus de 10 000 utilisateurs de façon stable.",
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: 'Études de cas',
+    intro: "Un aperçu détaillé de quelques décisions — le problème rencontré, comment je l'ai diagnostiqué, et pourquoi j'ai choisi cette solution plutôt qu'une autre.",
+    readMore: "Lire l'histoire complète",
+    backToList: '← Toutes les études de cas',
+    viewAll: 'Voir toutes les études de cas',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const fr: SiteContent = {
       points: ["Développement de visualisations de données de santé physique/mentale et amélioration de l'UI/UX basée sur les retours utilisateurs (Flutter)"],
     },
   ],
+  contact: {
+    heading: 'Me contacter',
+    description: 'Une proposition, un projet ou une question ? Envoyez-moi un message ci-dessous.',
+    namePlaceholder: 'Nom',
+    emailPlaceholder: 'E-mail',
+    messagePlaceholder: 'Message',
+    submitLabel: 'Envoyer le message',
+    sendingLabel: 'Envoi en cours…',
+    successMessage: 'Message envoyé — je vous répondrai bientôt.',
+    errorMessage: "Une erreur s'est produite. Réessayez ou écrivez-moi directement par e-mail.",
+    orEmailDirectly: 'Ou écrivez-moi directement à',
+  },
   footer: {
     tagline: "Du mobile au backend, jusqu'à l'infrastructure.",
     rights: 'Tous droits réservés.',

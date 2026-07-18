@@ -121,11 +121,15 @@ const zhCN: SiteContent = {
     achievements: ['助力完成 Pre-A 轮融资', '部署 150+ 台设备,含交付至文化中心的机型'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: '核心数据库查询性能提升 92%',
-    subtitle: '1206ms → 13ms —— 从 PostgreSQL 瓶颈分析到结构性优化',
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: '核心数据库查询性能提升 92%',
+      subtitle: '1206ms → 13ms —— 从 PostgreSQL 瓶颈分析到结构性优化',
+      summary: '通过 EXPLAIN ANALYZE 诊断出 1200ms 以上的查询瓶颈,重建索引策略,将响应时间缩短 92%,同时降低了 Redis 内存使用率。',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: '问题',
         body: '核心信息流查询的响应延迟直接影响用户体验并加重服务器负载。当时尚不清楚根本原因是查询本身、索引缺失,还是数据模型设计问题。',
@@ -140,9 +144,17 @@ const zhCN: SiteContent = {
       },
       {
         label: '结果',
-        body: '核心查询响应时间从 1206ms 降至 13ms,提升超过 92%。这一成果为后续的推荐架构与数据管道打下基础,目前稳定服务 10,000+ 用户。',
-      },
-    ],
+          body: '核心查询响应时间从 1206ms 降至 13ms,提升超过 92%。这一成果为后续的推荐架构与数据管道打下基础,目前稳定服务 10,000+ 用户。',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: '案例研究',
+    intro: '记录了几个关键决策 —— 我遇到的问题、如何诊断,以及在多个方案中为什么选择了这种解决方式。',
+    readMore: '查看完整内容',
+    backToList: '← 返回案例列表',
+    viewAll: '查看全部案例',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const zhCN: SiteContent = {
       points: ['开发身心健康数据可视化功能,并基于用户反馈优化 UI/UX(Flutter)'],
     },
   ],
+  contact: {
+    heading: '联系我',
+    description: '如果有合作意向或问题,欢迎通过下方表单给我留言。',
+    namePlaceholder: '姓名',
+    emailPlaceholder: '邮箱',
+    messagePlaceholder: '留言内容',
+    submitLabel: '发送消息',
+    sendingLabel: '发送中…',
+    successMessage: '消息已发送,我会尽快回复您。',
+    errorMessage: '发送失败,请稍后重试,或直接发邮件联系我。',
+    orEmailDirectly: '或直接发送邮件至:',
+  },
   footer: {
     tagline: '从移动端到后端,再到基础设施。',
     rights: '版权所有。',

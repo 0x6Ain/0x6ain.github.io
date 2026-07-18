@@ -30,11 +30,22 @@ export interface CaseStudyStep {
   body: string;
 }
 
-export interface CaseStudyContent {
+export interface CaseStudyEntry {
+  slug: string;
   company: string;
   title: string;
   subtitle: string;
+  summary: string;
+  tags: string[];
   steps: CaseStudyStep[];
+}
+
+export interface CaseStudiesPageContent {
+  title: string;
+  intro: string;
+  readMore: string;
+  backToList: string;
+  viewAll: string;
 }
 
 export interface SkillGroup {
@@ -53,6 +64,19 @@ export interface FreelanceProject {
   title: string;
   period: string;
   points: string[];
+}
+
+export interface ContactContent {
+  heading: string;
+  description: string;
+  namePlaceholder: string;
+  emailPlaceholder: string;
+  messagePlaceholder: string;
+  submitLabel: string;
+  sendingLabel: string;
+  successMessage: string;
+  errorMessage: string;
+  orEmailDirectly: string;
 }
 
 export interface SiteContent {
@@ -86,10 +110,12 @@ export interface SiteContent {
   impactStats: ImpactStat[];
   experiences: Experience[];
   sideProject: SideProject;
-  caseStudy: CaseStudyContent;
+  caseStudies: CaseStudyEntry[];
+  caseStudiesPage: CaseStudiesPageContent;
   skillGroups: SkillGroup[];
   education: EducationContent;
   freelanceProjects: FreelanceProject[];
+  contact: ContactContent;
   footer: {
     tagline: string;
     rights: string;

@@ -121,11 +121,15 @@ const nl: SiteContent = {
     achievements: ['Bijgedragen aan een Pre-A-financieringsronde', '150+ apparaten ingezet, inclusief units geleverd aan een cultureel centrum'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: '92% snellere kern-DB-query\'s',
-    subtitle: '1206ms → 13ms — van knelpuntanalyse tot structurele verbeteringen in PostgreSQL',
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: '92% snellere kern-DB-query\'s',
+      subtitle: '1206ms → 13ms — van knelpuntanalyse tot structurele verbeteringen in PostgreSQL',
+      summary: 'Met EXPLAIN ANALYZE een knelpunt van meer dan 1200ms gediagnosticeerd, de indexstrategie herbouwd en de responstijd met 92% verlaagd, terwijl ook het Redis-geheugengebruik daalde.',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: 'Probleem',
         body: 'De latentie van de kernfeed-query beïnvloedde direct de gebruikerservaring en verhoogde de serverbelasting. Het was onduidelijk of de oorzaak in de query zelf lag, ontbrekende indexen, of het datamodel.',
@@ -140,9 +144,17 @@ const nl: SiteContent = {
       },
       {
         label: 'Resultaat',
-        body: 'De responstijd van de kernquery daalde van 1206ms naar 13ms — een verbetering van meer dan 92%. Dit werk vormde de basis voor een aanbevelingsarchitectuur en datapijplijn die nu stabiel meer dan 10.000 gebruikers bedient.',
-      },
-    ],
+          body: 'De responstijd van de kernquery daalde van 1206ms naar 13ms — een verbetering van meer dan 92%. Dit werk vormde de basis voor een aanbevelingsarchitectuur en datapijplijn die nu stabiel meer dan 10.000 gebruikers bedient.',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: 'Casestudy\'s',
+    intro: 'Een nadere blik op een paar beslissingen — het probleem waar ik tegenaan liep, hoe ik het diagnosticeerde, en waarom ik voor deze aanpak koos boven de alternatieven.',
+    readMore: 'Lees het volledige verhaal',
+    backToList: '← Alle casestudy\'s',
+    viewAll: 'Bekijk alle casestudy\'s',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const nl: SiteContent = {
       points: ['Visualisaties van fysieke/mentale gezondheidsdata ontwikkeld en UI/UX verbeterd op basis van gebruikersfeedback (Flutter)'],
     },
   ],
+  contact: {
+    heading: 'Neem contact op',
+    description: 'Heb je een project, functie of vraag in gedachten? Stuur hieronder een bericht.',
+    namePlaceholder: 'Naam',
+    emailPlaceholder: 'E-mail',
+    messagePlaceholder: 'Bericht',
+    submitLabel: 'Bericht versturen',
+    sendingLabel: 'Versturen…',
+    successMessage: 'Bericht verzonden — ik reageer snel.',
+    errorMessage: 'Er is iets misgegaan. Probeer het opnieuw of mail me rechtstreeks.',
+    orEmailDirectly: 'Of mail me rechtstreeks naar',
+  },
   footer: {
     tagline: 'Van mobile naar backend, tot infrastructuur.',
     rights: 'Alle rechten voorbehouden.',

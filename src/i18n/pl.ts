@@ -121,11 +121,15 @@ const pl: SiteContent = {
     achievements: ['Przyczynił się do rundy finansowania Pre-A', 'Wdrożono ponad 150 urządzeń, w tym jednostki dostarczone do centrum kultury'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: 'Kluczowe zapytania do bazy danych o 92% szybsze',
-    subtitle: '1206ms → 13ms — od analizy wąskich gardeł po zmiany strukturalne w PostgreSQL',
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: 'Kluczowe zapytania do bazy danych o 92% szybsze',
+      subtitle: '1206ms → 13ms — od analizy wąskich gardeł po zmiany strukturalne w PostgreSQL',
+      summary: 'Za pomocą EXPLAIN ANALYZE zdiagnozowałem wąskie gardło zapytania przekraczające 1200ms, przebudowałem strategię indeksowania i skróciłem czas odpowiedzi o 92%, jednocześnie zmniejszając zużycie pamięci Redis.',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: 'Problem',
         body: 'Opóźnienie kluczowego zapytania kanału bezpośrednio wpływało na doświadczenie użytkownika i zwiększało obciążenie serwera. Nie było jasne, czy przyczyną było samo zapytanie, brak indeksów, czy model danych.',
@@ -140,9 +144,17 @@ const pl: SiteContent = {
       },
       {
         label: 'Wynik',
-        body: 'Czas odpowiedzi kluczowego zapytania spadł z 1206ms do 13ms — poprawa o ponad 92%. Ta praca stała się podstawą architektury rekomendacji i potoku danych, które dziś stabilnie obsługują ponad 10000 użytkowników.',
-      },
-    ],
+          body: 'Czas odpowiedzi kluczowego zapytania spadł z 1206ms do 13ms — poprawa o ponad 92%. Ta praca stała się podstawą architektury rekomendacji i potoku danych, które dziś stabilnie obsługują ponad 10000 użytkowników.',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: 'Studia przypadków',
+    intro: 'Bliższe spojrzenie na kilka decyzji — problem, z jakim się zmierzyłem, jak go zdiagnozowałem i dlaczego wybrałem to rozwiązanie spośród alternatyw.',
+    readMore: 'Przeczytaj całą historię',
+    backToList: '← Wszystkie studia przypadków',
+    viewAll: 'Zobacz wszystkie studia przypadków',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const pl: SiteContent = {
       points: ['Opracowano wizualizacje danych zdrowia fizycznego/psychicznego i poprawiono UI/UX na podstawie opinii użytkowników (Flutter)'],
     },
   ],
+  contact: {
+    heading: 'Skontaktuj się',
+    description: 'Masz propozycję, projekt albo pytanie? Napisz do mnie poniżej.',
+    namePlaceholder: 'Imię',
+    emailPlaceholder: 'E-mail',
+    messagePlaceholder: 'Wiadomość',
+    submitLabel: 'Wyślij wiadomość',
+    sendingLabel: 'Wysyłanie…',
+    successMessage: 'Wiadomość wysłana — odpowiem wkrótce.',
+    errorMessage: 'Coś poszło nie tak. Spróbuj ponownie lub napisz do mnie bezpośrednio e-mailem.',
+    orEmailDirectly: 'Lub napisz bezpośrednio na',
+  },
   footer: {
     tagline: 'Od mobile przez backend, po infrastrukturę.',
     rights: 'Wszelkie prawa zastrzeżone.',

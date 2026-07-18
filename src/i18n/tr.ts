@@ -121,11 +121,15 @@ const tr: SiteContent = {
     achievements: ['Bir Pre-A yatırım turuna katkı sağladı', 'Bir kültür merkezine teslim edilen birimler dahil 150+ cihaz kurdu'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: 'Kritik DB Sorguları %92 Daha Hızlı',
-    subtitle: '1206ms → 13ms — PostgreSQL\'de darboğaz analizinden yapısal düzeltmelere',
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: 'Kritik DB Sorguları %92 Daha Hızlı',
+      subtitle: '1206ms → 13ms — PostgreSQL\'de darboğaz analizinden yapısal düzeltmelere',
+      summary: "EXPLAIN ANALYZE ile 1200ms'yi aşan bir sorgu darboğazını teşhis ettim, indeksleme stratejisini yeniden kurdum ve yanıt süresini %92 azaltırken Redis bellek kullanımını da düşürdüm.",
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: 'Sorun',
         body: 'Ana akış sorgusundaki gecikme, kullanıcı deneyimini doğrudan etkiliyor ve sunucu yükünü artırıyordu. Kök nedenin sorgunun kendisi mi, indeks eksikliği mi, yoksa veri modeli mi olduğu belirsizdi.',
@@ -140,9 +144,17 @@ const tr: SiteContent = {
       },
       {
         label: 'Sonuç',
-        body: 'Ana sorgunun yanıt süresi 1206ms\'den 13ms\'ye düştü — %92\'nin üzerinde bir iyileşme. Bu çalışma, bugün 10.000+ kullanıcıya istikrarlı hizmet veren öneri mimarisi ve veri hattının temelini oluşturdu.',
-      },
-    ],
+          body: 'Ana sorgunun yanıt süresi 1206ms\'den 13ms\'ye düştü — %92\'nin üzerinde bir iyileşme. Bu çalışma, bugün 10.000+ kullanıcıya istikrarlı hizmet veren öneri mimarisi ve veri hattının temelini oluşturdu.',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: 'Vaka Analizleri',
+    intro: 'Birkaç karara daha yakından bakış — karşılaştığım sorun, onu nasıl teşhis ettiğim ve alternatifler arasından neden bu çözümü seçtiğim.',
+    readMore: 'Tüm hikayeyi oku',
+    backToList: '← Tüm vaka analizleri',
+    viewAll: 'Tüm vaka analizlerini gör',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const tr: SiteContent = {
       points: ['Fiziksel/zihinsel sağlık verisi görselleştirme özellikleri geliştirdi ve kullanıcı geri bildirimine dayalı UI/UX iyileştirmeleri yaptı (Flutter)'],
     },
   ],
+  contact: {
+    heading: 'İletişime geçin',
+    description: 'Bir proje, pozisyon ya da sorunuz mu var? Aşağıdan bana mesaj gönderin.',
+    namePlaceholder: 'İsim',
+    emailPlaceholder: 'E-posta',
+    messagePlaceholder: 'Mesaj',
+    submitLabel: 'Mesaj gönder',
+    sendingLabel: 'Gönderiliyor…',
+    successMessage: 'Mesaj gönderildi — kısa süre içinde dönüş yapacağım.',
+    errorMessage: 'Bir şeyler ters gitti. Lütfen tekrar deneyin ya da doğrudan e-posta gönderin.',
+    orEmailDirectly: 'Ya da doğrudan şu adrese e-posta gönderin:',
+  },
   footer: {
     tagline: 'Mobilden backend\'e, altyapıya kadar.',
     rights: 'Tüm hakları saklıdır.',

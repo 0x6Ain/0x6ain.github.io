@@ -121,28 +121,92 @@ const ko: SiteContent = {
     achievements: ['Pre-A 투자 유치 기여', '150대 이상 기기 운용 및 자곡 문화센터 기기 납품'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: '문토',
-    title: '핵심 DB 쿼리 92% 성능 개선',
-    subtitle: '1206ms → 13ms, PostgreSQL 병목 분석부터 구조적 개선까지',
-    steps: [
-      {
-        label: 'Problem',
-        body: '핵심 피드 조회 쿼리의 응답 지연이 사용자 경험과 서버 부하에 직접적인 영향을 주고 있었습니다. 원인이 특정 쿼리인지, 인덱스 부재인지, 데이터 모델 문제인지 파악되지 않은 상태였습니다.',
-      },
-      {
-        label: 'Analysis',
-        body: 'PostgreSQL EXPLAIN ANALYZE와 Prisma Middleware를 활용해 실운영 쿼리의 실행 계획을 추적하고, 주요 쿼리 성능을 시각화·리포팅하여 병목 구간을 구체적으로 특정했습니다.',
-      },
-      {
-        label: 'Action',
-        body: '병목 원인에 맞춰 인덱스 전략을 재수립하고, 쿼리 재작성과 조건 최적화 등 구조적 개선을 적용했습니다. 동시에 팔로우 피드 Fan-out ZSET를 사용자당 최근 500건으로 트리밍해 Redis 메모리 사용률을 90%에서 58%로 낮춰 장애 가능성도 함께 줄였습니다.',
-      },
-      {
-        label: 'Result',
-        body: '핵심 쿼리 응답 시간이 1206ms에서 13ms로, 92% 이상 개선되었습니다. 이 개선을 기반으로 추천 아키텍처와 데이터 파이프라인을 구축해 10,000명 이상이 이용하는 서비스를 안정적으로 운영하고 있습니다.',
-      },
-    ],
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: '문토',
+      title: '핵심 DB 쿼리 92% 성능 개선',
+      subtitle: '1206ms → 13ms, PostgreSQL 병목 분석부터 구조적 개선까지',
+      summary: 'EXPLAIN ANALYZE로 1200ms대 쿼리 병목을 진단하고 인덱스 전략을 재구축해 응답 시간을 92% 단축하고 Redis 메모리 사용률도 함께 줄였습니다.',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
+        {
+          label: 'Problem',
+          body: '핵심 피드 조회 쿼리의 응답 지연이 사용자 경험과 서버 부하에 직접적인 영향을 주고 있었습니다. 원인이 특정 쿼리인지, 인덱스 부재인지, 데이터 모델 문제인지 파악되지 않은 상태였습니다.',
+        },
+        {
+          label: 'Analysis',
+          body: 'PostgreSQL EXPLAIN ANALYZE와 Prisma Middleware를 활용해 실운영 쿼리의 실행 계획을 추적하고, 주요 쿼리 성능을 시각화·리포팅하여 병목 구간을 구체적으로 특정했습니다.',
+        },
+        {
+          label: 'Action',
+          body: '병목 원인에 맞춰 인덱스 전략을 재수립하고, 쿼리 재작성과 조건 최적화 등 구조적 개선을 적용했습니다. 동시에 팔로우 피드 Fan-out ZSET를 사용자당 최근 500건으로 트리밍해 Redis 메모리 사용률을 90%에서 58%로 낮춰 장애 가능성도 함께 줄였습니다.',
+        },
+        {
+          label: 'Result',
+          body: '핵심 쿼리 응답 시간이 1206ms에서 13ms로, 92% 이상 개선되었습니다. 이 개선을 기반으로 추천 아키텍처와 데이터 파이프라인을 구축해 10,000명 이상이 이용하는 서비스를 안정적으로 운영하고 있습니다.',
+        },
+      ],
+    },
+    {
+      slug: 'infra-as-code-least-privilege',
+      company: '문토',
+      title: 'AWS 인프라 CDK 전환과 IAM 최소 권한 재설계',
+      subtitle: '콘솔로 수동 관리하던 인프라를, 리뷰 가능하고 최소 권한 원칙을 지키는 코드 기반 인프라로',
+      summary: 'AWS 콘솔의 수동 변경을 CDK 기반 코드로 전환하고 IAM을 최소 권한 원칙으로 재설계해, 인프라 변경을 리뷰 가능하게 만들고 크리덴셜 유출 시 영향 범위를 줄였습니다.',
+      tags: ['AWS', 'CDK', 'IAM', 'Infrastructure'],
+      steps: [
+        {
+          label: 'Problem',
+          body: 'AWS 리소스가 콘솔에서 수동으로 생성·변경되어 변경 이력이 남지 않고 환경 간 재현이 어려웠습니다. IAM 권한도 서비스별로 세분화되지 않고 폭넓게 부여되어 있어, 어떤 서비스가 어떤 리소스에 접근 가능한지 파악하기 어려웠고 크리덴셜 하나가 유출되었을 때의 피해 범위도 컸습니다.',
+        },
+        {
+          label: 'Analysis',
+          body: '기존 IAM 정책과 리소스 구성을 감사해 서비스별로 실제 필요한 권한이 무엇인지 매핑하고, 콘솔 수동 변경으로 스테이징과 프로덕션 환경이 서로 달라진 지점(환경 드리프트)을 찾아냈습니다.',
+        },
+        {
+          label: 'Action',
+          body: '인프라 정의를 AWS CDK로 전환해 모든 변경이 코드로 남고 PR을 통해 리뷰되며 환경 간 재현이 가능하도록 만들었습니다. 동시에 서비스별로 IAM 역할과 정책을 최소 권한 원칙에 맞게 재구성했습니다.',
+        },
+        {
+          label: 'Result',
+          body: '이제 인프라 변경도 애플리케이션 코드와 동일한 리뷰 프로세스를 거치고, 스테이징-프로덕션 간 환경 드리프트가 사라졌습니다. 크리덴셜이 유출되더라도 영향 범위가 계정 전체가 아닌 해당 서비스로 한정됩니다.',
+        },
+      ],
+    },
+    {
+      slug: 'deep-linking-attribution',
+      company: 'Viceversa.ai',
+      title: '딥 링크 기반 사용자 유입 채널 분석',
+      subtitle: '마케팅 채널별 기여도 데이터를 확보해 유입 예산 효율을 높이다',
+      summary: 'Branch.io 딥 링크를 앱 전반에 연동해 설치·가입을 캠페인 단위로 추적할 수 있게 만들어, 마케팅 유입 예산의 효율을 높였습니다.',
+      tags: ['Flutter', 'Branch.io', 'Deep Linking', 'Growth'],
+      steps: [
+        {
+          label: 'Problem',
+          body: '어떤 캠페인, 추천 링크, 소셜 공유가 실제 설치·가입으로 이어졌는지 알 수 없어 채널별 성과를 평가하거나 유입 예산 집행의 근거를 데이터로 댈 방법이 없었습니다.',
+        },
+        {
+          label: 'Analysis',
+          body: '캠페인 링크, 초대 링크, 소셜 공유 등 앱으로 들어오는 모든 진입 경로와 각 경로에서 마케팅팀이 필요로 하는 기여 데이터를 정리했고, 앱이 아직 설치되지 않은 사용자를 위한 디퍼드 딥 링킹 요구사항도 함께 파악했습니다.',
+        },
+        {
+          label: 'Action',
+          body: 'iOS/Android 전반에 Branch.io를 연동하고, 링크 파라미터를 기여(attribution) 이벤트로 매핑한 뒤 마케팅팀의 분석 대시보드와 연결했습니다.',
+        },
+        {
+          label: 'Result',
+          body: '마케팅팀이 처음으로 채널별 기여도를 확인할 수 있게 되었고, 감에 의존하지 않고 데이터 기반으로 유입 예산을 배분할 수 있게 되었습니다.',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: '의사결정 사례',
+    intro: '실제로 마주했던 문제를 어떻게 진단했고, 여러 대안 중 왜 이 방식을 선택했는지 정리했습니다.',
+    readMore: '전체 내용 보기',
+    backToList: '← 전체 사례 목록',
+    viewAll: '전체 사례 보기',
   },
   skillGroups: [
     {
@@ -198,6 +262,18 @@ const ko: SiteContent = {
       points: ['신체·정신 건강 데이터 시각화 기능 개발 및 사용자 피드백 기반 UI/UX 개선 (Flutter)'],
     },
   ],
+  contact: {
+    heading: '연락하기',
+    description: '협업 제안이나 궁금한 점이 있다면 아래 폼으로 편하게 메시지를 남겨주세요.',
+    namePlaceholder: '이름',
+    emailPlaceholder: '이메일',
+    messagePlaceholder: '메시지',
+    submitLabel: '메시지 보내기',
+    sendingLabel: '보내는 중…',
+    successMessage: '메시지가 전송되었습니다. 곧 답장드릴게요.',
+    errorMessage: '전송에 실패했습니다. 잠시 후 다시 시도하거나 이메일로 연락해주세요.',
+    orEmailDirectly: '또는 이메일로 직접 연락하세요:',
+  },
   footer: {
     tagline: '모바일부터 백엔드, 인프라까지.',
     rights: '전체 권리 보유.',

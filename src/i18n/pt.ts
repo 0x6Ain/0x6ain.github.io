@@ -121,11 +121,15 @@ const pt: SiteContent = {
     achievements: ['Contribuiu para uma rodada de investimento Pre-A', 'Mais de 150 dispositivos implantados, incluindo unidades entregues a um centro cultural'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: 'Consultas críticas ao BD 92% mais rápidas',
-    subtitle: '1206ms → 13ms — da análise de gargalos a correções estruturais no PostgreSQL',
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: 'Consultas críticas ao BD 92% mais rápidas',
+      subtitle: '1206ms → 13ms — da análise de gargalos a correções estruturais no PostgreSQL',
+      summary: 'Diagnostiquei um gargalo de mais de 1200ms com EXPLAIN ANALYZE, reconstruí a estratégia de índices e reduzi o tempo de resposta em 92%, além de reduzir o uso de memória do Redis.',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: 'Problema',
         body: 'A latência na consulta principal do feed afetava diretamente a experiência do usuário e aumentava a carga do servidor. Não estava claro se a causa raiz era a própria consulta, a falta de índices ou o modelo de dados.',
@@ -140,9 +144,17 @@ const pt: SiteContent = {
       },
       {
         label: 'Resultado',
-        body: 'O tempo de resposta da consulta principal caiu de 1206ms para 13ms, uma melhoria de mais de 92%. Esse trabalho se tornou a base de uma arquitetura de recomendação e pipeline de dados que hoje serve de forma estável mais de 10.000 usuários.',
-      },
-    ],
+          body: 'O tempo de resposta da consulta principal caiu de 1206ms para 13ms, uma melhoria de mais de 92%. Esse trabalho se tornou a base de uma arquitetura de recomendação e pipeline de dados que hoje serve de forma estável mais de 10.000 usuários.',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: 'Estudos de caso',
+    intro: 'Um olhar mais atento sobre algumas decisões — o problema que encontrei, como o diagnostiquei e por que escolhi essa solução entre as alternativas.',
+    readMore: 'Ler a história completa',
+    backToList: '← Todos os estudos de caso',
+    viewAll: 'Ver todos os estudos de caso',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const pt: SiteContent = {
       points: ['Desenvolvimento de visualizações de dados de saúde física/mental e melhorias de UI/UX com base no feedback dos usuários (Flutter)'],
     },
   ],
+  contact: {
+    heading: 'Entre em contato',
+    description: 'Tem uma proposta, projeto ou pergunta? Envie uma mensagem abaixo.',
+    namePlaceholder: 'Nome',
+    emailPlaceholder: 'E-mail',
+    messagePlaceholder: 'Mensagem',
+    submitLabel: 'Enviar mensagem',
+    sendingLabel: 'Enviando…',
+    successMessage: 'Mensagem enviada — retornarei em breve.',
+    errorMessage: 'Algo deu errado. Tente novamente ou envie um e-mail diretamente.',
+    orEmailDirectly: 'Ou envie um e-mail diretamente para',
+  },
   footer: {
     tagline: 'Do mobile ao backend, até a infraestrutura.',
     rights: 'Todos os direitos reservados.',

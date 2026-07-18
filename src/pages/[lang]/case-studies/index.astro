@@ -1,0 +1,66 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/Footer.astro';
+import { content, languages, pathForLang, type Lang } from '../../../i18n';
+
+export function getStaticPaths() {
+  return (Object.keys(languages) as Lang[]).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const t = content[lang];
+---
+
+<Layout lang={lang} title={`${t.caseStudiesPage.title} — ${t.profile.name}`} description={t.caseStudiesPage.intro}>
+	<Nav t={t} lang={lang} />
+	<main>
+		<section class="mx-auto max-w-4xl px-6 pt-16 pb-20 sm:pt-24">
+			<h1 class="text-3xl font-semibold tracking-tight sm:text-4xl" style="color: var(--text-primary);">
+				{t.caseStudiesPage.title}
+			</h1>
+			<p class="mt-4 max-w-2xl text-lg leading-relaxed" style="color: var(--text-secondary);">
+				{t.caseStudiesPage.intro}
+			</p>
+
+			<div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+				{
+					t.caseStudies.map((caseStudy) => (
+						<a
+							href={`${pathForLang(lang)}case-studies/${caseStudy.slug}/`}
+							class="block rounded-2xl border p-6 transition-colors hover:opacity-90"
+							style="background: var(--surface); border-color: var(--border);"
+						>
+							<span
+								class="text-xs font-semibold tracking-wide uppercase"
+								style="color: var(--text-muted);"
+							>
+								{caseStudy.company}
+							</span>
+							<h2 class="mt-2 text-lg font-semibold" style="color: var(--text-primary);">
+								{caseStudy.title}
+							</h2>
+							<p class="mt-2 text-sm leading-relaxed" style="color: var(--text-secondary);">
+								{caseStudy.summary}
+							</p>
+							<div class="mt-4 flex flex-wrap gap-2">
+								{caseStudy.tags.map((tag) => (
+									<span
+										class="rounded-full px-2.5 py-1 text-xs"
+										style="background: var(--accent-soft); color: var(--accent-strong);"
+									>
+										{tag}
+									</span>
+								))}
+							</div>
+							<span class="mt-4 inline-block text-sm font-medium" style="color: var(--accent);">
+								{t.caseStudiesPage.readMore} →
+							</span>
+						</a>
+					))
+				}
+			</div>
+		</section>
+	</main>
+	<Footer t={t} />
+</Layout>

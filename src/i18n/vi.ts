@@ -121,11 +121,15 @@ const vi: SiteContent = {
     achievements: ['Góp phần vào một vòng gọi vốn Pre-A', 'Triển khai hơn 150 thiết bị, bao gồm các đơn vị bàn giao cho một trung tâm văn hóa'],
     stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
   },
-  caseStudy: {
-    company: 'Munto',
-    title: 'Tăng tốc truy vấn DB cốt lõi 92%',
-    subtitle: '1206ms → 13ms — từ phân tích điểm nghẽn đến khắc phục cấu trúc trong PostgreSQL',
-    steps: [
+  caseStudies: [
+    {
+      slug: 'core-query-performance',
+      company: 'Munto',
+      title: 'Tăng tốc truy vấn DB cốt lõi 92%',
+      subtitle: '1206ms → 13ms — từ phân tích điểm nghẽn đến khắc phục cấu trúc trong PostgreSQL',
+      summary: 'Chẩn đoán điểm nghẽn truy vấn hơn 1200ms bằng EXPLAIN ANALYZE, xây dựng lại chiến lược index và giảm 92% thời gian phản hồi, đồng thời giảm mức sử dụng bộ nhớ Redis.',
+      tags: ['PostgreSQL', 'Redis', 'Prisma', 'Performance'],
+      steps: [
       {
         label: 'Vấn đề',
         body: 'Độ trễ của truy vấn feed cốt lõi ảnh hưởng trực tiếp đến trải nghiệm người dùng và làm tăng tải server. Chưa rõ nguyên nhân gốc rễ là do bản thân truy vấn, thiếu index, hay do mô hình dữ liệu.',
@@ -140,9 +144,17 @@ const vi: SiteContent = {
       },
       {
         label: 'Kết quả',
-        body: 'Thời gian phản hồi của truy vấn cốt lõi giảm từ 1206ms xuống 13ms — cải thiện hơn 92%. Kết quả này trở thành nền tảng cho kiến trúc gợi ý và pipeline dữ liệu hiện đang phục vụ ổn định hơn 10.000 người dùng.',
-      },
-    ],
+          body: 'Thời gian phản hồi của truy vấn cốt lõi giảm từ 1206ms xuống 13ms — cải thiện hơn 92%. Kết quả này trở thành nền tảng cho kiến trúc gợi ý và pipeline dữ liệu hiện đang phục vụ ổn định hơn 10.000 người dùng.',
+        },
+      ],
+    },
+  ],
+  caseStudiesPage: {
+    title: 'Nghiên cứu tình huống',
+    intro: 'Nhìn kỹ hơn vào một vài quyết định — vấn đề tôi gặp phải, cách tôi chẩn đoán nó, và tại sao tôi chọn giải pháp này thay vì các lựa chọn khác.',
+    readMore: 'Đọc toàn bộ câu chuyện',
+    backToList: '← Tất cả nghiên cứu tình huống',
+    viewAll: 'Xem tất cả nghiên cứu tình huống',
   },
   skillGroups: [
     {
@@ -198,6 +210,18 @@ const vi: SiteContent = {
       points: ['Phát triển tính năng trực quan hóa dữ liệu sức khỏe thể chất/tinh thần và cải thiện UI/UX dựa trên phản hồi người dùng (Flutter)'],
     },
   ],
+  contact: {
+    heading: 'Liên hệ',
+    description: 'Bạn có cơ hội hợp tác, dự án hay câu hỏi? Hãy gửi tin nhắn bên dưới cho tôi.',
+    namePlaceholder: 'Tên',
+    emailPlaceholder: 'Email',
+    messagePlaceholder: 'Tin nhắn',
+    submitLabel: 'Gửi tin nhắn',
+    sendingLabel: 'Đang gửi…',
+    successMessage: 'Đã gửi tin nhắn — tôi sẽ phản hồi sớm.',
+    errorMessage: 'Đã có lỗi xảy ra. Vui lòng thử lại hoặc gửi email trực tiếp cho tôi.',
+    orEmailDirectly: 'Hoặc gửi email trực tiếp tới',
+  },
   footer: {
     tagline: 'Từ di động đến backend, đến hạ tầng.',
     rights: 'Bảo lưu mọi quyền.',
