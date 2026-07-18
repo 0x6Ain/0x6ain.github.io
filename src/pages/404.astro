@@ -1,4 +1,5 @@
 ---
+import '../styles/global.css';
 import { defaultLang, languages } from '../i18n';
 
 const supported = Object.keys(languages);
@@ -8,9 +9,25 @@ const supported = Object.keys(languages);
 <html lang={defaultLang}>
 	<head>
 		<meta charset="utf-8" />
-		<meta http-equiv="refresh" content={`0; url=/${defaultLang}/`} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Jinyoung Hong</title>
+		<meta name="robots" content="noindex" />
+		<title>404 — Jinyoung Hong</title>
+	</head>
+	<body>
+		<main class="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
+			<p class="text-sm font-semibold tracking-wide uppercase" style="color: var(--accent);">404</p>
+			<h1 class="text-3xl font-semibold" style="color: var(--text-primary);">Page not found</h1>
+			<p style="color: var(--text-secondary);">페이지를 찾을 수 없습니다.</p>
+			<a
+				data-home-link
+				href={`/${defaultLang}/`}
+				class="mt-4 rounded-full px-5 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+				style="background: var(--accent);"
+			>
+				Back to home · 홈으로 돌아가기
+			</a>
+		</main>
 		<script define:vars={{ supported, defaultLang }}>
 			(function () {
 				function matchBrowserLangs(browserLangs) {
@@ -33,22 +50,17 @@ const supported = Object.keys(languages);
 
 				var stored = localStorage.getItem('preferred-lang');
 				var lang = stored && supported.indexOf(stored) !== -1 ? stored : null;
-
 				if (!lang) {
 					var browserLangs = navigator.languages && navigator.languages.length
 						? navigator.languages
 						: [navigator.language || navigator.userLanguage || ''];
 					lang = matchBrowserLangs(browserLangs);
 				}
-
 				if (!lang) lang = defaultLang;
-				location.replace('/' + lang + '/');
+
+				var link = document.querySelector('[data-home-link]');
+				if (link) link.setAttribute('href', '/' + lang + '/');
 			})();
 		</script>
-	</head>
-	<body>
-		<noscript>
-			<p>Redirecting to <a href={`/${defaultLang}/`}>the portfolio</a>…</p>
-		</noscript>
 	</body>
 </html>

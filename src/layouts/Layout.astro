@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import { languages, pathForLang, type Lang } from '../i18n';
+import { languages, pathForLang, dirForLang, type Lang } from '../i18n';
+import { content } from '../i18n';
 
 interface Props {
   lang: Lang;
@@ -10,12 +11,35 @@ interface Props {
 
 const { lang, title, description } = Astro.props;
 const canonicalUrl = new URL(pathForLang(lang), Astro.site);
+const ogImageUrl = new URL('/og-image.png', Astro.site);
+const t = content[lang];
+const siteName = t.profile.subName ? `${t.profile.name} (${t.profile.subName})` : t.profile.name;
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: t.profile.name,
+  alternateName: t.profile.subName,
+  jobTitle: t.profile.title,
+  url: canonicalUrl.toString(),
+  image: ogImageUrl.toString(),
+  email: `mailto:${t.profile.email}`,
+  sameAs: [t.profile.githubUrl],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: t.profile.location,
+  },
+};
 ---
 
-<html lang={lang}>
+<html lang={lang} dir={dirForLang(lang)}>
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="alternate icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/manifest.json" />
+		<meta name="theme-color" content="#2a78d6" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
@@ -27,6 +51,30 @@ const canonicalUrl = new URL(pathForLang(lang), Astro.site);
 		}
 		<link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site)} />
 		<title>{title}</title>
+
+		<!-- Open Graph -->
+		<meta property="og:type" content="profile" />
+		<meta property="og:site_name" content={siteName} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content={lang.replace('-', '_')} />
+		{
+			(Object.keys(languages) as Lang[])
+				.filter((code) => code !== lang)
+				.map((code) => <meta property="og:locale:alternate" content={code.replace('-', '_')} />)
+		}
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
 	</head>
 	<body>
 		<slot />

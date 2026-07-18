@@ -44,7 +44,7 @@ const en: SiteContent = {
     },
     {
       label: 'Cumulative active users',
-      value: '6,000+',
+      value: '10,000+',
       detail: 'Stable operation after designing the recommendation architecture and data pipeline',
       direction: 'neutral',
     },
@@ -64,7 +64,7 @@ const en: SiteContent = {
       highlights: [
         'Cut Redis memory usage from 90% to 58% by trimming the follow-feed fan-out ZSET to the latest 500 entries per user',
         'Improved core DB query performance by over 92% (1206ms → 13ms) through indexing strategy and query rewrites',
-        'Designed a recommendation-driven service architecture and data pipeline, stably serving 6,000+ users',
+        'Designed a recommendation-driven service architecture and data pipeline, stably serving 10,000+ users',
         'Migrated AWS infrastructure to CDK (IaC) and redesigned IAM roles/policies around least-privilege access',
         'Standardized Docker-based test infrastructure and automated unit/E2E testing and coverage checks with GitHub Actions',
       ],
@@ -140,7 +140,7 @@ const en: SiteContent = {
       },
       {
         label: 'Result',
-        body: 'Core query response time dropped from 1206ms to 13ms — a 92%+ improvement. This work became the foundation for a recommendation architecture and data pipeline now stably serving 6,000+ users.',
+        body: 'Core query response time dropped from 1206ms to 13ms — a 92%+ improvement. This work became the foundation for a recommendation architecture and data pipeline now stably serving 10,000+ users.',
       },
     ],
   },

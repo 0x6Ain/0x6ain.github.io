@@ -1,5 +1,5 @@
 ---
-import { languages, pathForLang, type Lang } from '../i18n';
+import { languages, type Lang } from '../i18n';
 import type { SiteContent } from '../i18n/types';
 
 interface Props {
@@ -15,14 +15,16 @@ const links = [
   { href: '#case-study', label: t.nav.caseStudy },
   { href: '#skills', label: t.nav.skills },
 ];
+
+const langEntries = Object.entries(languages) as [Lang, string][];
 ---
 
 <header
 	class="sticky top-0 z-50 border-b backdrop-blur"
 	style="background: color-mix(in srgb, var(--page) 85%, transparent); border-color: var(--border);"
 >
-	<nav class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
-		<a href="#top" class="font-semibold tracking-tight" style="color: var(--text-primary);">
+	<nav class="mx-auto flex max-w-4xl items-center justify-between gap-4 px-6 py-4">
+		<a href="#top" class="shrink-0 font-semibold tracking-tight" style="color: var(--text-primary);">
 			{t.profile.subName}
 		</a>
 		<ul class="hidden gap-6 text-sm sm:flex" style="color: var(--text-secondary);">
@@ -36,24 +38,36 @@ const links = [
 				))
 			}
 		</ul>
-		<div class="flex items-center gap-3">
-			<div class="flex items-center gap-1 text-sm" style="color: var(--text-muted);">
-				{
-					(Object.keys(languages) as Lang[]).map((code, i) => (
-						<>
-							{i > 0 && <span aria-hidden="true">/</span>}
-							<a
-								href={pathForLang(code)}
-								data-lang-link={code}
-								aria-current={code === lang ? 'page' : undefined}
-								class="px-1 transition-colors hover:opacity-70"
-								style={code === lang ? 'color: var(--accent); font-weight: 600;' : undefined}
-							>
-								{code.toUpperCase()}
-							</a>
-						</>
-					))
-				}
+		<div class="flex shrink-0 items-center gap-3">
+			<div class="relative">
+				<label class="sr-only" for="lang-select">Language</label>
+				<select
+					id="lang-select"
+					data-lang-select
+					class="cursor-pointer appearance-none rounded-full border py-1.5 pr-7 pl-3 text-sm"
+					style="border-color: var(--border); color: var(--text-primary); background: var(--surface);"
+				>
+					{
+						langEntries.map(([code, name]) => (
+							<option value={code} selected={code === lang}>
+								{name}
+							</option>
+						))
+					}
+				</select>
+				<svg
+					class="pointer-events-none absolute top-1/2 right-2 h-3.5 w-3.5 -translate-y-1/2"
+					style="color: var(--text-muted);"
+					viewBox="0 0 20 20"
+					fill="currentColor"
+					aria-hidden="true"
+				>
+					<path
+						fill-rule="evenodd"
+						d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+						clip-rule="evenodd"
+					></path>
+				</svg>
 			</div>
 			<a
 				href={`mailto:${t.profile.email}`}
@@ -67,10 +81,13 @@ const links = [
 </header>
 
 <script>
-	document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]').forEach((el) => {
-		el.addEventListener('click', () => {
-			const code = el.getAttribute('data-lang-link');
-			if (code) localStorage.setItem('preferred-lang', code);
+	document.querySelectorAll<HTMLSelectElement>('[data-lang-select]').forEach((el) => {
+		el.addEventListener('change', () => {
+			const code = el.value;
+			if (code) {
+				localStorage.setItem('preferred-lang', code);
+				location.href = `/${code}/`;
+			}
 		});
 	});
 </script>

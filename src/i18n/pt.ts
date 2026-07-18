@@ -1,0 +1,207 @@
+import type { SiteContent } from './types';
+
+const pt: SiteContent = {
+  profile: {
+    name: 'Jinyoung Hong',
+    subName: '홍진영',
+    title: 'Desenvolvedor de Software',
+    location: 'Seul, Coreia do Sul',
+    email: 'jinpods@gmail.com',
+    github: '0x6ain',
+    githubUrl: 'https://github.com/0x6ain',
+    intro:
+      'Desenvolvedor com experiência em aplicativos móveis, serviços de backend e infraestrutura em nuvem, sempre equilibrando experiência do usuário e eficiência operacional. Com um forte entendimento da experiência do cliente, construo serviços confiáveis por meio de design de APIs, modelagem de dados, otimização de desempenho e automação operacional.',
+    yearsOfExperience: 4,
+    yearsSuffix: ' anos',
+  },
+  nav: {
+    impact: 'Impacto',
+    experience: 'Experiência',
+    caseStudy: 'Estudo de caso',
+    skills: 'Habilidades',
+    contact: 'Contato',
+  },
+  sectionLabels: {
+    impact: 'Impacto',
+    experience: 'Experiência profissional',
+    caseStudy: 'Estudo de caso',
+    skills: 'Habilidades',
+    education: 'Formação',
+    freelance: 'Freelance',
+  },
+  impactStats: [
+    {
+      label: 'Uso de memória do Redis',
+      value: '90% → 58%',
+      detail: 'Redução do ZSET de fan-out do feed de seguidos para as últimas 500 entradas por usuário',
+      direction: 'good',
+    },
+    {
+      label: 'Latência de consultas críticas ao BD',
+      value: '1206ms → 13ms',
+      detail: 'Gargalos diagnosticados com EXPLAIN ANALYZE e Prisma Middleware, com reconstrução de índices e consultas',
+      direction: 'good',
+    },
+    {
+      label: 'Usuários ativos acumulados',
+      value: '10.000+',
+      detail: 'Operação estável após o design da arquitetura de recomendação e do pipeline de dados',
+      direction: 'neutral',
+    },
+    {
+      label: 'Dispositivos embarcados implantados',
+      value: '150+',
+      detail: 'Sistema próprio de automação hidropônica; contribuiu para uma rodada de investimento Pre-A',
+      direction: 'neutral',
+    },
+  ],
+  experiences: [
+    {
+      company: 'Munto',
+      period: 'mai. 2025 - Atual',
+      summary: 'Serviço de comunidade online/offline baseado em interesses',
+      role: 'Engenheiro de backend',
+      highlights: [
+        'Redução do uso de memória do Redis de 90% para 58% ao limitar o ZSET de fan-out às últimas 500 entradas por usuário',
+        'Melhoria de mais de 92% no desempenho de consultas críticas ao BD (1206ms → 13ms) com estratégia de índices e reescrita de consultas',
+        'Design de arquitetura de serviço e pipeline de dados orientados a recomendação, servindo de forma estável mais de 10.000 usuários',
+        'Migração da infraestrutura AWS para CDK (IaC) e redesenho de papéis/políticas IAM com base no princípio do menor privilégio',
+        'Padronização do ambiente de testes baseado em Docker e automação de testes unitários/E2E e cobertura com GitHub Actions',
+      ],
+      stack: ['NestJS', 'Prisma', 'PostgreSQL', 'Redis', 'AWS CDK', 'Docker', 'MongoDB'],
+    },
+    {
+      company: 'Viceversa.ai',
+      period: 'set. 2023 - out. 2024',
+      summary: 'Aplicativo de comunidade de moda com IA generativa',
+      role: 'Desenvolvedor de aplicativos móveis',
+      highlights: [
+        'Construção de sistema de compras no aplicativo (IAP) para fortalecer o modelo de receita',
+        'Implementação de deep linking para analisar aquisição de usuários e melhorar a eficiência de marketing',
+        'Refatoração do gerenciamento de estado para melhorar a compreensão do código pela equipe e a manutenibilidade',
+        'Configuração de rastreamento de falhas e uma base para análise de comportamento do usuário',
+      ],
+      stack: ['Flutter', 'Firebase', 'Riverpod', 'GetX', 'RevenueCat', 'BranchIO'],
+    },
+    {
+      company: 'Starry Night Labs',
+      period: 'mai. 2023 - ago. 2023',
+      summary: 'Aplicativo de comunidade de fãs para atletas profissionais',
+      role: 'Desenvolvedor de aplicativos móveis',
+      highlights: [
+        'Integração de login social via Google, Apple e outras plataformas',
+        'Construção de gerenciamento de dados de localização e pipelines de implantação',
+        'Revisões de código, testes e melhorias para manter a qualidade da base de código',
+      ],
+      stack: ['Flutter', 'Firebase', 'Bloc'],
+    },
+    {
+      company: 'Future Connect',
+      period: 'set. 2021 - abr. 2023',
+      summary: 'Serviço de pedidos online',
+      role: 'Banco de dados e desenvolvimento de novo servidor de API',
+      highlights: [
+        'Introdução de sistema de verificação de identidade baseado em Redis, melhorando velocidade e eficiência da autenticação',
+        'Construção de notificações em tempo real com Socket.IO',
+        'Desenvolvimento de servidores de API para suportar integrações externas e escalabilidade do serviço',
+      ],
+      stack: ['Node.js', 'MongoDB', 'Redis', 'AWS', 'Docker', 'Socket.IO'],
+    },
+  ],
+  sideProject: {
+    title: 'Sistema de automação hidropônica',
+    period: 'set. 2021 - abr. 2023',
+    role: 'Desenvolvimento de sistema de automação embarcado',
+    highlights: [
+      'Design e desenvolvimento de sistema embarcado de automação otimizado para ambientes hidropônicos',
+      'Implementação de comunicação baseada em MQTT para coleta de dados de sensores e controle remoto de equipamentos',
+      'Atualizações de firmware OTA para melhorar a manutenibilidade e escalabilidade dos dispositivos',
+      'Liderança do processo completo, do design de circuitos à fabricação terceirizada de PCB, até um MVP em estágio inicial',
+    ],
+    achievements: ['Contribuiu para uma rodada de investimento Pre-A', 'Mais de 150 dispositivos implantados, incluindo unidades entregues a um centro cultural'],
+    stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
+  },
+  caseStudy: {
+    company: 'Munto',
+    title: 'Consultas críticas ao BD 92% mais rápidas',
+    subtitle: '1206ms → 13ms — da análise de gargalos a correções estruturais no PostgreSQL',
+    steps: [
+      {
+        label: 'Problema',
+        body: 'A latência na consulta principal do feed afetava diretamente a experiência do usuário e aumentava a carga do servidor. Não estava claro se a causa raiz era a própria consulta, a falta de índices ou o modelo de dados.',
+      },
+      {
+        label: 'Análise',
+        body: 'Uso do EXPLAIN ANALYZE do PostgreSQL junto com Prisma Middleware para rastrear planos de execução de consultas em produção, com visualização e relatório das consultas mais lentas para identificar exatamente o gargalo.',
+      },
+      {
+        label: 'Ação',
+        body: 'Reconstrução da estratégia de índices de acordo com o gargalo e aplicação de correções estruturais: reescrita de consultas e otimização de condições. Paralelamente, o ZSET de fan-out foi limitado às últimas 500 entradas por usuário, reduzindo o uso de memória do Redis de 90% para 58% e diminuindo o risco de falhas.',
+      },
+      {
+        label: 'Resultado',
+        body: 'O tempo de resposta da consulta principal caiu de 1206ms para 13ms, uma melhoria de mais de 92%. Esse trabalho se tornou a base de uma arquitetura de recomendação e pipeline de dados que hoje serve de forma estável mais de 10.000 usuários.',
+      },
+    ],
+  },
+  skillGroups: [
+    {
+      title: 'Backend',
+      items: [
+        'NestJS / Node.js / Express',
+        'MikroORM / Prisma / PostgreSQL / MongoDB',
+        'Redis, Docker',
+        'Design e desenvolvimento de servidores de API em produção',
+        'Arquitetura de comunicação em tempo real (notificações/autenticação)',
+        'Implantação e operação na AWS',
+      ],
+    },
+    {
+      title: 'Mobile',
+      items: [
+        'Desenvolvimento e operação de vários aplicativos com Flutter',
+        'Gerenciamento de estado: Bloc, Riverpod, GetX',
+        'Chat em tempo real, compras no aplicativo, login social, localização',
+        'Integração de análise de comportamento do usuário e relatórios de falhas',
+      ],
+    },
+  ],
+  education: {
+    school: 'Universidade Kyung Hee',
+    degree: 'Bacharelado em Engenharia Mecânica',
+    period: 'mar. 2013 - fev. 2020',
+    notes: [
+      'Análise de dados de sensores inerciais (IMU) no MATLAB para análise de marcha e visualização de movimento esquelético',
+      'Prêmio de incentivo do grupo de pesquisa do projeto de conclusão de curso',
+    ],
+  },
+  freelanceProjects: [
+    {
+      title: 'Suporte de backend para plataforma de e-commerce',
+      period: 'nov. 2024 - jan. 2025',
+      points: [
+        'Resolução de incompatibilidades de formato de dados entre servidor e cliente, e desenvolvimento de novas APIs (NestJS, MikroORM)',
+        'Melhoria da experiência do usuário otimizando a velocidade de resposta da API e o desempenho do servidor',
+      ],
+    },
+    {
+      title: 'Desenvolvimento de aplicativo móvel de relacionamento',
+      period: 'jun. 2024 - ago. 2024',
+      points: [
+        'Liderança completa do aplicativo: design, desenvolvimento, testes e lançamento; chat em tempo real, gerenciamento de perfil e verificação de identidade (Flutter)',
+        'Publicação na App Store/Google Play e iteração contínua com base no feedback dos usuários',
+      ],
+    },
+    {
+      title: 'Suporte ao desenvolvimento de aplicativo de saúde física e mental',
+      period: 'abr. 2024 - jul. 2024',
+      points: ['Desenvolvimento de visualizações de dados de saúde física/mental e melhorias de UI/UX com base no feedback dos usuários (Flutter)'],
+    },
+  ],
+  footer: {
+    tagline: 'Do mobile ao backend, até a infraestrutura.',
+    rights: 'Todos os direitos reservados.',
+  },
+};
+
+export default pt;

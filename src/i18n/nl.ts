@@ -1,0 +1,207 @@
+import type { SiteContent } from './types';
+
+const nl: SiteContent = {
+  profile: {
+    name: 'Jinyoung Hong',
+    subName: '홍진영',
+    title: 'Softwareontwikkelaar',
+    location: 'Seoul, Zuid-Korea',
+    email: 'jinpods@gmail.com',
+    github: '0x6ain',
+    githubUrl: 'https://github.com/0x6ain',
+    intro:
+      'Ontwikkelaar met ervaring in mobiele apps, backend-diensten en cloudinfrastructuur, waarbij ik altijd gebruikerservaring en operationele efficiëntie in balans houd. Dankzij een sterk begrip van de client-ervaring bouw ik betrouwbare diensten via API-ontwerp, datamodellering, prestatie-optimalisatie en operationele automatisering.',
+    yearsOfExperience: 4,
+    yearsSuffix: ' jaar',
+  },
+  nav: {
+    impact: 'Impact',
+    experience: 'Ervaring',
+    caseStudy: 'Case study',
+    skills: 'Vaardigheden',
+    contact: 'Contact',
+  },
+  sectionLabels: {
+    impact: 'Impact',
+    experience: 'Werkervaring',
+    caseStudy: 'Case study',
+    skills: 'Vaardigheden',
+    education: 'Opleiding',
+    freelance: 'Freelance',
+  },
+  impactStats: [
+    {
+      label: 'Redis-geheugengebruik',
+      value: '90% → 58%',
+      detail: 'De fan-out ZSET van de follow-feed teruggebracht tot de laatste 500 items per gebruiker',
+      direction: 'good',
+    },
+    {
+      label: 'Latentie van kern-DB-query\'s',
+      value: '1206ms → 13ms',
+      detail: 'Knelpunten gediagnosticeerd met EXPLAIN ANALYZE en Prisma Middleware, indexen en query\'s herbouwd',
+      direction: 'good',
+    },
+    {
+      label: 'Cumulatief aantal actieve gebruikers',
+      value: '10.000+',
+      detail: 'Stabiele werking na het ontwerpen van de aanbevelingsarchitectuur en datapijplijn',
+      direction: 'neutral',
+    },
+    {
+      label: 'Ingezette embedded apparaten',
+      value: '150+',
+      detail: 'Zelf ontwikkeld hydrocultuur-automatiseringssysteem; droeg bij aan een Pre-A-financieringsronde',
+      direction: 'neutral',
+    },
+  ],
+  experiences: [
+    {
+      company: 'Munto',
+      period: 'mei 2025 - heden',
+      summary: 'Interessegebaseerde online/offline communitydienst',
+      role: 'Backend engineer',
+      highlights: [
+        'Redis-geheugengebruik verlaagd van 90% naar 58% door de fan-out ZSET van de follow-feed te beperken tot de laatste 500 items per gebruiker',
+        'Prestaties van kern-DB-query\'s met meer dan 92% verbeterd (1206ms → 13ms) via indexstrategie en query-herschrijving',
+        'Aanbevelingsgedreven service-architectuur en datapijplijn ontworpen, stabiel dienstverlenend aan 10.000+ gebruikers',
+        'AWS-infrastructuur gemigreerd naar CDK (IaC) en IAM-rollen/-beleid herontworpen volgens het principe van minimale rechten',
+        'Docker-gebaseerde testinfrastructuur gestandaardiseerd en unit-/E2E-tests en coverage-controles geautomatiseerd met GitHub Actions',
+      ],
+      stack: ['NestJS', 'Prisma', 'PostgreSQL', 'Redis', 'AWS CDK', 'Docker', 'MongoDB'],
+    },
+    {
+      company: 'Viceversa.ai',
+      period: 'sep 2023 - okt 2024',
+      summary: 'Modecommunity-app aangedreven door generatieve AI',
+      role: 'Mobiele app-ontwikkelaar',
+      highlights: [
+        'In-app-aankoopsysteem (IAP) gebouwd om het verdienmodel te versterken',
+        'Deep linking geïmplementeerd voor analyse van gebruikersacquisitie en verbeterde marketingefficiëntie',
+        'State management gerefactored voor beter codebegrip en onderhoudbaarheid binnen het team',
+        'App-crashtracking en een basis voor gebruikersgedraganalyse opgezet',
+      ],
+      stack: ['Flutter', 'Firebase', 'Riverpod', 'GetX', 'RevenueCat', 'BranchIO'],
+    },
+    {
+      company: 'Starry Night Labs',
+      period: 'mei 2023 - aug 2023',
+      summary: 'Fancommunity-app voor professionele sporters',
+      role: 'Mobiele app-ontwikkelaar',
+      highlights: [
+        'Social login via Google, Apple en andere platforms geïntegreerd',
+        'Databeheer voor lokalisatie en deploymentpijplijnen opgezet',
+        'Codereviews, tests en verbeteringen uitgevoerd om codekwaliteit te behouden',
+      ],
+      stack: ['Flutter', 'Firebase', 'Bloc'],
+    },
+    {
+      company: 'Future Connect',
+      period: 'sep 2021 - apr 2023',
+      summary: 'Online bestelservice',
+      role: 'Database- en nieuwe API-serverontwikkeling',
+      highlights: [
+        'Redis-gebaseerd identiteitsverificatiesysteem geïntroduceerd, wat de snelheid en efficiëntie van authenticatie verbeterde',
+        'Realtime notificaties gebouwd met Socket.IO',
+        'API-servers ontwikkeld ter ondersteuning van externe integraties en schaalbaarheid van de dienst',
+      ],
+      stack: ['Node.js', 'MongoDB', 'Redis', 'AWS', 'Docker', 'Socket.IO'],
+    },
+  ],
+  sideProject: {
+    title: 'Hydrocultuur-automatiseringssysteem',
+    period: 'sep 2021 - apr 2023',
+    role: 'Ontwikkeling van embedded automatiseringssysteem',
+    highlights: [
+      'Embedded automatiseringssysteem ontworpen en ontwikkeld, geoptimaliseerd voor hydrocultuuromgevingen',
+      'MQTT-gebaseerde communicatie geïmplementeerd voor sensordataverzameling en afstandsbediening van apparatuur',
+      'OTA-firmware-updates toegevoegd om onderhoudbaarheid en schaalbaarheid van apparaten te verbeteren',
+      'Het volledige proces geleid, van circuitontwerp tot uitbestede PCB-productie, tot een vroege MVP',
+    ],
+    achievements: ['Bijgedragen aan een Pre-A-financieringsronde', '150+ apparaten ingezet, inclusief units geleverd aan een cultureel centrum'],
+    stack: ['C', 'C++', 'PlatformIO', 'RabbitMQ'],
+  },
+  caseStudy: {
+    company: 'Munto',
+    title: '92% snellere kern-DB-query\'s',
+    subtitle: '1206ms → 13ms — van knelpuntanalyse tot structurele verbeteringen in PostgreSQL',
+    steps: [
+      {
+        label: 'Probleem',
+        body: 'De latentie van de kernfeed-query beïnvloedde direct de gebruikerservaring en verhoogde de serverbelasting. Het was onduidelijk of de oorzaak in de query zelf lag, ontbrekende indexen, of het datamodel.',
+      },
+      {
+        label: 'Analyse',
+        body: 'Met EXPLAIN ANALYZE van PostgreSQL samen met Prisma Middleware werden uitvoeringsplannen van productiequery\'s getraceerd, en de traagste query\'s werden gevisualiseerd en gerapporteerd om het exacte knelpunt te identificeren.',
+      },
+      {
+        label: 'Actie',
+        body: 'De indexstrategie werd herbouwd op basis van het knelpunt en structurele verbeteringen werden toegepast — query-herschrijving en conditieoptimalisatie. Tegelijkertijd werd de fan-out ZSET van de follow-feed beperkt tot de laatste 500 items per gebruiker, waardoor het Redis-geheugengebruik daalde van 90% naar 58% en het risico op storingen afnam.',
+      },
+      {
+        label: 'Resultaat',
+        body: 'De responstijd van de kernquery daalde van 1206ms naar 13ms — een verbetering van meer dan 92%. Dit werk vormde de basis voor een aanbevelingsarchitectuur en datapijplijn die nu stabiel meer dan 10.000 gebruikers bedient.',
+      },
+    ],
+  },
+  skillGroups: [
+    {
+      title: 'Backend',
+      items: [
+        'NestJS / Node.js / Express',
+        'MikroORM / Prisma / PostgreSQL / MongoDB',
+        'Redis, Docker',
+        'Ontwerp en ontwikkeling van productie-API-servers',
+        'Architectuur voor realtime communicatie (notificaties/authenticatie)',
+        'Deployment en beheer op AWS',
+      ],
+    },
+    {
+      title: 'App',
+      items: [
+        'Meerdere apps ontwikkeld en beheerd met Flutter',
+        'State management: Bloc, Riverpod, GetX',
+        'Realtime chat, in-app-aankopen, social login, lokalisatie',
+        'Integratie van gebruikersgedraganalyse en crashrapportage',
+      ],
+    },
+  ],
+  education: {
+    school: 'Kyung Hee Universiteit',
+    degree: 'Bachelor Werktuigbouwkunde',
+    period: 'mrt 2013 - feb 2020',
+    notes: [
+      'IMU-sensordata geanalyseerd in Matlab voor gang-analyse en visualisatie van skeletbewegingen',
+      'Aanmoedigingsprijs ontvangen van de onderzoeksgroep voor het afstudeerproject',
+    ],
+  },
+  freelanceProjects: [
+    {
+      title: 'Backend-ondersteuning voor e-commerceplatform',
+      period: 'nov 2024 - jan 2025',
+      points: [
+        'Dataformaatinconsistenties tussen server en client opgelost en nieuwe API\'s ontwikkeld (NestJS, MikroORM)',
+        'Gebruikerservaring verbeterd door API-responssnelheid en serverprestaties te optimaliseren',
+      ],
+    },
+    {
+      title: 'Ontwikkeling van mobiele datingapp',
+      period: 'jun 2024 - aug 2024',
+      points: [
+        'De app end-to-end geleid: ontwerp, ontwikkeling, testen en release; realtime chat, profielbeheer en identiteitsverificatie geïmplementeerd (Flutter)',
+        'Uitgebracht op App Store/Google Play en continu geïtereerd op basis van gebruikersfeedback',
+      ],
+    },
+    {
+      title: 'Ontwikkelingsondersteuning voor app voor fysieke en mentale gezondheid',
+      period: 'apr 2024 - jul 2024',
+      points: ['Visualisaties van fysieke/mentale gezondheidsdata ontwikkeld en UI/UX verbeterd op basis van gebruikersfeedback (Flutter)'],
+    },
+  ],
+  footer: {
+    tagline: 'Van mobile naar backend, tot infrastructuur.',
+    rights: 'Alle rechten voorbehouden.',
+  },
+};
+
+export default nl;
