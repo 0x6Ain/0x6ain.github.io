@@ -148,6 +148,58 @@ const fr: SiteContent = {
         },
       ],
     },
+    {
+      slug: 'infra-as-code-least-privilege',
+      company: 'Munto',
+      title: "Migration de l'infrastructure AWS vers CDK avec IAM à privilège minimal",
+      subtitle: "D'une infrastructure gérée manuellement via la console, aux permissions larges, à une infrastructure as code révisable et à privilège minimal",
+      summary: "Remplacement des modifications manuelles de la console AWS par AWS CDK et refonte d'IAM autour du privilège minimal, rendant les changements d'infrastructure révisables et réduisant le rayon d'impact de tout identifiant compromis.",
+      tags: ['AWS', 'CDK', 'IAM', 'Infrastructure'],
+      steps: [
+        {
+          label: 'Problème',
+          body: "Les ressources AWS étaient provisionnées manuellement via la console, si bien que les changements n'étaient pas documentés et difficiles à reproduire d'un environnement à l'autre. Les rôles IAM avaient également un périmètre trop large, rendant difficile de savoir quels services pouvaient accéder à quelles ressources — et amplifiant l'impact de tout identifiant compromis.",
+        },
+        {
+          label: 'Analyse',
+          body: "Audit des politiques IAM et des configurations de ressources existantes pour cartographier les permissions réellement nécessaires à chaque service, et identification des points où des modifications manuelles via la console avaient provoqué une dérive entre les environnements de staging et de production.",
+        },
+        {
+          label: 'Action',
+          body: "Migration des définitions d'infrastructure vers AWS CDK afin que chaque changement soit versionné, revu via des pull requests et reproductible d'un environnement à l'autre. Reconstruction en parallèle des rôles et politiques IAM par service selon le principe du privilège minimal, à la place de permissions larges partagées.",
+        },
+        {
+          label: 'Résultat',
+          body: "Les changements d'infrastructure suivent désormais le même processus de revue que le code applicatif, la dérive entre staging et production a été éliminée, et l'impact potentiel d'un identifiant compromis est désormais limité à un seul service plutôt qu'à l'ensemble du compte.",
+        },
+      ],
+    },
+    {
+      slug: 'deep-linking-attribution',
+      company: 'Viceversa.ai',
+      title: "Deep linking pour l'attribution de l'acquisition utilisateurs",
+      subtitle: "Donner au marketing des données d'attribution par canal pour améliorer l'efficacité des dépenses d'acquisition",
+      summary: "Intégration du deep linking Branch.io dans toute l'application afin que le marketing puisse attribuer installations et inscriptions à des campagnes précises, améliorant l'efficacité des dépenses d'acquisition.",
+      tags: ['Flutter', 'Branch.io', 'Deep Linking', 'Growth'],
+      steps: [
+        {
+          label: 'Problème',
+          body: "Le marketing ne pouvait pas savoir quelle campagne, quel lien de parrainage ou quel partage social générait réellement une installation ou une inscription, rendant impossible toute évaluation fiable de la performance par canal ou justification des dépenses d'acquisition.",
+        },
+        {
+          label: 'Analyse',
+          body: "Cartographie de tous les points d'entrée dans l'application — liens de campagne, liens d'invitation, partages sociaux — et des données d'attribution requises par le marketing pour chacun, y compris le deep linking différé pour les utilisateurs n'ayant pas encore installé l'application.",
+        },
+        {
+          label: 'Action',
+          body: "Intégration de Branch.io sur iOS et Android, connexion des paramètres de liens à des événements d'attribution, puis connexion de ces événements aux tableaux de bord analytiques du marketing.",
+        },
+        {
+          label: 'Résultat',
+          body: "Le marketing a obtenu pour la première fois une visibilité d'attribution par canal, permettant des décisions basées sur les données plutôt que sur des suppositions pour allouer le budget d'acquisition.",
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Études de cas',

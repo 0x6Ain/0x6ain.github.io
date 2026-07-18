@@ -148,6 +148,58 @@ const de: SiteContent = {
         },
       ],
     },
+    {
+      slug: 'infra-as-code-least-privilege',
+      company: 'Munto',
+      title: 'Migration der AWS-Infrastruktur zu CDK mit IAM nach dem Least-Privilege-Prinzip',
+      subtitle: 'Von konsolenverwalteter Infrastruktur mit weitreichenden Berechtigungen zu überprüfbarer Infrastructure as Code nach dem Prinzip minimaler Rechte',
+      summary: 'Manuelle AWS-Konsolenänderungen durch AWS CDK ersetzt und IAM nach dem Least-Privilege-Prinzip neu gestaltet, wodurch Infrastrukturänderungen überprüfbar wurden und der Schaden bei kompromittierten Zugangsdaten begrenzt wird.',
+      tags: ['AWS', 'CDK', 'IAM', 'Infrastructure'],
+      steps: [
+        {
+          label: 'Problem',
+          body: 'AWS-Ressourcen wurden manuell über die Konsole angelegt, wodurch Änderungen nicht dokumentiert und über Umgebungen hinweg schwer reproduzierbar waren. IAM-Rollen waren zudem zu breit angelegt, sodass unklar war, welche Services auf welche Ressourcen zugreifen konnten – was die Auswirkung kompromittierter Zugangsdaten vergrößerte.',
+        },
+        {
+          label: 'Analyse',
+          body: 'Bestehende IAM-Richtlinien und Ressourcenkonfigurationen wurden geprüft, um die tatsächlich benötigten Berechtigungen je Service zu ermitteln, und es wurde identifiziert, wo manuelle Konsolenänderungen zu Abweichungen zwischen Staging und Produktion geführt hatten.',
+        },
+        {
+          label: 'Maßnahme',
+          body: 'Infrastrukturdefinitionen wurden nach AWS CDK migriert, sodass jede Änderung als Code vorliegt, per Pull Request geprüft wird und über Umgebungen hinweg reproduzierbar ist. Parallel dazu wurden IAM-Rollen und -Richtlinien je Service nach dem Least-Privilege-Prinzip statt gemeinsamer breiter Berechtigungen neu aufgebaut.',
+        },
+        {
+          label: 'Ergebnis',
+          body: 'Infrastrukturänderungen durchlaufen jetzt denselben Review-Prozess wie Anwendungscode, die Abweichung zwischen Staging und Produktion wurde beseitigt, und die potenzielle Auswirkung kompromittierter Zugangsdaten ist auf einen einzelnen Service statt das gesamte Konto begrenzt.',
+        },
+      ],
+    },
+    {
+      slug: 'deep-linking-attribution',
+      company: 'Viceversa.ai',
+      title: 'Deep Linking für die Attribution der Nutzergewinnung',
+      subtitle: 'Marketing kanalgenaue Attributionsdaten liefern, um die Effizienz der Akquise-Ausgaben zu verbessern',
+      summary: 'Branch.io-Deep-Linking in der gesamten App integriert, damit Marketing Installationen und Anmeldungen konkreten Kampagnen zuordnen konnte – für effizientere Akquise-Ausgaben.',
+      tags: ['Flutter', 'Branch.io', 'Deep Linking', 'Growth'],
+      steps: [
+        {
+          label: 'Problem',
+          body: 'Marketing konnte nicht erkennen, welche Kampagne, welcher Empfehlungslink oder welches Social-Media-Share tatsächlich zu einer Installation oder Anmeldung führte, wodurch eine verlässliche Bewertung der Kanalleistung oder Rechtfertigung der Akquise-Ausgaben nicht möglich war.',
+        },
+        {
+          label: 'Analyse',
+          body: 'Alle Einstiegspunkte in die App wurden kartiert – Kampagnenlinks, Einladungslinks, Social-Media-Shares – sowie die jeweils von Marketing benötigten Attributionsdaten, einschließlich Deferred Deep Linking für Nutzer ohne installierte App.',
+        },
+        {
+          label: 'Maßnahme',
+          body: 'Branch.io wurde auf iOS und Android integriert, Link-Parameter wurden mit Attributionsereignissen verknüpft und diese Ereignisse an die Analyse-Dashboards des Marketings angebunden.',
+        },
+        {
+          label: 'Ergebnis',
+          body: 'Marketing erhielt erstmals kanalgenaue Attributionstransparenz und konnte das Akquise-Budget datenbasiert statt nach Vermutung verteilen.',
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Fallstudien',

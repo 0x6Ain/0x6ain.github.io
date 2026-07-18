@@ -148,6 +148,58 @@ const es: SiteContent = {
         },
       ],
     },
+    {
+      slug: 'infra-as-code-least-privilege',
+      company: 'Munto',
+      title: 'Migración de la infraestructura AWS a CDK con IAM de mínimo privilegio',
+      subtitle: 'De una infraestructura gestionada manualmente por consola y con permisos amplios, a una infraestructura como código revisable y de mínimo privilegio',
+      summary: 'Sustituí los cambios manuales en la consola de AWS por AWS CDK y rediseñé IAM en torno al mínimo privilegio, haciendo que los cambios de infraestructura fueran revisables y reduciendo el radio de impacto de cualquier credencial comprometida.',
+      tags: ['AWS', 'CDK', 'IAM', 'Infrastructure'],
+      steps: [
+        {
+          label: 'Problema',
+          body: 'Los recursos de AWS se aprovisionaban manualmente desde la consola, por lo que los cambios no quedaban documentados y era difícil reproducirlos entre entornos. Los roles de IAM también tenían un alcance demasiado amplio, lo que dificultaba saber qué servicios podían acceder a qué recursos, ampliando el impacto de cualquier credencial comprometida.',
+        },
+        {
+          label: 'Análisis',
+          body: 'Se auditaron las políticas de IAM y las configuraciones de recursos existentes para mapear qué permisos necesitaba realmente cada servicio, y se identificaron los puntos donde los cambios manuales en la consola habían provocado divergencias entre los entornos de staging y producción.',
+        },
+        {
+          label: 'Acción',
+          body: 'Se migraron las definiciones de infraestructura a AWS CDK, de modo que cada cambio queda como código, se revisa mediante pull requests y es reproducible entre entornos. En paralelo, se reconstruyeron los roles y políticas de IAM por servicio siguiendo el principio de mínimo privilegio, en lugar de permisos amplios compartidos.',
+        },
+        {
+          label: 'Resultado',
+          body: 'Los cambios de infraestructura ahora pasan por el mismo proceso de revisión que el código de la aplicación, se eliminó la divergencia entre staging y producción, y el impacto potencial de una credencial filtrada queda acotado a un único servicio en lugar de a toda la cuenta.',
+        },
+      ],
+    },
+    {
+      slug: 'deep-linking-attribution',
+      company: 'Viceversa.ai',
+      title: 'Deep linking para la atribución de adquisición de usuarios',
+      subtitle: 'Dar a marketing datos de atribución por canal para mejorar la eficiencia del gasto de adquisición',
+      summary: 'Integré deep linking con Branch.io en toda la app para que marketing pudiera atribuir instalaciones y registros a campañas concretas, mejorando la eficiencia del gasto de adquisición.',
+      tags: ['Flutter', 'Branch.io', 'Deep Linking', 'Growth'],
+      steps: [
+        {
+          label: 'Problema',
+          body: 'Marketing no podía saber qué campaña, enlace de referido o publicación social generaba realmente una instalación o un registro, por lo que no había forma fiable de evaluar el rendimiento por canal ni justificar el gasto de adquisición.',
+        },
+        {
+          label: 'Análisis',
+          body: 'Se mapearon todos los puntos de entrada a la app —enlaces de campaña, enlaces de invitación, publicaciones sociales— y los datos de atribución que marketing necesitaba en cada caso, incluido el deep linking diferido para usuarios que aún no tenían la app instalada.',
+        },
+        {
+          label: 'Acción',
+          body: 'Se integró Branch.io en iOS y Android, se conectaron los parámetros de los enlaces a eventos de atribución, y se enlazaron esos eventos con los paneles de analítica de marketing.',
+        },
+        {
+          label: 'Resultado',
+          body: 'Marketing obtuvo por primera vez visibilidad de atribución por canal, lo que permitió tomar decisiones basadas en datos sobre dónde invertir el presupuesto de adquisición en lugar de depender de conjeturas.',
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Casos de estudio',
