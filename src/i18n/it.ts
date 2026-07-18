@@ -148,6 +148,58 @@ const it: SiteContent = {
         },
       ],
     },
+    {
+      slug: 'infra-as-code-least-privilege',
+      company: 'Munto',
+      title: 'Migrazione dell\'infrastruttura AWS a CDK con IAM a privilegio minimo',
+      subtitle: 'Da un\'infrastruttura gestita manualmente da console, con permessi ampi, a un\'infrastructure as code verificabile e a privilegio minimo',
+      summary: 'Ho sostituito le modifiche manuali sulla console AWS con AWS CDK e riprogettato IAM secondo il privilegio minimo, rendendo le modifiche all\'infrastruttura verificabili e riducendo il raggio d\'impatto di eventuali credenziali compromesse.',
+      tags: ['AWS', 'CDK', 'IAM', 'Infrastructure'],
+      steps: [
+        {
+          label: 'Problema',
+          body: 'Le risorse AWS venivano create manualmente tramite console, quindi le modifiche non erano documentate ed erano difficili da riprodurre tra ambienti diversi. I ruoli IAM avevano inoltre un ambito troppo ampio, rendendo poco chiaro quali servizi potessero accedere a quali risorse, ampliando l\'impatto di eventuali credenziali compromesse.',
+        },
+        {
+          label: 'Analisi',
+          body: 'Ho verificato le policy IAM e le configurazioni delle risorse esistenti per mappare quali permessi fossero realmente necessari a ciascun servizio, individuando i punti in cui le modifiche manuali da console avevano causato disallineamenti tra staging e produzione.',
+        },
+        {
+          label: 'Azione',
+          body: 'Ho migrato le definizioni dell\'infrastruttura su AWS CDK, così che ogni modifica sia codice, venga rivista tramite pull request e sia riproducibile tra ambienti. In parallelo ho ricostruito ruoli e policy IAM per servizio secondo il privilegio minimo, al posto di permessi ampi condivisi.',
+        },
+        {
+          label: 'Risultato',
+          body: 'Le modifiche all\'infrastruttura seguono ora lo stesso processo di revisione del codice applicativo, il disallineamento tra staging e produzione è stato eliminato, e l\'impatto potenziale di una credenziale trapelata è limitato a un singolo servizio anziché all\'intero account.',
+        },
+      ],
+    },
+    {
+      slug: 'deep-linking-attribution',
+      company: 'Viceversa.ai',
+      title: 'Deep linking per l\'attribuzione dell\'acquisizione utenti',
+      subtitle: 'Fornire al marketing dati di attribuzione per canale per migliorare l\'efficienza della spesa di acquisizione',
+      summary: 'Ho integrato il deep linking di Branch.io in tutta l\'app affinché il marketing potesse attribuire installazioni e registrazioni a campagne specifiche, migliorando l\'efficienza della spesa di acquisizione.',
+      tags: ['Flutter', 'Branch.io', 'Deep Linking', 'Growth'],
+      steps: [
+        {
+          label: 'Problema',
+          body: 'Il marketing non riusciva a capire quale campagna, link di invito o condivisione social generasse effettivamente un\'installazione o una registrazione, rendendo impossibile valutare in modo affidabile le performance per canale o giustificare la spesa di acquisizione.',
+        },
+        {
+          label: 'Analisi',
+          body: 'Ho mappato tutti i punti di ingresso nell\'app — link di campagna, link di invito, condivisioni social — e i dati di attribuzione necessari al marketing per ciascuno, incluso il deep linking differito per gli utenti che non avevano ancora installato l\'app.',
+        },
+        {
+          label: 'Azione',
+          body: 'Ho integrato Branch.io su iOS e Android, collegato i parametri dei link a eventi di attribuzione e collegato questi eventi alle dashboard di analytics del marketing.',
+        },
+        {
+          label: 'Risultato',
+          body: 'Il marketing ha ottenuto per la prima volta visibilità sull\'attribuzione per canale, permettendo decisioni basate sui dati su dove investire il budget di acquisizione invece di affidarsi a supposizioni.',
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Casi di studio',

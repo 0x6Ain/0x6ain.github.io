@@ -148,6 +148,58 @@ const vi: SiteContent = {
         },
       ],
     },
+    {
+      slug: 'infra-as-code-least-privilege',
+      company: 'Munto',
+      title: 'Di chuyển hạ tầng AWS sang CDK với IAM theo nguyên tắc đặc quyền tối thiểu',
+      subtitle: 'Từ hạ tầng quản lý thủ công qua console với quyền hạn rộng, sang hạ tầng dưới dạng mã có thể review và tuân thủ đặc quyền tối thiểu',
+      summary: 'Thay thế các thay đổi thủ công trên console AWS bằng AWS CDK và thiết kế lại IAM theo nguyên tắc đặc quyền tối thiểu, giúp các thay đổi hạ tầng có thể review và giảm phạm vi ảnh hưởng khi thông tin xác thực bị lộ.',
+      tags: ['AWS', 'CDK', 'IAM', 'Infrastructure'],
+      steps: [
+        {
+          label: 'Vấn đề',
+          body: 'Tài nguyên AWS được cấp phát thủ công qua console nên các thay đổi không được ghi lại và khó tái tạo giữa các môi trường. Vai trò IAM cũng có phạm vi quá rộng, khiến khó xác định dịch vụ nào được truy cập tài nguyên nào — và làm tăng mức độ ảnh hưởng nếu một thông tin xác thực bị lộ.',
+        },
+        {
+          label: 'Phân tích',
+          body: 'Kiểm tra các chính sách IAM và cấu hình tài nguyên hiện có để xác định quyền thực sự cần thiết cho từng dịch vụ, đồng thời tìm ra những điểm mà thay đổi thủ công trên console đã gây ra sự khác biệt giữa môi trường staging và production.',
+        },
+        {
+          label: 'Hành động',
+          body: 'Di chuyển định nghĩa hạ tầng sang AWS CDK để mọi thay đổi đều là code, được review qua pull request và có thể tái tạo giữa các môi trường. Đồng thời xây dựng lại vai trò và chính sách IAM theo từng dịch vụ dựa trên nguyên tắc đặc quyền tối thiểu thay vì quyền hạn rộng dùng chung.',
+        },
+        {
+          label: 'Kết quả',
+          body: 'Các thay đổi hạ tầng giờ đây đi qua cùng quy trình review như code ứng dụng, sự khác biệt giữa staging và production đã được loại bỏ, và tác động tiềm tàng của một thông tin xác thực bị lộ chỉ giới hạn ở một dịch vụ thay vì toàn bộ tài khoản.',
+        },
+      ],
+    },
+    {
+      slug: 'deep-linking-attribution',
+      company: 'Viceversa.ai',
+      title: 'Deep Linking để phân bổ nguồn gốc thu hút người dùng',
+      subtitle: 'Cung cấp dữ liệu phân bổ theo kênh cho marketing để cải thiện hiệu quả chi tiêu thu hút người dùng',
+      summary: 'Tích hợp deep linking Branch.io trên toàn bộ ứng dụng để marketing có thể gán các lượt cài đặt và đăng ký cho từng chiến dịch cụ thể, cải thiện hiệu quả chi tiêu thu hút người dùng.',
+      tags: ['Flutter', 'Branch.io', 'Deep Linking', 'Growth'],
+      steps: [
+        {
+          label: 'Vấn đề',
+          body: 'Marketing không thể biết chiến dịch, link giới thiệu, hay chia sẻ mạng xã hội nào thực sự dẫn đến lượt cài đặt hoặc đăng ký, nên không có cách đáng tin cậy để đánh giá hiệu quả từng kênh hay biện minh cho chi tiêu thu hút người dùng.',
+        },
+        {
+          label: 'Phân tích',
+          body: 'Lập bản đồ mọi điểm vào ứng dụng — link chiến dịch, link mời, chia sẻ mạng xã hội — và dữ liệu phân bổ mà marketing cần cho từng loại, bao gồm cả deep linking trì hoãn cho người dùng chưa cài ứng dụng.',
+        },
+        {
+          label: 'Hành động',
+          body: 'Tích hợp Branch.io trên cả iOS và Android, kết nối tham số link với các sự kiện phân bổ, và liên kết các sự kiện này với dashboard phân tích của marketing.',
+        },
+        {
+          label: 'Kết quả',
+          body: 'Lần đầu tiên marketing có được khả năng quan sát phân bổ theo từng kênh, cho phép ra quyết định dựa trên dữ liệu về việc nên chi ngân sách thu hút người dùng ở đâu thay vì dựa vào phỏng đoán.',
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Nghiên cứu tình huống',
