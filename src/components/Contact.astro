@@ -112,16 +112,17 @@ const errorMessage = t.contact.errorMessage;
 			status.textContent = '';
 
 			try {
-				const payload = Object.fromEntries(new FormData(form).entries());
-				const res = await fetch(form.action, {
+				// Web3Forms doesn't send back Access-Control-Allow-Origin for this
+				// setup, so the browser blocks us from reading the response even
+				// though the request itself reaches them and gets recorded. Use
+				// no-cors with a "simple" (multipart) request so the browser sends
+				// it without a blocked preflight, and treat a non-throwing fetch
+				// as success since the opaque response can't be inspected.
+				await fetch(form.action, {
 					method: 'POST',
-					headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-					body: JSON.stringify(payload),
+					mode: 'no-cors',
+					body: new FormData(form),
 				});
-				const data = await res.json();
-				if (!res.ok || data.success === false) {
-					throw new Error(data.message || 'submit failed');
-				}
 				status.textContent = successMessage;
 				status.style.color = 'var(--good)';
 				form.reset();
