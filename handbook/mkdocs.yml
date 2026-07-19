@@ -50,6 +50,7 @@ nav:
   - 홈: index.md
   - OS:
       - 프로세스, 스레드, Context Switching: os/process-thread.md
+      - 프로세스 격리, IPC, 커널/유저 모드: os/process-isolation-ipc.md
       - Memory 구조: os/memory.md
       - GC: os/gc.md
   - Network:

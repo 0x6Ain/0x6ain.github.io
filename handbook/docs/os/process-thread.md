@@ -59,3 +59,4 @@ Node.js의 자바스크립트 실행 자체는 싱글 스레드지만, **Event L
 
 - [Memory 구조](memory.md)
 - [Race Condition](../database/race-condition.md)
+- [프로세스 격리, IPC, 커널/유저 모드](process-isolation-ipc.md)
