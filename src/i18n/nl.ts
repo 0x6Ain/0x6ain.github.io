@@ -19,6 +19,7 @@ const nl: SiteContent = {
     experience: 'Ervaring',
     caseStudy: 'Case study',
     skills: 'Vaardigheden',
+    handbook: 'Handboek',
     contact: 'Contact',
   },
   sectionLabels: {

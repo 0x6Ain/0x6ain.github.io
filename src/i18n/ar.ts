@@ -19,6 +19,7 @@ const ar: SiteContent = {
     experience: 'الخبرة',
     caseStudy: 'دراسة حالة',
     skills: 'المهارات',
+    handbook: 'الدليل',
     contact: 'تواصل',
   },
   sectionLabels: {

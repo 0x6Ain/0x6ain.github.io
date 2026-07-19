@@ -19,6 +19,7 @@ const sv: SiteContent = {
     experience: 'Erfarenhet',
     caseStudy: 'Fallstudie',
     skills: 'Kompetens',
+    handbook: 'Handbok',
     contact: 'Kontakt',
   },
   sectionLabels: {

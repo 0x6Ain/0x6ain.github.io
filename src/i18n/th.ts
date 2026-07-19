@@ -19,6 +19,7 @@ const th: SiteContent = {
     experience: 'ประสบการณ์',
     caseStudy: 'กรณีศึกษา',
     skills: 'ทักษะ',
+    handbook: 'คู่มือ',
     contact: 'ติดต่อ',
   },
   sectionLabels: {

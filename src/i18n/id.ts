@@ -19,6 +19,7 @@ const id: SiteContent = {
     experience: 'Pengalaman',
     caseStudy: 'Studi Kasus',
     skills: 'Keahlian',
+    handbook: 'Panduan',
     contact: 'Kontak',
   },
   sectionLabels: {

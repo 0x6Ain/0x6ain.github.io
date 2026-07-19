@@ -19,6 +19,7 @@ const vi: SiteContent = {
     experience: 'Kinh nghiệm',
     caseStudy: 'Case Study',
     skills: 'Kỹ năng',
+    handbook: 'Sổ tay',
     contact: 'Liên hệ',
   },
   sectionLabels: {

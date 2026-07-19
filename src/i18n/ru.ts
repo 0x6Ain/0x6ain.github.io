@@ -19,6 +19,7 @@ const ru: SiteContent = {
     experience: 'Опыт',
     caseStudy: 'Кейс',
     skills: 'Навыки',
+    handbook: 'Справочник',
     contact: 'Контакты',
   },
   sectionLabels: {

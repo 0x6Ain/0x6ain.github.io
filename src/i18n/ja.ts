@@ -19,6 +19,7 @@ const ja: SiteContent = {
     experience: '職務経歴',
     caseStudy: 'ケーススタディ',
     skills: 'スキル',
+    handbook: 'ハンドブック',
     contact: 'お問い合わせ',
   },
   sectionLabels: {

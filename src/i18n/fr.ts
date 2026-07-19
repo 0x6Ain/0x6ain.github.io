@@ -19,6 +19,7 @@ const fr: SiteContent = {
     experience: 'Expérience',
     caseStudy: 'Étude de cas',
     skills: 'Compétences',
+    handbook: 'Manuel',
     contact: 'Contact',
   },
   sectionLabels: {

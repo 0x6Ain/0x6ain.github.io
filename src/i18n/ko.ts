@@ -19,6 +19,7 @@ const ko: SiteContent = {
     experience: 'Experience',
     caseStudy: 'Case Study',
     skills: 'Skills',
+    handbook: 'Handbook',
     contact: 'Contact',
   },
   sectionLabels: {

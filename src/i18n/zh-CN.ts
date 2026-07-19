@@ -19,6 +19,7 @@ const zhCN: SiteContent = {
     experience: '工作经历',
     caseStudy: '案例研究',
     skills: '技能',
+    handbook: '手册',
     contact: '联系方式',
   },
   sectionLabels: {

@@ -97,6 +97,7 @@ export interface SiteContent {
     experience: string;
     caseStudy: string;
     skills: string;
+    handbook: string;
     contact: string;
   };
   sectionLabels: {

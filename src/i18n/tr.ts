@@ -19,6 +19,7 @@ const tr: SiteContent = {
     experience: 'Deneyim',
     caseStudy: 'Vaka Analizi',
     skills: 'Yetenekler',
+    handbook: 'El Kitabı',
     contact: 'İletişim',
   },
   sectionLabels: {

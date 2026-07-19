@@ -19,6 +19,7 @@ const zhTW: SiteContent = {
     experience: '工作經歷',
     caseStudy: '案例研究',
     skills: '技能',
+    handbook: '手冊',
     contact: '聯絡方式',
   },
   sectionLabels: {

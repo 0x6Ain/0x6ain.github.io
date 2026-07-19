@@ -19,6 +19,7 @@ const hi: SiteContent = {
     experience: 'अनुभव',
     caseStudy: 'केस स्टडी',
     skills: 'कौशल',
+    handbook: 'हैंडबुक',
     contact: 'संपर्क करें',
   },
   sectionLabels: {
