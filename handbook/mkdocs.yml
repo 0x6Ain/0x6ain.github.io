@@ -1,0 +1,57 @@
+site_name: Backend Handbook
+site_url: https://0x6ain.github.io/handbook/
+repo_url: https://github.com/0x6Ain/0x6ain.github.io
+repo_name: 0x6ain/0x6ain.github.io
+edit_uri: edit/main/handbook/docs/
+
+docs_dir: docs
+
+theme:
+  name: material
+  language: ko
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: 다크 모드로 전환
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: 라이트 모드로 전환
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - tables
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+
+nav:
+  - 홈: index.md
+  - Database:
+      - 재고 동시성 문제: database/concurrency.md
+      - Deadlock: database/deadlock.md
+      - Race Condition: database/race-condition.md
+      - Database Backup: database/backup.md
+      - Database 보안: database/security.md
+      - 면접 핵심 정리: database/interview-summary.md

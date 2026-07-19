@@ -32,6 +32,16 @@ jobs:
         run: npm run build
         env:
           WEB3FORMS_ACCESS_KEY: ${{ secrets.WEB3FORMS_ACCESS_KEY }}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: handbook/requirements.txt
+      - name: Install MkDocs
+        run: pip install -r handbook/requirements.txt
+      - name: Build handbook
+        run: mkdocs build --strict -f handbook/mkdocs.yml -d ../dist/handbook
       - name: Setup Pages
         uses: actions/configure-pages@v6
       - name: Upload artifact
