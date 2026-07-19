@@ -79,3 +79,8 @@ nav:
       - Kafka / SQS 기본 개념: kafka/kafka-basics.md
   - AWS:
       - AWS 핵심 서비스: aws/aws-basics.md
+  - RAG / 벡터 검색:
+      - RAG (검색 증강 생성): rag/rag-overview.md
+      - 임베딩: rag/embeddings.md
+      - 벡터 검색과 pgvector: rag/vector-search-pgvector.md
+      - 의미 검색 vs 키워드 검색: rag/semantic-vs-keyword-search.md
