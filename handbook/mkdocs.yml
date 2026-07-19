@@ -48,10 +48,33 @@ markdown_extensions:
 
 nav:
   - 홈: index.md
+  - OS:
+      - 프로세스, 스레드, Context Switching: os/process-thread.md
+      - Memory 구조: os/memory.md
+      - GC: os/gc.md
+  - Network:
+      - TCP vs UDP: network/tcp-udp.md
+      - HTTP / HTTPS / TLS: network/http.md
+      - Cookie, Session, JWT: network/auth.md
+      - REST와 멱등성: network/rest-idempotency.md
+      - DNS, Load Balancer: network/dns-lb.md
   - Database:
       - 재고 동시성 문제: database/concurrency.md
       - Deadlock: database/deadlock.md
       - Race Condition: database/race-condition.md
       - Database Backup: database/backup.md
       - Database 보안: database/security.md
-      - 면접 핵심 정리: database/interview-summary.md
+  - 자료구조/알고리즘:
+      - 자료구조와 시간복잡도: algorithms/data-structures.md
+  - 객체지향:
+      - SOLID, DI, IoC: oop/solid-di.md
+  - 시스템 설계:
+      - 시스템 설계 기본기: system-design/basics.md
+  - Redis:
+      - Redis 자료구조와 TTL: redis/redis-data-structures.md
+      - 캐시 전략: redis/redis-caching.md
+      - Pub/Sub와 Distributed Lock: redis/redis-pubsub-lock.md
+  - Kafka/SQS:
+      - Kafka / SQS 기본 개념: kafka/kafka-basics.md
+  - AWS:
+      - AWS 핵심 서비스: aws/aws-basics.md
