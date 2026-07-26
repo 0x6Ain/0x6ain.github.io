@@ -59,6 +59,7 @@ nav:
       - Cookie, Session, JWT: network/auth.md
       - REST와 멱등성: network/rest-idempotency.md
       - DNS, Load Balancer: network/dns-lb.md
+      - 네트워크 계층 구조와 캡슐화, IP/MAC 주소, ARP: network/network-layering-encapsulation-arp.md
   - Database:
       - 재고 동시성 문제: database/concurrency.md
       - Deadlock: database/deadlock.md
