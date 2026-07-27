@@ -104,3 +104,4 @@ limit 없이 의미 검색이 가능하다. 실측상 한국어 검색 품질도
 
 - [RAG (검색 증강 생성)](rag-overview.md)
 - [벡터 검색과 pgvector](vector-search-pgvector.md)
+- [신경망과 역전파](../ml/neural-networks.md)
