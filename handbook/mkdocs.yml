@@ -73,6 +73,7 @@ nav:
       - 싱글턴 패턴: oop/singleton-pattern.md
   - 시스템 설계:
       - 시스템 설계 기본기: system-design/basics.md
+      - 확장성 전략과 CAP 이론: system-design/scale-up-vs-scale-out-and-cap-theorem.md
   - Redis:
       - Redis 자료구조와 TTL: redis/redis-data-structures.md
       - 캐시 전략: redis/redis-caching.md
