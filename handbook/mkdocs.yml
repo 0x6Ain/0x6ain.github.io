@@ -66,6 +66,7 @@ nav:
       - Race Condition: database/race-condition.md
       - Database Backup: database/backup.md
       - Database 보안: database/security.md
+      - "트랜잭션 ACID와 격리 수준, 그리고 NoSQL의 트레이드오프": database/transaction-acid-and-nosql-tradeoff.md
   - 자료구조/알고리즘:
       - 자료구조와 시간복잡도: algorithms/data-structures.md
   - 객체지향:
