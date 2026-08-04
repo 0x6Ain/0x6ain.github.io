@@ -85,6 +85,117 @@ resolve되면, 그 이후 코드(`console.log(result)`부터)가 **microtask**�
 6. `console.log(result)`, `console.log(2)`가 한 번의 재개 안에서 연속
    실행 (중간에 다른 코드가 끼어들 틈 없음)
 
+<div class="event-loop-diagram">
+<style>
+.event-loop-diagram {
+  --el-accent: #0f766e;
+  --el-accent-bg: #ccfbf1;
+  --el-accent-ink: #064e46;
+  --el-queue: #b45309;
+  --el-queue-bg: #fef3c7;
+  --el-queue-ink: #7c3a0a;
+  --el-line: #d8ddd9;
+  --el-surface: #ffffff;
+  margin: 1.5em 0;
+}
+[data-md-color-scheme="slate"] .event-loop-diagram {
+  --el-accent: #2dd4bf;
+  --el-accent-bg: #113a36;
+  --el-accent-ink: #99f6e4;
+  --el-queue: #f59e0b;
+  --el-queue-bg: #3a2a0d;
+  --el-queue-ink: #fde68a;
+  --el-line: #2a3138;
+  --el-surface: #1a2027;
+}
+.event-loop-diagram svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  background: var(--el-surface);
+  border: 1px solid var(--el-line);
+  border-radius: 8px;
+}
+.event-loop-diagram figcaption {
+  font-size: 0.8rem;
+  opacity: 0.75;
+  margin-top: 0.6em;
+}
+</style>
+<figure>
+<svg viewBox="0 0 1200 600" role="img" aria-label="withAwait 함수 실행 시, console.log(1) 실행 후 asyncCall 호출과 동시에 함수가 콜스택에서 빠져나가 Web API로 작업이 위임되고, 콜스택은 비어 다른 코드를 실행할 수 있으며, asyncCall이 완료되면 이어질 코드가 마이크로태스크 큐에 들어갔다가 콜스택이 빌 때 이벤트 루프에 의해 다시 실행되어 result와 2가 출력되는 과정">
+<defs>
+<marker id="el-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 Z" fill="currentColor" />
+</marker>
+</defs>
+<g font-size="12.5" fill="currentColor" opacity="0.6" font-weight="600">
+<text x="14" y="129">Call Stack</text>
+<text x="14" y="253">Web / Node API</text>
+<text x="14" y="377">Microtask Queue</text>
+<text x="14" y="501">Console Output</text>
+</g>
+<line x1="172" y1="66" x2="172" y2="556" stroke="var(--el-line)" stroke-width="1" />
+<g stroke="var(--el-line)" stroke-width="1">
+<line x1="172" y1="184" x2="1180" y2="184" />
+<line x1="172" y1="308" x2="1180" y2="308" />
+<line x1="172" y1="432" x2="1180" y2="432" />
+</g>
+<g stroke="var(--el-line)" stroke-width="1" stroke-dasharray="3 4">
+<line x1="360" y1="50" x2="360" y2="556" />
+<line x1="520" y1="50" x2="520" y2="556" />
+<line x1="680" y1="50" x2="680" y2="556" />
+<line x1="840" y1="50" x2="840" y2="556" />
+<line x1="1000" y1="50" x2="1000" y2="556" />
+</g>
+<g font-size="11.5" fill="currentColor" opacity="0.6" text-anchor="middle">
+<text x="280" y="38">console.log(1)</text>
+<text x="440" y="38">asyncCall() 호출</text>
+<text x="600" y="38">대기 중 (다른 코드 가능)</text>
+<text x="760" y="38">asyncCall() 완료</text>
+<text x="920" y="38">재개(resume)</text>
+<text x="1080" y="38">console.log(result), (2)</text>
+</g>
+<rect x="210" y="90" width="140" height="70" rx="7" fill="var(--el-accent-bg)" stroke="var(--el-accent)" stroke-width="1.4" />
+<text x="280" y="130" text-anchor="middle" font-size="12.5" fill="var(--el-accent-ink)" font-weight="600">console.log(1)</text>
+<rect x="230" y="466" width="100" height="46" rx="6" fill="var(--el-accent-bg)" stroke="var(--el-accent)" stroke-width="1.2" />
+<text x="280" y="494" text-anchor="middle" font-size="13" fill="var(--el-accent-ink)" font-weight="700">1</text>
+<line x1="280" y1="160" x2="280" y2="464" stroke="var(--el-accent)" stroke-width="1.2" stroke-dasharray="2 4" marker-end="url(#el-arrow)" opacity="0.6" />
+<rect x="370" y="90" width="140" height="70" rx="7" fill="var(--el-surface)" stroke="var(--el-queue)" stroke-width="1.4" />
+<text x="440" y="122" text-anchor="middle" font-size="12" fill="currentColor" font-weight="600">await asyncCall()</text>
+<text x="440" y="140" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.65">함수 일시정지 · 스택에서 제거</text>
+<rect x="530" y="90" width="140" height="70" rx="7" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" opacity="0.4" />
+<text x="600" y="122" text-anchor="middle" font-size="11.5" fill="currentColor" opacity="0.6">(비어 있음)</text>
+<text x="600" y="140" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.6">스레드는 자유 — 다른 콜백 처리 가능</text>
+<rect x="380" y="214" width="450" height="70" rx="7" fill="var(--el-queue-bg)" stroke="var(--el-queue)" stroke-width="1.4" />
+<text x="605" y="245" text-anchor="middle" font-size="12.5" fill="var(--el-queue-ink)" font-weight="600">asyncCall() 실행 중</text>
+<text x="605" y="263" text-anchor="middle" font-size="10.5" fill="var(--el-queue-ink)">JS 엔진 밖 — 브라우저/Node 런타임이 처리</text>
+<path d="M440,160 C440,190 420,195 415,212" fill="none" stroke="var(--el-queue)" stroke-width="1.4" marker-end="url(#el-arrow)" />
+<text x="452" y="196" font-size="10.5" fill="var(--el-queue-ink)">위임</text>
+<rect x="690" y="338" width="140" height="70" rx="7" fill="var(--el-queue-bg)" stroke="var(--el-queue)" stroke-width="1.4" />
+<text x="760" y="368" text-anchor="middle" font-size="12" fill="var(--el-queue-ink)" font-weight="600">이어질 코드 enqueue</text>
+<text x="760" y="386" text-anchor="middle" font-size="10.5" fill="var(--el-queue-ink)">console.log(result); console.log(2)</text>
+<path d="M790,284 C790,305 775,315 775,336" fill="none" stroke="var(--el-queue)" stroke-width="1.4" marker-end="url(#el-arrow)" />
+<text x="800" y="312" font-size="10.5" fill="var(--el-queue-ink)">resolve</text>
+<rect x="850" y="90" width="140" height="70" rx="7" fill="var(--el-accent-bg)" stroke="var(--el-accent)" stroke-width="1.4" />
+<text x="920" y="120" text-anchor="middle" font-size="12" fill="var(--el-accent-ink)" font-weight="600">withAwait() 재개</text>
+<text x="920" y="138" text-anchor="middle" font-size="10.5" fill="var(--el-accent-ink)">스택이 비자 이벤트 루프가 꺼냄</text>
+<path d="M810,338 C860,300 900,220 910,162" fill="none" stroke="var(--el-accent)" stroke-width="1.4" marker-end="url(#el-arrow)" />
+<text x="960" y="230" font-size="10.5" fill="var(--el-accent-ink)">event loop가 dequeue</text>
+<rect x="1010" y="90" width="140" height="70" rx="7" fill="var(--el-accent-bg)" stroke="var(--el-accent)" stroke-width="1.4" />
+<text x="1080" y="120" text-anchor="middle" font-size="11.5" fill="var(--el-accent-ink)" font-weight="600">console.log(result)</text>
+<text x="1080" y="138" text-anchor="middle" font-size="11.5" fill="var(--el-accent-ink)" font-weight="600">console.log(2)</text>
+<line x1="920" y1="160" x2="1050" y2="160" stroke="var(--el-accent)" stroke-width="1.2" stroke-dasharray="2 4" opacity="0.5" marker-end="url(#el-arrow)" />
+<rect x="1015" y="466" width="90" height="46" rx="6" fill="var(--el-accent-bg)" stroke="var(--el-accent)" stroke-width="1.2" />
+<text x="1060" y="494" text-anchor="middle" font-size="12" fill="var(--el-accent-ink)" font-weight="700">result</text>
+<rect x="1113" y="466" width="60" height="46" rx="6" fill="var(--el-accent-bg)" stroke="var(--el-accent)" stroke-width="1.2" />
+<text x="1143" y="494" text-anchor="middle" font-size="12" fill="var(--el-accent-ink)" font-weight="700">2</text>
+<line x1="1080" y1="160" x2="1080" y2="464" stroke="var(--el-accent)" stroke-width="1.2" stroke-dasharray="2 4" opacity="0.5" marker-end="url(#el-arrow)" />
+</svg>
+<figcaption>초록색 = 콜스택에서 실행 중/출력됨, 주황색 = JS 엔진 밖(Web/Node API, 마이크로태스크 큐)에서 처리 중, 점선 테두리 = 콜스택이 비어 다른 코드가 실행될 수 있는 구간.</figcaption>
+</figure>
+</div>
+
 `async/await`는 Promise 기반 비동기 코드를 동기적인 문법으로 쓸 수
 있게 해주는 **syntactic sugar**일 뿐, 내부적으로는 `.then()` 체인과
 동일하게 동작하며 스레드를 막지 않는다는 비동기의 본질은 그대로
