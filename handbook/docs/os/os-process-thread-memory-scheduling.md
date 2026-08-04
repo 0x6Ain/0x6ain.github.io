@@ -84,6 +84,113 @@ CPU 코어 수는 한정적인데 실행할 프로세스는 많으므로, OS는 
 
 디스크(수백GB~TB)가 물리 RAM(수GB~수십GB)보다 훨씬 크기 때문에 체감상 거의 무한한 메모리처럼 느껴지는 것뿐이며, 디스크도 유한한 자원이라 다 차면 OOM 같은 문제가 발생한다.
 
+### 소프트웨어와 하드웨어의 경계
+
+"OS는 소프트웨어, MMU/RAM/디스크는 하드웨어"라는 구분은 단순하지만, 페이지 폴트가 실제로 일어나는 순간을 따라가 보면 그 경계를 정확히 어디서 넘는지 헷갈리기 쉽다.
+
+| 구성 요소 | 정체 | 하는 일 |
+|---|---|---|
+| 스케줄러 | 소프트웨어 | 어떤 프로세스/스레드를 CPU에 올릴지 결정 |
+| 페이지 테이블 관리 | 소프트웨어 | 가상→물리 주소 매핑 데이터 구조를 생성·갱신 |
+| 페이지 폴트 핸들러 | 소프트웨어 | MMU가 건 인터럽트를 받아 디스크 I/O와 테이블 갱신을 지휘 |
+| MMU / TLB | 하드웨어 | 페이지 테이블을 참조해 가상 주소를 물리 주소로 실제 변환하는 회로 |
+| RAM | 하드웨어 | 데이터와 페이지 테이블이 실제로 저장되는 물리 메모리 칩 |
+| 디스크 | 하드웨어 | RAM에 없는 데이터를 영구 저장해두는 장치 |
+
+MMU는 TLB가 맞으면(hit) 하드웨어 선에서 몇 나노초 만에 변환을 끝낸다. 놓치면(TLB miss, 페이지 폴트) 그제서야 CPU에 **인터럽트**를 걸어 소프트웨어(OS의 페이지 폴트 핸들러)를 깨운다. 여기서부터는 "어디서 읽어올지, 어디에 적재할지, 테이블을 어떻게 갱신할지"를 순수 소프트웨어 로직이 결정한 뒤, 디스크 읽기 명령과 테이블 갱신으로 다시 하드웨어에게 실행을 넘긴다.
+
+<div class="hwsw-diagram">
+<style>
+.hwsw-diagram {
+  --hs-sw: #4338ca;
+  --hs-sw-bg: #eef2ff;
+  --hs-sw-ink: #312e81;
+  --hs-hw: #475569;
+  --hs-hw-bg: #f1f5f9;
+  --hs-hw-ink: #334155;
+  --hs-cross: #be123c;
+  --hs-line: #d8ddd9;
+  --hs-surface: #ffffff;
+  margin: 1.5em 0;
+}
+[data-md-color-scheme="slate"] .hwsw-diagram {
+  --hs-sw: #818cf8;
+  --hs-sw-bg: #211f45;
+  --hs-sw-ink: #c7d2fe;
+  --hs-hw: #94a3b8;
+  --hs-hw-bg: #1e2733;
+  --hs-hw-ink: #cbd5e1;
+  --hs-cross: #fb7185;
+  --hs-line: #2a3138;
+  --hs-surface: #1a2027;
+}
+.hwsw-diagram svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  background: var(--hs-surface);
+  border: 1px solid var(--hs-line);
+  border-radius: 8px;
+}
+.hwsw-diagram figcaption {
+  font-size: 0.8rem;
+  opacity: 0.75;
+  margin-top: 0.6em;
+}
+</style>
+<figure>
+<svg viewBox="0 0 1200 780" role="img" aria-label="CPU가 가상 주소로 메모리에 접근하면 하드웨어인 MMU가 TLB를 확인해 즉시 물리 주소로 변환하거나, TLB 미스가 나면 소프트웨어인 OS의 페이지 폴트 핸들러에게 인터럽트를 걸어 경계를 넘는다. OS는 디스크에 읽기를 요청하고 페이지 테이블을 갱신한 뒤 다시 하드웨어인 MMU에게 매핑을 넘겨 변환을 재개시키는 과정을 보여준다">
+<defs>
+<marker id="hs-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 Z" fill="currentColor" />
+</marker>
+</defs>
+<rect x="40" y="56" width="1120" height="270" rx="10" fill="var(--hs-sw-bg)" stroke="var(--hs-sw)" stroke-width="1.2" stroke-opacity="0.5" />
+<text x="64" y="86" font-size="14" font-weight="700" fill="var(--hs-sw-ink)">SOFTWARE — 운영체제(OS)</text>
+<rect x="40" y="356" width="1120" height="380" rx="10" fill="var(--hs-hw-bg)" stroke="var(--hs-hw)" stroke-width="1.2" stroke-opacity="0.5" />
+<text x="64" y="386" font-size="14" font-weight="700" fill="var(--hs-hw-ink)">HARDWARE — 물리 장치</text>
+<text x="1136" y="342" text-anchor="end" font-size="11" fill="var(--hs-cross)" font-weight="700">← 경계 (인터럽트로만 넘는다) →</text>
+<rect x="80" y="110" width="200" height="80" rx="7" fill="var(--hs-surface)" stroke="var(--hs-sw)" stroke-width="1.4" />
+<text x="180" y="145" text-anchor="middle" font-size="12.5" fill="var(--hs-sw-ink)" font-weight="600">스케줄러</text>
+<text x="180" y="163" text-anchor="middle" font-size="10" fill="var(--hs-sw-ink)" opacity="0.8">CPU/코어 배정 결정</text>
+<rect x="320" y="110" width="230" height="80" rx="7" fill="var(--hs-surface)" stroke="var(--hs-sw)" stroke-width="1.4" />
+<text x="435" y="145" text-anchor="middle" font-size="12.5" fill="var(--hs-sw-ink)" font-weight="600">페이지 테이블 관리</text>
+<text x="435" y="163" text-anchor="middle" font-size="10" fill="var(--hs-sw-ink)" opacity="0.8">가상→물리 매핑 생성/갱신</text>
+<rect x="590" y="110" width="230" height="80" rx="7" fill="var(--hs-surface)" stroke="var(--hs-cross)" stroke-width="1.6" />
+<text x="705" y="145" text-anchor="middle" font-size="12.5" fill="var(--hs-cross)" font-weight="700">페이지 폴트 핸들러</text>
+<text x="705" y="163" text-anchor="middle" font-size="10" fill="var(--hs-cross)" opacity="0.85">인터럽트를 받아 대응</text>
+<rect x="80" y="440" width="280" height="200" rx="9" fill="none" stroke="var(--hs-hw)" stroke-width="1.4" stroke-dasharray="5 4" />
+<text x="96" y="464" font-size="12" fill="var(--hs-hw-ink)" font-weight="700">CPU</text>
+<rect x="110" y="486" width="220" height="120" rx="7" fill="var(--hs-surface)" stroke="var(--hs-cross)" stroke-width="1.6" />
+<text x="220" y="536" text-anchor="middle" font-size="13" fill="var(--hs-cross)" font-weight="700">MMU / TLB</text>
+<text x="220" y="556" text-anchor="middle" font-size="10" fill="var(--hs-cross)" opacity="0.85">주소 변환 회로</text>
+<rect x="430" y="486" width="220" height="120" rx="7" fill="var(--hs-surface)" stroke="var(--hs-hw)" stroke-width="1.4" />
+<text x="540" y="536" text-anchor="middle" font-size="13" fill="var(--hs-hw-ink)" font-weight="700">RAM</text>
+<text x="540" y="556" text-anchor="middle" font-size="10" fill="var(--hs-hw-ink)" opacity="0.85">물리 메모리</text>
+<rect x="740" y="486" width="220" height="120" rx="7" fill="var(--hs-surface)" stroke="var(--hs-hw)" stroke-width="1.4" />
+<text x="850" y="536" text-anchor="middle" font-size="13" fill="var(--hs-hw-ink)" font-weight="700">디스크</text>
+<text x="850" y="556" text-anchor="middle" font-size="10" fill="var(--hs-hw-ink)" opacity="0.85">영구 저장 장치</text>
+<text x="45" y="470" font-size="10.5" fill="var(--hs-hw-ink)">가상주소</text>
+<path d="M50,486 C50,500 70,505 108,520" fill="none" stroke="var(--hs-hw)" stroke-width="1.4" marker-end="url(#hs-arrow)" />
+<path d="M330,540 C370,530 400,530 428,536" fill="none" stroke="var(--hs-hw)" stroke-width="1.4" stroke-dasharray="3 4" marker-end="url(#hs-arrow)" />
+<text x="380" y="522" text-anchor="middle" font-size="10.5" fill="var(--hs-hw-ink)">② TLB hit → 즉시 변환</text>
+<path d="M260,484 C300,380 500,270 588,165" fill="none" stroke="var(--hs-cross)" stroke-width="2" marker-end="url(#hs-arrow)" />
+<text x="330" y="330" font-size="11" fill="var(--hs-cross)" font-weight="700">③ TLB miss → 폴트 인터럽트 (경계)</text>
+<path d="M760,192 C820,280 850,380 850,484" fill="none" stroke="var(--hs-cross)" stroke-width="2" marker-end="url(#hs-arrow)" />
+<text x="866" y="330" font-size="11" fill="var(--hs-cross)" font-weight="700">④ 디스크 읽기 요청 (경계)</text>
+<path d="M738,546 C700,546 690,546 652,546" fill="none" stroke="var(--hs-hw)" stroke-width="1.4" marker-end="url(#hs-arrow)" />
+<text x="695" y="532" text-anchor="middle" font-size="10.5" fill="var(--hs-hw-ink)">⑤ 데이터 적재</text>
+<path d="M400,192 C320,280 260,380 235,484" fill="none" stroke="var(--hs-cross)" stroke-width="2" marker-end="url(#hs-arrow)" />
+<text x="270" y="230" font-size="11" fill="var(--hs-cross)" font-weight="700">⑥ 매핑 테이블 갱신 (경계)</text>
+</svg>
+<figcaption>초록빛(보라) = 소프트웨어(OS), 회색 = 하드웨어(물리 장치), 붉은색 화살표 = 경계를 넘는 지점(인터럽트 · 명령).</figcaption>
+</figure>
+</div>
+
+경계는 하나의 선이 아니라 **두 번의 신호 전달 지점**이다 — MMU가 인터럽트로 하드웨어→소프트웨어 경계를 넘고(③), OS가 디스크 읽기 명령·테이블 갱신으로 소프트웨어→하드웨어 경계를 다시 넘는다(④, ⑥). 그 외 대부분(TLB hit 경로)은 MMU가 하드웨어 선에서 혼자 처리하고 OS는 관여하지 않는다.
+
+이 디스크 왕복 구간(③~⑤)이 전체 흐름에서 가장 느린 병목이다. 디스크가 "I/O를 전담해서 빠른" 게 아니라, 메모리 계층 중 가장 느린 단계라 OS가 최대한 피하려 하는 것에 가깝다 — CPU 레지스터/캐시는 나노초, RAM은 수십~수백 나노초, 디스크는 밀리초 단위로 RAM보다 수만~수십만 배 느리다. 아래 [스래싱](#thrashing) 문제가 심각해지는 이유도 이 디스크 왕복 비용 때문이다.
+
 ## 스래싱(Thrashing)
 
 물리 메모리가 부족한 상태에서 여러 프로세스가 동시에 많은 페이지를 요구하면, OS는 계속 페이지를 디스크와 RAM 사이로 교체하게 된다. 디스크 접근은 RAM 접근보다 수만 배 느리기 때문에, CPU가 실제 계산보다 페이지를 나르는 데 더 많은 시간을 쓰게 되고 시스템이 거의 멈춘 것처럼 느껴진다. 이 현상을 **스래싱**이라 부른다.
