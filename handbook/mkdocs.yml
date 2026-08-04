@@ -53,6 +53,7 @@ nav:
       - 프로세스 격리, IPC, 커널/유저 모드: os/process-isolation-ipc.md
       - Memory 구조: os/memory.md
       - GC: os/gc.md
+      - "프로세스/스레드 메모리 구조와 가상 메모리, 페이지 교체": os/os-process-thread-memory-scheduling.md
   - Network:
       - TCP vs UDP: network/tcp-udp.md
       - HTTP / HTTPS / TLS: network/http.md
