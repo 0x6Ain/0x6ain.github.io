@@ -32,3 +32,4 @@ Deadlock은 이런 동시성 제어(주로 Lock) 과정에서 잘못된 대기 �
 
 - [재고 동시성 문제](concurrency.md)
 - [Deadlock](deadlock.md)
+- [스레드 동기화 - Mutex와 임계 구역](../os/thread-synchronization.md)

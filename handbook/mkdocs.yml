@@ -54,6 +54,7 @@ nav:
       - Memory 구조: os/memory.md
       - GC: os/gc.md
       - "프로세스/스레드 메모리 구조와 가상 메모리, 페이지 교체": os/os-process-thread-memory-scheduling.md
+      - 스레드 동기화 - Mutex와 임계 구역: os/thread-synchronization.md
   - Network:
       - TCP vs UDP: network/tcp-udp.md
       - HTTP / HTTPS / TLS: network/http.md
@@ -61,6 +62,8 @@ nav:
       - REST와 멱등성: network/rest-idempotency.md
       - DNS, Load Balancer: network/dns-lb.md
       - 네트워크 계층 구조와 캡슐화, IP/MAC 주소, ARP: network/network-layering-encapsulation-arp.md
+  - JavaScript:
+      - 동기/비동기와 이벤트 루프: javascript/event-loop.md
   - Database:
       - 재고 동시성 문제: database/concurrency.md
       - Deadlock: database/deadlock.md
