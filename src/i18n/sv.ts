@@ -201,6 +201,40 @@ const sv: SiteContent = {
         },
       ],
     },
+    {
+      slug: "redis-lounge-cache-memory-optimization",
+      company: "Munto",
+      title: "Lösning av minnesexplosion i Redis-cache utan TTL",
+      subtitle: "Minnesanvändning i lounge-feedens cache sänkt från 90 % till 58 %",
+      summary: "I Muntos lounge-cache saknades TTL, vilket gjorde att nycklar för enskilda populära användare växte obegränsat och drev Redis-minnesanvändningen upp till 90 %. Problemet analyserades datadrivet: genom att sampla fördelningen av antal element per nyckel kunde vi fastställa att den översta procenten av användarnycklar stod för merparten av minnesanvändningen. Åtgärden blev ett tak på 500 element baserat på p90 samt en gradvis utrullning. Resultatet blev en minskning av minnesanvändningen till 58 % utan några negativa bieffekter.",
+      tags: ["Redis", "CloudWatch", "SNS", "AWS Chatbot", "Slack", "ZSET"],
+      steps: [
+        {
+          label: "Problem",
+          body: "Muntos lounge-cache i Redis lagrade feed-innehåll från konton en användare följer och visade det i utvalda ytor som \"populära inlägg\". Minnesanvändningen för denna cache steg till 90 %. Tidigare upptäcktes den här typen av problem genom manuell kontroll av dashboards, men efter att vi byggt upp en larmkedja från CloudWatch Alarm via SNS och AWS Chatbot till Slack kunde vi fånga upp problemet automatiskt. Lyckligtvis hade det vid det här laget ännu inte lett till några konkreta driftstörningar eller fördröjda svarstider.",
+        },
+        {
+          label: "Cause",
+          body: "Felsökningen visade att 60 % av det totala minnet användes av en enda cache-nyckel. Nyckeln tillhörde en populär användare med många följare, och eftersom ingen TTL var satt fortsatte nya feed-poster att läggas till (append) utan gräns, vilket fick nyckeln att växa obegränsat. Varför TTL saknades i den ursprungliga legacy-koden gick inte att fastställa i efterhand.",
+        },
+        {
+          label: "Trade-off",
+          body: "Att bara lägga till en TTL avfärdades eftersom det var oklart varför designen ursprungligen saknade TTL, vilket gjorde risken för oförutsedda bieffekter svår att bedöma. En omstrukturering av nyckeldesignen eller en generell storleksbegränsning i cachen bedömdes kräva för mycket utvecklingsresurser och valdes bort. Att bara utöka minnet i cache-instansen övervägdes också, men avfärdades eftersom det bara skulle låta den underliggande legacy-strukturen fortsätta växa. Istället samplade vi fördelningen av antal element per nyckel (2 015 nycklar: p50 = 48, p90 = 504, p99 = 2 195, max = 22 415) och bekräftade att den översta procenten av användarnas ZSET-nycklar stod för merparten av minnesanvändningen. Att begränsa omfånget och rulla ut gradvis bedömdes ge bäst effekt i förhållande till insatsen.",
+        },
+        {
+          label: "Decision",
+          body: "Vi beslutade att sätta ett tak på 500 element per cache-nyckel, baserat på p90-värdet. Genom att utnyttja ZSET:s egenskaper implementerades det så att de äldsta värdena trimmades bort först när ny feed-data kom in. Befintliga nycklar lämnades orörda, och begränsningen rullades ut gradvis för nya nycklar som tillkom därefter.",
+        },
+        {
+          label: "Result",
+          body: "Efter att ändringen införts sjönk Redis minnesanvändning från 90 % till 58 %. Inga negativa bieffekter, till exempel användarklagomål på grund av att äldre feed-innehåll trimmades bort, har hittills observerats efter utrullningen.",
+        },
+        {
+          label: "Lesson",
+          body: "Jag lärde mig att motiveringen bakom en TTL-inställning bör dokumenteras redan när en cache införs, eftersom det gör framtida felsökning och åtgärder betydligt enklare. Jag satte också principen att man vid legacy-konfigurationer utan TTL inte ska lägga till TTL rakt av, utan först noggrant utvärdera potentiella bieffekter. Dessutom blev det tydligt att den enkla lösningen att bara utöka cacheminnet inte är en verklig lösning, eftersom den bara låter den underliggande legacy-strukturen fortsätta växa.",
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Fallstudier',

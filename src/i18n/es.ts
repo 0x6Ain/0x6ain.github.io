@@ -201,6 +201,40 @@ const es: SiteContent = {
         },
       ],
     },
+    {
+      slug: "redis-lounge-cache-memory-optimization",
+      company: "Munto",
+      title: "Solución al desbordamiento de memoria en la caché de Redis por falta de TTL",
+      subtitle: "Uso de memoria de la caché del feed de Lounge: del 90 % al 58 %",
+      summary: "En la caché de Lounge de Munto, la falta de configuración de TTL provocaba que las claves de ciertos usuarios populares crecieran indefinidamente, elevando el uso de memoria de Redis hasta el 90 %. Mediante un análisis basado en datos, se muestreó la distribución del número de elementos por clave y se confirmó que el 1 % de usuarios con más seguidores concentraba la mayor parte de la memoria. Se aplicó un límite (cap) de 500 elementos basado en el percentil 90 con un despliegue gradual, lo que redujo el uso de memoria al 58 % sin generar efectos secundarios.",
+      tags: ["Redis", "CloudWatch", "SNS", "AWS Chatbot", "Slack", "ZSET"],
+      steps: [
+        {
+          label: "Problema",
+          body: "La caché de Lounge de Munto almacenaba el feed de las cuentas seguidas por cada usuario y lo exponía en zonas destacadas, como la sección de publicaciones populares. El uso de memoria de esta caché de Redis se disparó hasta el 90 %. Anteriormente los problemas se detectaban revisando dashboards de forma manual, pero tras implementar un sistema de monitoreo con CloudWatch Alarm → SNS → AWS Chatbot integrado con Slack, fue posible detectar este problema a tiempo. Por suerte, hasta ese momento no se habían producido fallos de servicio ni retrasos reales en las respuestas.",
+        },
+        {
+          label: "Causa",
+          body: "Al investigar la causa, se descubrió que el 60 % de la memoria total provenía de una única clave de caché. Esa clave correspondía al feed de un usuario muy popular con muchos seguidores, y al no tener TTL configurado, el feed seguía creciendo sin límite a medida que se le hacían nuevos append. No quedaba registro de por qué el código legado nunca incluyó un TTL desde el principio.",
+        },
+        {
+          label: "Disyuntiva",
+          body: "Simplemente añadir un TTL se descartó por el riesgo de efectos secundarios, ya que no había forma de confirmar por qué originalmente se había diseñado sin él. Cambiar la estructura de las claves o introducir un límite de tamaño de caché también se descartó por el alto costo en recursos de desarrollo, y aumentar la memoria de la instancia de caché se consideró pero se rechazó por dejar intacto el problema de fondo de una estructura que seguía acumulando datos legados. En su lugar, se muestreó la distribución del número de elementos (2015 muestras: p50 = 48, p90 = 504, p99 = 2195, máximo = 22415) y se confirmó que el ZSET del 1 % superior de usuarios concentraba la mayor parte de la memoria, por lo que se optó por acotar el alcance y desplegar la solución de forma gradual como la opción más eficiente en relación con los recursos disponibles.",
+        },
+        {
+          label: "Decisión",
+          body: "Se decidió limitar (cap) el número de elementos por clave a 500, en línea con el percentil 90. Aprovechando las características de ZSET, se implementó un recorte (trim) que elimina primero los valores más antiguos al llegar nuevos elementos al feed, dejando intactas las claves existentes y aplicando el límite de forma progresiva solo a las claves nuevas.",
+        },
+        {
+          label: "Resultado",
+          body: "Tras aplicar el cambio, el uso de memoria de Redis bajó del 90 % al 58 %. Hasta la fecha tampoco se han detectado efectos secundarios, como quejas de usuarios por la pérdida de publicaciones antiguas recortadas tras el despliegue.",
+        },
+        {
+          label: "Lección",
+          body: "Se aprendió que, al introducir una caché, es fundamental documentar por escrito el criterio detrás de la configuración del TTL, lo que facilita mucho el diagnóstico y la respuesta ante problemas futuros. También se estableció el principio de que, ante configuraciones legadas sin TTL, no conviene añadirlo sin más, sino evaluar a fondo los posibles efectos secundarios antes de actuar. Por último, quedó claro que simplemente aumentar la memoria de la caché no es una solución de fondo, ya que solo permite que la estructura legada siga acumulándose.",
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Casos de estudio',

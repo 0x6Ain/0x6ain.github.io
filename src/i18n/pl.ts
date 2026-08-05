@@ -201,6 +201,40 @@ const pl: SiteContent = {
         },
       ],
     },
+    {
+      slug: "redis-lounge-cache-memory-optimization",
+      company: "Munto",
+      title: "Rozwiązanie problemu eksplozji pamięci w cache Redis bez TTL",
+      subtitle: "Zużycie pamięci cache kanału lounge: 90% → 58%",
+      summary: "W cache lounge aplikacji Munto, z powodu braku ustawionego TTL, klucze niektórych popularnych użytkowników rosły bez ograniczeń, co doprowadziło zużycie pamięci Redis do 90%. Problem przeanalizowano w oparciu o dane: próbkowanie rozkładu liczby elementów pokazało, że klucze należące do 1% najpopularniejszych użytkowników odpowiadają za większość zużytej pamięci. Rozwiązaniem było wprowadzenie limitu 500 elementów (na podstawie percentyla p90) oraz stopniowe wdrożenie zmiany. W efekcie zużycie pamięci spadło do 58%, bez żadnych efektów ubocznych.",
+      tags: ["Redis", "CloudWatch", "SNS", "AWS Chatbot", "Slack", "ZSET"],
+      steps: [
+        {
+          label: "Problem",
+          body: "Cache lounge w Munto przechowywał kanały obserwowanych przez użytkownika treści i wyświetlał je m.in. w sekcji polecanych postów. Zużycie pamięci tego cache'a Redis wzrosło do 90%. Wcześniej podobne problemy wykrywano ręcznie, przeglądając dashboardy, ale tym razem udało się je zauważyć dzięki nowo wdrożonemu systemowi monitoringu, w którym alert CloudWatch trafiał przez SNS i AWS Chatbot na Slacka. Na szczęście do tego momentu nie doszło jeszcze do realnej awarii usługi ani spowolnienia odpowiedzi.",
+        },
+        {
+          label: "Cause",
+          body: "Analiza przyczyny wykazała, że aż 60% całkowitej pamięci zajmował jeden pojedynczy klucz cache. Był to kanał użytkownika z bardzo dużą liczbą obserwujących — klucz nie miał ustawionego TTL, więc nowe wpisy były do niego stale dopisywane (append), przez co rósł bez końca. Nie udało się ustalić z dokumentacji, dlaczego w legacy kodzie TTL nie zostało od razu skonfigurowane.",
+        },
+        {
+          label: "Trade-off",
+          body: "Proste dodanie TTL odrzucono, ponieważ nie było jasne, dlaczego pierwotnie zaprojektowano to bez TTL — istniało ryzyko nieprzewidzianych efektów ubocznych. Zmianę struktury klucza lub wprowadzenie ogólnego limitu rozmiaru cache'a również odrzucono jako zbyt kosztowne pod względem zasobów deweloperskich. Rozważano też po prostu zwiększenie pamięci instancji cache, ale odrzucono to rozwiązanie, bo pozostawiałoby strukturę wciąż akumulującego się legacy problemu bez zmian. Zamiast tego przeprowadzono próbkowanie rozkładu liczby elementów (2015 próbek: p50 = 48, p90 = 504, p99 = 2195, maksimum = 22 415) i potwierdzono, że ZSET-y należące do 1% najbardziej aktywnych użytkowników odpowiadają za większość zużycia pamięci. Uznano, że najbardziej efektywnym względem nakładu pracy rozwiązaniem będzie zawężenie zakresu problemu i stopniowe wdrożenie zmiany.",
+        },
+        {
+          label: "Decision",
+          body: "Zdecydowano się ograniczyć (cap) liczbę elementów w kluczu cache do 500, zgodnie z wartością p90. Wykorzystując właściwości struktury ZSET, zaimplementowano mechanizm, w którym przy dodawaniu nowego wpisu najstarsze wartości są automatycznie przycinane (trim). Istniejące klucze pozostawiono bez zmian, a nowe podejście wdrażano stopniowo — obejmując od tej pory nowo powstające klucze.",
+        },
+        {
+          label: "Result",
+          body: "Po wdrożeniu zmiany zużycie pamięci Redis spadło z 90% do 58%. Do tej pory nie zaobserwowano żadnych efektów ubocznych, takich jak skargi użytkowników związane z utratą starszych wpisów z kanału.",
+        },
+        {
+          label: "Lesson",
+          body: "Wnioskiem jest to, że przy wdrażaniu cache'a warto od razu dokumentować uzasadnienie decyzji dotyczących TTL — ułatwia to późniejszą diagnozę i reagowanie na problemy. Przyjęto zasadę, że napotykając legacy konfigurację bez TTL, nie należy dodawać go automatycznie, lecz najpierw dokładnie przeanalizować potencjalne efekty uboczne. Potwierdzono też, że proste zwiększanie pamięci cache nie jest rozwiązaniem fundamentalnym, ponieważ pozwala jedynie dalej narastać strukturalnemu problemowi legacy kodu.",
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Studia przypadków',

@@ -201,6 +201,40 @@ const vi: SiteContent = {
         },
       ],
     },
+    {
+      slug: "redis-lounge-cache-memory-optimization",
+      company: "Munto",
+      title: "Xử lý sự cố bùng nổ bộ nhớ cache Redis do thiếu TTL",
+      subtitle: "Giảm tỷ lệ sử dụng bộ nhớ cache feed Lounge từ 90% xuống 58%",
+      summary: "Trong cache Lounge của Munto, do không thiết lập TTL, một số cache key của người dùng phổ biến phình to vô hạn khiến bộ nhớ Redis tăng lên đến 90%. Vấn đề được phân tích dựa trên dữ liệu: lấy mẫu phân phối số lượng element cho thấy 1% người dùng hàng đầu chiếm phần lớn bộ nhớ, từ đó áp dụng giới hạn 500 element theo chuẩn p90 và triển khai dần dần. Kết quả là tỷ lệ sử dụng bộ nhớ giảm xuống còn 58% mà không phát sinh tác dụng phụ.",
+      tags: ["Redis", "CloudWatch", "SNS", "AWS Chatbot", "Slack", "ZSET"],
+      steps: [
+        {
+          label: "Vấn đề",
+          body: "Cache Lounge của Munto lưu trữ feed của những người mà người dùng đang theo dõi và hiển thị ở các khu vực nổi bật như bài viết phổ biến — đây là một cache Redis mà tỷ lệ sử dụng bộ nhớ đã tăng vọt lên tới 90%. Trước đây, việc phát hiện sự cố chỉ dừng ở mức kiểm tra dashboard thủ công, nhưng nhờ xây dựng hệ thống giám sát kết nối CloudWatch Alarm → SNS → AWS Chatbot để gửi thông báo qua Slack, nhóm đã nhận biết được vấn đề này. May mắn là tại thời điểm đó chưa có ảnh hưởng thực tế nào như sự cố dịch vụ hay độ trễ phản hồi.",
+        },
+        {
+          label: "Nguyên nhân",
+          body: "Sau khi truy vết, xác nhận rằng 60% tổng bộ nhớ đến từ duy nhất một cache key. Key này là feed của một người dùng phổ biến có lượng follower lớn, và do không được thiết lập TTL nên feed mới liên tục được append vào, khiến key này phình to không giới hạn. Lý do vì sao TTL bị bỏ sót ngay từ đầu trong đoạn code legacy này không thể xác minh được qua lịch sử.",
+        },
+        {
+          label: "Đánh đổi",
+          body: "Phương án đơn giản là thêm TTL bị tạm gác lại vì không rõ lý do ban đầu tại sao thiết kế lại không có TTL, nên lo ngại về tác dụng phụ. Việc thay đổi cấu trúc key hoặc áp dụng giới hạn kích thước cache bị loại bỏ do đòi hỏi nguồn lực phát triển lớn; phương án tăng bộ nhớ cho instance cache cũng được cân nhắc nhưng không được chọn vì chỉ là để mặc cho cấu trúc legacy tiếp tục phình to. Thay vào đó, sau khi lấy mẫu phân phối số lượng element (2.015 mẫu, p50: 48, p90: 504, p99: 2.195, tối đa: 22.415), xác nhận rằng ZSET của 1% người dùng hàng đầu chiếm phần lớn bộ nhớ, nên quyết định thu hẹp phạm vi và triển khai dần dần là phương án hiệu quả nhất so với nguồn lực bỏ ra.",
+        },
+        {
+          label: "Quyết định",
+          body: "Quyết định giới hạn (cap) số lượng element của cache key ở mức 500, dựa theo chuẩn p90. Tận dụng đặc tính của ZSET, hệ thống được triển khai sao cho khi có feed mới, giá trị cũ nhất sẽ bị cắt bỏ (trim) trước tiên; các key hiện có được giữ nguyên, còn việc áp dụng thay đổi được triển khai dần dần bắt đầu từ các key mới phát sinh.",
+        },
+        {
+          label: "Kết quả",
+          body: "Sau khi áp dụng thay đổi, tỷ lệ sử dụng bộ nhớ Redis giảm từ 90% xuống còn 58%. Cho đến hiện tại, chưa ghi nhận tác dụng phụ nào như phản ứng tiêu cực từ người dùng do feed cũ bị cắt bỏ sau khi triển khai.",
+        },
+        {
+          label: "Bài học",
+          body: "Rút ra bài học rằng khi áp dụng cache, cần ghi lại rõ ràng lý do thiết lập TTL để việc xác định nguyên nhân và xử lý sau này trở nên dễ dàng hơn. Cũng đặt ra nguyên tắc rằng ngay cả khi gặp lại cấu hình legacy không có TTL, không nên vội vàng thêm TTL mà cần xem xét kỹ tác dụng phụ trước khi tiếp cận. Ngoài ra, cũng xác nhận rằng giải pháp dễ dàng là chỉ tăng bộ nhớ cache không phải là giải pháp căn cơ, vì nó có thể khiến cấu trúc legacy tiếp tục tích lũy.",
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Nghiên cứu tình huống',

@@ -201,6 +201,40 @@ const tr: SiteContent = {
         },
       ],
     },
+    {
+      slug: "redis-lounge-cache-memory-optimization",
+      company: "Munto",
+      title: "TTL Ayarlanmamış Redis Önbelleğinde Bellek Patlamasının Çözülmesi",
+      subtitle: "Lounge feed önbelleği bellek kullanımı %90 → %58'e düşürüldü",
+      summary: "Munto lounge önbelleğinde TTL tanımlanmamış olması nedeniyle belirli popüler kullanıcı anahtarlarının sınırsızca büyümesi sonucu Redis bellek kullanımının %90'a çıktığı sorun, veri odaklı bir analizle çözüldü. Eleman sayısı dağılımı örneklenerek en popüler %1'lik kullanıcı anahtarlarının belleğin büyük bölümünü kapladığı tespit edildi; p90 baz alınarak 500 elemanlık bir üst sınır (cap) getirildi ve kademeli olarak yayına alındı. Sonuç olarak bellek kullanımı %58'e düşürüldü ve herhangi bir yan etki gözlenmeden süreç tamamlandı.",
+      tags: ["Redis", "CloudWatch", "SNS", "AWS Chatbot", "Slack", "ZSET"],
+      steps: [
+        {
+          label: "Sorun",
+          body: "Munto'nun lounge önbelleği, kullanıcının takip ettiği hesapların feed'lerini tutan ve popüler gönderiler gibi öne çıkan alanlarda gösterilen bir Redis önbelleğiydi. Bu önbelleğin bellek kullanım oranı %90'a kadar yükseldi. Daha önce sorunlar yalnızca dashboard'ları manuel kontrol ederek fark ediliyordu; ancak CloudWatch Alarm → SNS → AWS Chatbot üzerinden Slack'e bağlanan bir izleme sistemi kurulduktan sonra bu sorun fark edilebildi. Neyse ki bu aşamaya kadar servis kesintisi veya yanıt gecikmesi gibi gerçek bir etki henüz oluşmamıştı.",
+        },
+        {
+          label: "Neden",
+          body: "Kök nedeni araştırdığımızda toplam belleğin %60'ının tek bir önbellek anahtarından kaynaklandığını tespit ettik. Bu anahtar, takipçi sayısı yüksek popüler bir kullanıcının feed'iydi ve TTL tanımlanmadığı için yeni feed girdileri sürekli ekleniyor (append), anahtar sınırsızca büyüyordu. Legacy kodda TTL'nin başından beri neden tanımlanmadığına dair herhangi bir kayıt bulunamadı.",
+        },
+        {
+          label: "Trade-off",
+          body: "TTL'yi doğrudan eklemek, tasarımın neden başlangıçta TTL'siz yapıldığı net olmadığından yan etki riski taşıyordu ve bu yüzden ertelendi. Anahtar yapısını değiştirmek veya önbellek boyutu sınırlaması getirmek geliştirme kaynağı açısından maliyetli olacağından elendi. Önbellek instance'ının bellek kapasitesini artırmak da değerlendirildi, ancak legacy anahtarların büyümeye devam etmesine göz yummak anlamına geldiği için tercih edilmedi. Bunun yerine eleman sayısı dağılımı örneklendi (2.015 örnek; p50: 48, p90: 504, p99: 2.195, maksimum: 22.415) ve en popüler %1'lik kullanıcı grubunun ZSET'lerinin belleğin büyük kısmını kapladığı doğrulandı. Kapsamı daraltıp kademeli olarak yayına almanın, kaynak/etki dengesi açısından en verimli yaklaşım olduğuna karar verildi.",
+        },
+        {
+          label: "Karar",
+          body: "p90 değerine göre önbellek anahtarlarındaki eleman sayısını 500 ile sınırlamaya (cap) karar verildi. ZSET'in yapısından faydalanılarak yeni feed girdisi eklendiğinde en eski değerin budanacağı (trim) şekilde uygulama yapıldı. Mevcut anahtarlara dokunulmadı; değişiklik yalnızca yeni oluşturulan anahtarlardan başlayarak kademeli olarak devreye alındı.",
+        },
+        {
+          label: "Sonuç",
+          body: "Değişiklik uygulandıktan sonra Redis bellek kullanım oranı %90'dan %58'e düştü. Yayına almanın ardından eski feed verilerinin budanmasından kaynaklanabilecek kullanıcı şikayeti gibi yan etkiler de o güne kadar gözlenmedi.",
+        },
+        {
+          label: "Ders",
+          body: "Önbellek tasarlarken TTL kararının gerekçesinin belgelenmesi gerektiğini, aksi halde ileride kök neden analizi ve müdahalenin zorlaştığını öğrendim. TTL'siz bir legacy yapıyla tekrar karşılaşıldığında körü körüne TTL eklemek yerine önce yan etkileri detaylıca değerlendirmenin bir ilke olması gerektiğini benimsedim. Ayrıca önbellek belleğini büyütmek gibi kolay bir çözümün, legacy yapının birikmeye devam etmesine yol açabileceği için kalıcı bir çözüm olmadığını da doğrulamış oldum.",
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Vaka Analizleri',

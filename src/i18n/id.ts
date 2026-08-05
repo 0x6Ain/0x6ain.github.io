@@ -201,6 +201,40 @@ const id: SiteContent = {
         },
       ],
     },
+    {
+      slug: "redis-lounge-cache-memory-optimization",
+      company: "Munto",
+      title: "Mengatasi Lonjakan Memori Redis Cache Akibat Ketiadaan TTL",
+      subtitle: "Menurunkan penggunaan memori cache feed Lounge dari 90% menjadi 58%",
+      summary: "Menganalisis dan menyelesaikan masalah cache Lounge di Munto, di mana key milik segelintir user populer terus membesar tanpa batas karena tidak ada TTL, hingga membuat penggunaan memori Redis naik ke 90%. Dengan mengambil sampel distribusi jumlah element per key, ditemukan bahwa 1% key teratas menghabiskan sebagian besar memori. Solusinya adalah menerapkan cap 500 element berdasarkan nilai p90 dan melakukan rollout secara bertahap. Hasilnya, penggunaan memori berhasil diturunkan hingga 58% tanpa efek samping.",
+      tags: ["Redis", "CloudWatch", "SNS", "AWS Chatbot", "Slack", "ZSET"],
+      steps: [
+        {
+          label: "Masalah",
+          body: "Cache Lounge di Munto menyimpan feed dari akun-akun yang diikuti user untuk ditampilkan di area spotlight seperti postingan populer. Penggunaan memori Redis pada cache ini melonjak hingga 90%. Sebelumnya, masalah semacam ini hanya terdeteksi lewat pengecekan dashboard secara manual, tetapi berkat sistem monitoring yang baru dibangun (CloudWatch Alarm → SNS → AWS Chatbot, dengan notifikasi masuk ke Slack), masalah ini bisa terdeteksi lebih cepat. Untungnya, hingga titik ini belum ada dampak nyata seperti gangguan layanan atau response yang melambat.",
+        },
+        {
+          label: "Penyebab",
+          body: "Setelah ditelusuri, ternyata 60% dari total memori berasal dari satu key cache saja. Key tersebut adalah feed milik user populer dengan jumlah follower besar, dan karena tidak ada TTL yang diset, feed baru terus di-append tanpa batas sehingga key ini membesar tanpa henti. Alasan mengapa TTL tidak pernah diset sejak awal di kode legacy tidak bisa ditelusuri dari histori yang ada.",
+        },
+        {
+          label: "Trade-off",
+          body: "Opsi menambahkan TTL begitu saja ditunda karena tidak jelas alasan awal cache ini didesain tanpa TTL, sehingga berisiko menimbulkan efek samping yang tidak terduga. Opsi mengubah struktur key atau membatasi ukuran cache juga disingkirkan karena membutuhkan resource development yang besar. Menambah kapasitas memori instance cache sempat dipertimbangkan, tapi ditolak karena hanya menunda masalah tanpa menyelesaikan akar penyebabnya, yaitu struktur legacy yang terus menumpuk. Sebagai gantinya, dilakukan sampling distribusi jumlah element (2.015 sampel, dengan p50 48, p90 504, p99 2.195, dan maksimum 22.415), yang mengonfirmasi bahwa ZSET milik 1% user teratas menghabiskan sebagian besar memori. Berdasarkan temuan ini, membatasi cakupan lalu melakukan rollout bertahap dinilai sebagai pendekatan paling efisien dibanding resource yang dibutuhkan.",
+        },
+        {
+          label: "Keputusan",
+          body: "Diputuskan untuk membatasi jumlah element per key cache menjadi 500, mengikuti nilai p90. Dengan memanfaatkan karakteristik ZSET, diimplementasikan mekanisme trim agar value paling lama terhapus lebih dulu saat feed baru masuk. Key yang sudah ada dibiarkan apa adanya, sementara rollout diterapkan secara bertahap mulai dari key-key baru yang masuk setelahnya.",
+        },
+        {
+          label: "Hasil",
+          body: "Setelah perubahan diterapkan, penggunaan memori Redis turun dari 90% menjadi 58%. Hingga saat ini, belum ditemukan efek samping seperti keluhan user akibat feed lama yang terpotong pasca-rollout.",
+        },
+        {
+          label: "Pelajaran",
+          body: "Belajar bahwa saat memperkenalkan cache, alasan penetapan TTL sebaiknya didokumentasikan dengan jelas agar penelusuran penyebab dan penanganan masalah di kemudian hari menjadi lebih mudah. Menetapkan prinsip bahwa ketika menemukan konfigurasi legacy tanpa TTL, jangan langsung menambahkan TTL begitu saja, melainkan pertimbangkan dulu efek sampingnya secara menyeluruh. Selain itu, dikonfirmasi bahwa solusi mudah seperti sekadar menambah memori cache bukan solusi fundamental, karena hanya membiarkan struktur legacy terus menumpuk.",
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Studi Kasus',

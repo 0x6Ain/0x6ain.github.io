@@ -201,6 +201,40 @@ const de: SiteContent = {
         },
       ],
     },
+    {
+      slug: "redis-lounge-cache-memory-optimization",
+      company: "Munto",
+      title: "Speicherexplosion im Redis-Cache ohne TTL behoben",
+      subtitle: "Speicherauslastung des Lounge-Feed-Caches von 90 % auf 58 % gesenkt",
+      summary: "Im Lounge-Cache von Munto stieg die Redis-Speicherauslastung auf 90 %, weil für die Keys einzelner populärer Nutzer keine TTL gesetzt war und diese dadurch unbegrenzt weiterwuchsen. Durch eine datengetriebene Analyse wurde per Sampling der Element-Anzahl-Verteilung festgestellt, dass die Keys des obersten 1 % der Nutzer den Großteil des Speichers belegten. Die Lösung war eine Begrenzung auf 500 Elemente pro Key nach dem p90-Wert, umgesetzt über einen schrittweisen Rollout. Ergebnis: Die Speicherauslastung sank auf 58 %, ohne Nebenwirkungen.",
+      tags: ["Redis", "CloudWatch", "SNS", "AWS Chatbot", "Slack", "ZSET"],
+      steps: [
+        {
+          label: "Problem",
+          body: "Der Lounge-Cache von Munto speicherte die Feeds der von Nutzern gefolgten Accounts und nutzte sie unter anderem für Spotlight-Bereiche mit beliebten Beiträgen. Die Speicherauslastung dieses Redis-Caches schoss auf 90 % hoch. Zuvor wurden Probleme nur durch manuelle Dashboard-Kontrollen erkannt, doch mittlerweile war ein Monitoring-System über CloudWatch Alarm → SNS → AWS Chatbot mit Slack-Benachrichtigung aufgebaut, wodurch das Problem überhaupt auffiel. Glücklicherweise gab es zu diesem Zeitpunkt noch keine spürbaren Auswirkungen wie Serviceausfälle oder verzögerte Antwortzeiten.",
+        },
+        {
+          label: "Ursache",
+          body: "Die Analyse ergab, dass 60 % des gesamten Speichers auf einen einzigen Cache-Key entfielen. Dieser Key gehörte zum Feed eines Nutzers mit sehr vielen Followern und besaß keine TTL, wodurch immer neue Feed-Einträge angehängt wurden und der Key unbegrenzt weiterwuchs. Warum die TTL im Legacy-Code von Anfang an fehlte, ließ sich anhand der vorhandenen Dokumentation nicht mehr nachvollziehen.",
+        },
+        {
+          label: "Kompromiss",
+          body: "Eine einfache TTL-Ergänzung wurde zurückgestellt, da der ursprüngliche Grund für das Fehlen der TTL unklar war und dadurch Nebenwirkungen befürchtet wurden. Eine Änderung der Key-Struktur oder die Einführung einer Größenbegrenzung wurde wegen des hohen Entwicklungsaufwands verworfen, und auch eine reine Vergrößerung des Cache-Instanzspeichers wurde erwogen, aber verworfen, da sie das Grundproblem des stetig wachsenden Legacy-Datenbestands nur verschleppt hätte. Stattdessen wurde die Verteilung der Element-Anzahl je Key gesampelt (2.015 Keys, p50 = 48, p90 = 504, p99 = 2.195, Maximum = 22.415) und dabei bestätigt, dass die ZSETs des obersten 1 % der Nutzer den Großteil des Speichers belegten. Eine gezielte, schrittweise ausgerollte Begrenzung wurde als das Vorgehen mit dem besten Aufwand-Nutzen-Verhältnis bewertet.",
+        },
+        {
+          label: "Entscheidung",
+          body: "Es wurde entschieden, die Anzahl der Elemente pro Cache-Key auf 500 zu begrenzen, orientiert am p90-Wert. Unter Ausnutzung der ZSET-Eigenschaften wurde implementiert, dass beim Eintreffen neuer Feed-Einträge die jeweils ältesten Werte per Trim entfernt werden. Bestehende Keys blieben unverändert, während die Begrenzung schrittweise nur auf neu hinzukommende Keys ausgerollt wurde.",
+        },
+        {
+          label: "Ergebnis",
+          body: "Nach der Umsetzung sank die Redis-Speicherauslastung von 90 % auf 58 %. Auch mögliche Nebenwirkungen wie Nutzerbeschwerden durch das Abschneiden älterer Feed-Einträge wurden bis dato nicht beobachtet.",
+        },
+        {
+          label: "Erkenntnis",
+          body: "Es zeigte sich, dass die Gründe für eine gesetzte TTL beim Einführen eines Caches dokumentiert werden sollten, um spätere Fehleranalysen und Reaktionen zu erleichtern. Als Prinzip wurde festgehalten, bei Legacy-Konfigurationen ohne TTL nicht vorschnell eine TTL zu ergänzen, sondern mögliche Nebenwirkungen zuerst gründlich zu prüfen. Außerdem bestätigte sich, dass eine bloße Vergrößerung des Cache-Speichers keine echte Lösung ist, da sie nur dazu führt, dass sich die zugrunde liegende Legacy-Struktur weiter aufbläht.",
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Fallstudien',

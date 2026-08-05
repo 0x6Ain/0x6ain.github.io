@@ -201,6 +201,40 @@ const pt: SiteContent = {
         },
       ],
     },
+    {
+      slug: "redis-lounge-cache-memory-optimization",
+      company: "Munto",
+      title: "Resolução do estouro de memória em cache Redis sem TTL",
+      subtitle: "Uso de memória do cache do feed do Lounge: 90% → 58%",
+      summary: "No cache do Lounge da Munto, a ausência de TTL fazia com que a chave de determinados usuários populares crescesse indefinidamente, elevando o uso de memória do Redis a 90%. Uma análise orientada por dados identificou o problema: a amostragem da distribuição do número de elementos mostrou que o 1% de usuários no topo concentrava a maior parte da memória. A solução aplicou um limite (cap) de 500 elementos com base no p90 e um rollout gradual, reduzindo o uso de memória para 58% sem efeitos colaterais.",
+      tags: ["Redis", "CloudWatch", "SNS", "AWS Chatbot", "Slack", "ZSET"],
+      steps: [
+        {
+          label: "Problema",
+          body: "O cache do Lounge da Munto armazenava o feed dos usuários seguidos e o exibia em áreas de destaque, como posts populares. O uso de memória desse cache Redis subiu até 90%. Antes, os problemas eram identificados manualmente checando dashboards, mas, com a implantação de um pipeline de monitoramento (CloudWatch Alarm → SNS → AWS Chatbot → Slack), foi possível detectar o problema por meio de alertas automáticos. Felizmente, até aquele momento não havia impacto real, como falhas no serviço ou lentidão nas respostas.",
+        },
+        {
+          label: "Causa",
+          body: "A investigação revelou que 60% de toda a memória estava concentrada em uma única chave de cache. Essa chave correspondia ao feed de um usuário com grande número de seguidores e, por não ter TTL configurado, novos itens de feed eram continuamente adicionados (append), fazendo a chave crescer sem limite. Não havia registro do motivo pelo qual o TTL havia sido omitido no código legado desde o início.",
+        },
+        {
+          label: "Trade-off",
+          body: "Simplesmente adicionar um TTL foi descartado, já que não havia como confirmar por que o design original não incluía TTL, criando risco de efeitos colaterais. Alterar a estrutura da chave ou introduzir um limite de tamanho de cache também foi descartado por exigir esforço de desenvolvimento significativo. Aumentar a memória da própria instância de cache foi considerado, mas rejeitado por apenas adiar o problema, permitindo que a estrutura legada continuasse acumulando dados. Em vez disso, foi feita uma amostragem da distribuição do número de elementos (2.015 amostras: p50 = 48, p90 = 504, p99 = 2.195, máximo = 22.415), confirmando que o ZSET do 1% de usuários no topo concentrava a maior parte da memória. Reduzir o escopo do problema e aplicar um rollout gradual mostrou ser a abordagem mais eficiente em relação ao esforço necessário.",
+        },
+        {
+          label: "Decisão",
+          body: "Foi decidido limitar (cap) o número de elementos por chave de cache a 500, com base no p90. Aproveitando as características do ZSET, a implementação faz com que, ao chegar um novo item de feed, os valores mais antigos sejam removidos (trim) primeiro. As chaves existentes foram mantidas como estavam, e o novo limite foi aplicado gradualmente apenas às chaves criadas a partir dali.",
+        },
+        {
+          label: "Resultado",
+          body: "Após a mudança, o uso de memória do Redis caiu de 90% para 58%. Até o momento, não foram observados efeitos colaterais, como reclamações de usuários decorrentes da remoção de itens antigos do feed após o rollout.",
+        },
+        {
+          label: "Aprendizado",
+          body: "Ficou claro que, ao introduzir um cache, documentar formalmente a justificativa para a configuração de TTL facilita a identificação de causas e a resposta a problemas futuros. Também ficou estabelecido o princípio de que, ao encontrar configurações legadas sem TTL, a resposta não deve ser simplesmente adicionar um TTL, mas sim avaliar cuidadosamente os possíveis efeitos colaterais antes de agir. Além disso, confirmou-se que apenas aumentar a memória do cache não é uma solução definitiva, pois permite que a estrutura legada continue se acumulando indefinidamente.",
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Estudos de caso',

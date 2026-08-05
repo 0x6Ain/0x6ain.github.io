@@ -201,6 +201,40 @@ const en: SiteContent = {
         },
       ],
     },
+    {
+      slug: "redis-lounge-cache-memory-optimization",
+      company: "Munto",
+      title: "Fixing a Redis Cache Memory Blowout Caused by Missing TTLs",
+      subtitle: "Cut Lounge feed cache memory usage from 90% to 58%",
+      summary: "Diagnosed and fixed a Redis memory issue in Munto's Lounge cache, where a missing TTL let a handful of popular-user keys grow without bound and pushed memory usage up to 90%. By sampling the distribution of element counts per key, I found that the top 1% of user keys accounted for most of the memory, then capped keys at 500 elements based on the p90 value and rolled the fix out gradually. Memory usage dropped to 58% with no observed side effects.",
+      tags: ["Redis", "CloudWatch", "SNS", "AWS Chatbot", "Slack", "ZSET"],
+      steps: [
+        {
+          label: "Problem",
+          body: "Munto's Lounge cache stores the feed of accounts a user follows and surfaces items like popular posts in spotlight sections. Memory usage on this Redis cache spiked to 90%. Previously, issues like this were only caught by manually checking dashboards, but after we wired up monitoring through CloudWatch Alarm → SNS → AWS Chatbot into Slack, the spike surfaced as an alert. At the time it was caught, there was no measurable service impact yet — no outage or latency degradation.",
+        },
+        {
+          label: "Cause",
+          body: "Tracing the memory usage showed that a single cache key accounted for 60% of total memory. That key belonged to the feed of a user with a large follower count, and since no TTL was set on it, new feed entries kept appending indefinitely, letting the key grow without any bound. There was no record of why the legacy code had omitted a TTL in the first place.",
+        },
+        {
+          label: "Trade-off",
+          body: "Simply adding a TTL was ruled out because the original reasoning behind the TTL-less design was unclear, raising the risk of unknown side effects. Restructuring the keys or introducing a general cache size limit was ruled out as too costly in dev resources. Just scaling up the cache instance's memory was also considered, but rejected since it would leave the underlying unbounded-growth structure in place. Instead, I sampled the distribution of element counts across keys (2,015 samples: p50 = 48, p90 = 504, p99 = 2,195, max = 22,415) and confirmed that the ZSETs of the top 1% of users accounted for most of the memory. Narrowing the fix to that subset and rolling it out gradually turned out to be the most resource-efficient approach.",
+        },
+        {
+          label: "Decision",
+          body: "Based on the p90 figure, I decided to cap the element count per cache key at 500. Taking advantage of ZSET's ordering, new feed entries trigger a trim that evicts the oldest values first. Existing keys were left untouched, and the cap was applied gradually starting only with newly created keys.",
+        },
+        {
+          label: "Result",
+          body: "After the change, Redis memory usage dropped from 90% to 58%. No side effects — such as user complaints about older feed items being trimmed — have been observed since the rollout.",
+        },
+        {
+          label: "Lesson",
+          body: "I learned that when introducing a cache, documenting the reasoning behind its TTL settings makes future root-cause analysis and fixes much easier. I also set a personal rule: when encountering a legacy cache with no TTL, don't just bolt one on — first investigate potential side effects thoroughly. Finally, I confirmed that simply scaling up cache memory is not a real fix, since it just lets the underlying legacy growth pattern keep accumulating.",
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Case Studies',

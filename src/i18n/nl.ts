@@ -201,6 +201,40 @@ const nl: SiteContent = {
         },
       ],
     },
+    {
+      slug: "redis-lounge-cache-memory-optimization",
+      company: "Munto",
+      title: "Redis-cachegeheugen liep uit de hand door ontbrekende TTL",
+      subtitle: "Geheugengebruik van de lounge-feedcache verlaagd van 90% naar 58%",
+      summary: "In de lounge-cache van Munto groeide de sleutel van een populaire gebruiker onbeperkt door, omdat er geen TTL was ingesteld, waardoor het Redis-geheugengebruik opliep tot 90%. Op basis van data-analyse werd het probleem opgelost: door de verdeling van het aantal elements te samplen bleek dat de top 1% van de gebruikerssleutels het grootste deel van het geheugen in beslag nam. De oplossing was een cap van 500 elements op basis van de p90-waarde, gecombineerd met een geleidelijke uitrol. Het resultaat was een daling van het geheugengebruik naar 58%, zonder negatieve neveneffecten.",
+      tags: ["Redis", "CloudWatch", "SNS", "AWS Chatbot", "Slack", "ZSET"],
+      steps: [
+        {
+          label: "Probleem",
+          body: "De lounge-cache van Munto is een Redis-cache die de feeds opslaat van accounts die een gebruiker volgt, en die gebruikt wordt om bijvoorbeeld populaire posts in spotlight-secties te tonen. Het geheugengebruik van deze cache schoot omhoog naar 90%. Voorheen werd zoiets alleen ontdekt door handmatig het dashboard te checken en het issue vervolgens te escaleren, maar dankzij een nieuw opgezet monitoringsysteem (CloudWatch Alarm → SNS → AWS Chatbot → Slack) kwam deze keer meteen een melding binnen. Gelukkig was er op dat moment nog geen merkbare impact zoals storingen of vertraagde responses.",
+        },
+        {
+          label: "Oorzaak",
+          body: "Analyse wees uit dat 60% van het totale geheugengebruik afkomstig was van één enkele cachesleutel. Dit bleek de feed te zijn van een gebruiker met veel volgers; omdat er geen TTL was ingesteld, bleven nieuwe feed-items maar toegevoegd worden zonder dat de sleutel ooit werd opgeschoond, waardoor hij eindeloos bleef groeien. Waarom de TTL in de legacy-code oorspronkelijk ontbrak, was niet meer te achterhalen.",
+        },
+        {
+          label: "Afweging",
+          body: "Simpelweg een TTL toevoegen werd terzijde gelegd, omdat onduidelijk was waarom de sleutel oorspronkelijk zonder TTL was ontworpen en er risico bestond op onbedoelde neveneffecten. Het herstructureren van de sleutel of het invoeren van een cachegroottelimiet werd als te resource-intensief beoordeeld en dus verworpen. Het simpelweg vergroten van het geheugen van de cache-instance werd ook overwogen, maar afgewezen omdat dit de onderliggende legacy-structuur alleen maar verder zou laten opstapelen. In plaats daarvan werd de verdeling van het aantal elements gesampled (2.015 sleutels, p50 = 48, p90 = 504, p99 = 2.195, max = 22.415), waaruit bleek dat de ZSET's van de top 1% gebruikers verantwoordelijk waren voor het grootste deel van het geheugengebruik. Een gerichte, geleidelijke uitrol bleek daarmee de meest efficiënte aanpak in verhouding tot de benodigde inspanning.",
+        },
+        {
+          label: "Beslissing",
+          body: "Op basis van de p90-waarde werd besloten het aantal elements per cachesleutel te beperken tot 500 (cap). Gebruikmakend van de eigenschappen van ZSET werd dit zo geïmplementeerd dat bij het binnenkomen van nieuwe feed-items automatisch de oudste waarden werden verwijderd (trim). Bestaande sleutels werden ongemoeid gelaten; de nieuwe limiet werd geleidelijk uitgerold, te beginnen bij nieuw aangemaakte sleutels.",
+        },
+        {
+          label: "Resultaat",
+          body: "Na het doorvoeren van de wijziging daalde het Redis-geheugengebruik van 90% naar 58%. Tot dusver zijn er geen negatieve neveneffecten waargenomen, zoals klachten van gebruikers over verdwenen oudere feed-items.",
+        },
+        {
+          label: "Les",
+          body: "De belangrijkste les was dat het vastleggen van de motivatie achter een TTL-instelling bij het opzetten van een cache latere probleemanalyse en respons sterk vereenvoudigt. Verder werd het principe vastgesteld om, bij het opnieuw tegenkomen van legacy-caches zonder TTL, niet automatisch een TTL toe te voegen, maar eerst de mogelijke neveneffecten grondig te onderzoeken. Ook werd bevestigd dat het simpelweg vergroten van het cachegeheugen geen structurele oplossing is, omdat dit alleen maar leidt tot verdere opstapeling van de onderliggende legacy-structuur.",
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Casestudy\'s',

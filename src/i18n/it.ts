@@ -201,6 +201,40 @@ const it: SiteContent = {
         },
       ],
     },
+    {
+      slug: "redis-lounge-cache-memory-optimization",
+      company: "Munto",
+      title: "Risoluzione dell'esplosione di memoria nella cache Redis priva di TTL",
+      subtitle: "Utilizzo memoria della cache del feed Lounge: dal 90% al 58%",
+      summary: "Nella cache Lounge di Munto, l'assenza di TTL faceva crescere indefinitamente le chiavi di alcuni utenti molto popolari, portando l'utilizzo della memoria Redis fino al 90%. Ho analizzato il problema in modo data-driven, campionando la distribuzione del numero di elementi per chiave e scoprendo che l'1% degli utenti più popolari occupava la quasi totalità della memoria. Ho quindi introdotto un cap di 500 elementi basato sul p90 e un rollout graduale, riducendo l'utilizzo della memoria al 58% senza effetti collaterali.",
+      tags: ["Redis", "CloudWatch", "SNS", "AWS Chatbot", "Slack", "ZSET"],
+      steps: [
+        {
+          label: "Problema",
+          body: "La cache Lounge di Munto memorizzava il feed degli utenti seguiti da ciascun profilo, usato anche per mostrare i post popolari in aree in evidenza. L'utilizzo della memoria di questa cache Redis era salito fino al 90%. In precedenza i problemi venivano rilevati controllando manualmente una dashboard, ma da poco era stato messo in piedi un sistema di monitoraggio con CloudWatch Alarm → SNS → AWS Chatbot collegato a Slack, ed è stato proprio questo a far emergere il problema. Fortunatamente, fino a quel momento non c'erano stati impatti concreti come interruzioni del servizio o rallentamenti nelle risposte.",
+        },
+        {
+          label: "Causa",
+          body: "Indagando sulla causa, ho scoperto che il 60% dell'intera memoria era occupato da una sola chiave della cache: il feed di un utente con un numero molto elevato di follower. Questa chiave non aveva un TTL impostato, quindi i nuovi contenuti del feed venivano continuamente aggiunti (append) senza mai essere rimossi, facendola crescere all'infinito. Non era possibile risalire, dalla documentazione o dallo storico, al motivo per cui il codice legacy non prevedesse un TTL fin dall'inizio.",
+        },
+        {
+          label: "Compromesso",
+          body: "Ho scartato l'idea di aggiungere semplicemente un TTL, perché non era chiaro il motivo originario per cui non fosse stato previsto, e temevo effetti collaterali imprevisti. Ho escluso anche modifiche alla struttura delle chiavi o l'introduzione di limiti di dimensione della cache, perché avrebbero richiesto un impegno di sviluppo troppo elevato, così come l'aumento diretto della memoria dell'istanza cache, che avrebbe solo rimandato il problema lasciando che la struttura legacy continuasse ad accumularsi. Ho invece campionato la distribuzione del numero di elementi per chiave (2.015 chiavi: p50 = 48, p90 = 504, p99 = 2.195, massimo 22.415), confermando che l'1% degli utenti più popolari, tramite le proprie ZSET, occupava la maggior parte della memoria. Ho quindi concluso che restringere l'ambito del problema e applicare un rollout graduale fosse la soluzione più efficace rispetto alle risorse necessarie.",
+        },
+        {
+          label: "Decisione",
+          body: "Ho deciso di limitare (cap) il numero di elementi per chiave della cache a 500, in linea con il valore del p90. Sfruttando le caratteristiche delle ZSET, ho implementato un meccanismo di trim che rimuove i valori più vecchi quando arrivano nuovi elementi nel feed, lasciando invariate le chiavi esistenti e applicando il nuovo limite gradualmente solo alle chiavi create successivamente.",
+        },
+        {
+          label: "Risultato",
+          body: "Dopo l'applicazione della modifica, l'utilizzo della memoria Redis è sceso dal 90% al 58%. Dopo il rollout non sono emersi effetti collaterali, come lamentele degli utenti dovute al taglio dei feed più vecchi.",
+        },
+        {
+          label: "Lezione appresa",
+          body: "Ho imparato che, quando si introduce una cache, è fondamentale documentare esplicitamente i motivi delle scelte relative al TTL, così da facilitare l'analisi delle cause e gli interventi futuri. Ho stabilito il principio che, di fronte a configurazioni legacy prive di TTL, non bisogna aggiungerlo automaticamente, ma valutare a fondo i possibili effetti collaterali prima di intervenire. Ho anche verificato che aumentare semplicemente la memoria della cache non è una soluzione strutturale, perché permette solo all'architettura legacy di continuare ad accumularsi nel tempo.",
+        },
+      ],
+    },
   ],
   caseStudiesPage: {
     title: 'Casi di studio',
